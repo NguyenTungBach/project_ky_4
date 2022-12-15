@@ -15,11 +15,21 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterDTO {
+    @NotEmpty(message = "Thiếu tên")
+    private String name;
+    private String address;
     @Email(message = "Sai định dạng email")
     @NotEmpty(message = "Thiếu email")
     private String email;
     @NotEmpty(message = "Thiếu password")
     private String password;
+    @NotEmpty(message = "Thiếu số điện thoại")
+    private String phone;
+    private String thumbnail;
+    @NotEmpty(message = "Thiếu giới tính")
+    private String gender;
+    private Integer member_ship_class_id;
+    private Double total_payment;
     @NotEmpty(message = "Thiếu role")
     private Set<Role> roles;
 }

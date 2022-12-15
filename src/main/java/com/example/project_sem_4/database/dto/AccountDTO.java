@@ -12,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class AccountDTO {
     private long id;
+    private String name;
     private String email;
     private Set<Role> roles;
     private int status;
@@ -20,11 +21,12 @@ public class AccountDTO {
 
     public AccountDTO(Account account) {
         this.id = account.getId();
+        this.name = account.getName();
         this.email = account.getEmail();
         this.roles = account.getRoles();
         this.status = account.getStatus();
-        this.createdAt = account.getCreatedAt();
-        this.updatedAt = account.getUpdatedAt();
+        this.createdAt = account.getCreated_at();
+        this.updatedAt = account.getUpdated_at();
     }
 
 }

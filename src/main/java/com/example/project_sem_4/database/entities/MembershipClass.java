@@ -1,5 +1,6 @@
 package com.example.project_sem_4.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class MembershipClass extends BaseEntity{
     private int id;
     private String name;
 
+    @JsonIgnore
     @OneToMany(cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "member_ship_class_id", fetch = FetchType.LAZY)

@@ -16,11 +16,9 @@ public abstract class BaseEntity{
     @Column(columnDefinition = "integer default 0", name = "status",nullable = false)
     private int status;
 
-    @CreationTimestamp
     @Column(name = "created_at")
-    private Date createdAt;
+    private Date created_at;
 
-    @CreationTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Date updated_at;
 }

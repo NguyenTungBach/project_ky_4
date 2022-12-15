@@ -24,7 +24,7 @@ import static java.util.Arrays.stream;
 // here we get the token from user then assign role for them
 public class ApiAuthorizationFilter extends OncePerRequestFilter {
     private static final String[] IGNORE_PATHS = {"/api/v1/login", "/api/v1/register", "/api/v1/token/refresh"};
-
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //let login and register pass through

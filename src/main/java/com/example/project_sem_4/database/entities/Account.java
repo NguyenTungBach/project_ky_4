@@ -24,6 +24,7 @@ public class Account extends BaseEntity{
     private String name;
     private String address;
     private String phone;
+    @Column(unique = true)
     private String email;
     private String password;
     private String thumbnail;

@@ -6,16 +6,15 @@ import com.example.project_sem_4.database.dto.CredentialDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
 import com.example.project_sem_4.database.entities.Account;
 import com.example.project_sem_4.database.entities.Role;
+import com.example.project_sem_4.database.search_body.AccountSearchBody;
 import com.example.project_sem_4.service.authen.AuthenticationService;
 import com.example.project_sem_4.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,9 +25,8 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
 @RequiredArgsConstructor
-
+@CrossOrigin()
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -80,5 +78,68 @@ public class AuthenticationController {
             //show error
             return ResponseEntity.internalServerError().body(ex.getMessage());
         }
+    }
+
+    @RequestMapping(value = "account",method = RequestMethod.GET)
+    public ResponseEntity<List<Account>> findAllJDBC(
+//            @RequestParam(name = "page", defaultValue = "1") int page,
+//            @RequestParam(name = "limit", defaultValue = "4") int limit,
+//            @RequestParam(name = "sort", defaultValue = "asc") String sort,
+//            @RequestParam(name = "name", required = false) String name,
+//            @RequestParam(name = "role_id", defaultValue = "-1") Integer role_id,
+//            @RequestParam(name = "member_ship_class_id", defaultValue = "-1") Integer member_ship_class_id,
+//            @RequestParam(name = "phone", required = false) String phone,
+//            @RequestParam(name = "gender", required = false) String gender,
+//            @RequestParam(name = "status", defaultValue = "-1") Integer status,
+//            @RequestParam(name = "start", required = false) String start,
+//            @RequestParam(name = "end", required = false) String end
+            @RequestBody AccountSearchBody accountSearchBody
+    ){
+        /*
+            {
+                "page": 1,
+                "limit":4,
+                "sort":"asc",
+                "role_id":-1,
+                "member_ship_class_id":-1,
+                "status":-1
+            }
+        */
+
+//        AccountSearchBody accountSearchBody = AccountSearchBody.builder()
+//                .page(page)
+//                .limit(limit)
+//                .name(name)
+//                .role_id(role_id)
+//                .member_ship_class_id(member_ship_class_id)
+//                .gender(gender)
+//                .phone(phone)
+//                .status(status)
+//                .start(start)
+//                .end(end)
+//                .sort(sort)
+//                .build();
+        return new ResponseEntity(authenticationService.findAllAccount(accountSearchBody), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "account/{id}",method = RequestMethod.GET)
+    public ResponseEntity<Account> findById(
+            @PathVariable int id
+    ){
+        return new ResponseEntity(authenticationService.findAccountById(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "account/findByRole_id/{id}",method = RequestMethod.GET)
+    public ResponseEntity<Account> findByRole_id(
+            @PathVariable int id
+    ){
+        return new ResponseEntity(authenticationService.findAccountByRole_id(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "account/update/{id}",method = RequestMethod.POST)
+    public ResponseEntity<Object> update(
+            @RequestBody @Valid RegisterDTO registerDTO,
+            @PathVariable int id){
+        return ResponseEntity.ok().body(authenticationService.updateAccount(registerDTO,id));
     }
 }
