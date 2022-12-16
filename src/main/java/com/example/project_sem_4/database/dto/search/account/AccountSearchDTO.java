@@ -1,6 +1,7 @@
 package com.example.project_sem_4.database.dto.search.account;
 
 import com.example.project_sem_4.database.entities.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -26,5 +28,7 @@ public class AccountSearchDTO {
     private String account_created_at;
 //    private Double roles_id;
 //    private String roles_name;
-//    private Set<Role> roles;
+    @JsonIgnore
+    private String rolesListBefore;
+    private Set<Role> roles;
 }

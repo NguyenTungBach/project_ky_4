@@ -30,7 +30,32 @@ public class QueryAccountByJDBC {
 
     public String stringQuery(AccountSearchBody searchBody){
         StringBuilder sqlQuery = new StringBuilder("Select accounts.id as accounts_id,accounts.name as accounts_name,accounts.email as accounts_email,accounts.phone,accounts.gender,accounts.address,accounts.thumbnail,accounts.total_payment,accounts.created_at as account_created_at ");
-        sqlQuery.append(" ,roles.id as roles_id, roles.name as roles_name ").append(" FROM accounts ")
+//        sqlQuery.append(" ,(CONCAT('[',GROUP_CONCAT(CONCAT('")
+//                .append('{')
+//                .append('"')
+//                .append("id")
+//                .append('"')
+//                .append(':')
+//                .append('"')
+//                .append("'")
+//                .append(", roles.id,")
+//                .append("'")
+//                .append('"')
+//                .append(", ")
+//                .append('"')
+//                .append("name")
+//                .append('"')
+//                .append(':')
+//                .append('"')
+//                .append("'")
+//                .append(", roles.id,")
+//                .append("'")
+//                .append('"')
+//                .append('}')
+//                .append("')),']')) as roleList")
+
+        sqlQuery.append(" ,(CONCAT(\"[\",GROUP_CONCAT(CONCAT('{\"id\":\"', roles.id, '\", \"name\":\"',roles.name,'\"}')),']')) as rolesListBefore")
+                .append(" FROM accounts ")
                 .append(" Join accounts_roles ").append(" ON accounts.id = accounts_roles.account_id ")
                 .append(" Join roles ").append(" ON accounts_roles.role_id = roles.id ");
 
@@ -126,7 +151,7 @@ public class QueryAccountByJDBC {
         if (searchBody.getSort().equals("desc")){
             sqlQuery.append(" DESC ");
         }
-        log.info("check query: "+ sqlQuery);
+//        log.info("check query: "+ sqlQuery);
         return sqlQuery.toString();
     }
 

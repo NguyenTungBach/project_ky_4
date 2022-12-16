@@ -2,6 +2,7 @@ package com.example.project_sem_4.service.authen;
 
 import com.example.project_sem_4.database.dto.AccountDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
+import com.example.project_sem_4.database.dto.search.account.AccountSearchDTO;
 import com.example.project_sem_4.database.entities.Account;
 import com.example.project_sem_4.database.entities.MembershipClass;
 import com.example.project_sem_4.database.entities.Role;
@@ -15,6 +16,8 @@ import com.example.project_sem_4.enum_project.constant.GenderConstant;
 import com.example.project_sem_4.enum_project.ERROR;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Type;
 import java.util.*;
 
 @Service
@@ -191,8 +195,13 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public Map<String, Object> findAllAccount(AccountSearchBody searchBody){
-        List<?> listContentPage = queryAccountByJDBC.filterWithPaging(searchBody);
-        List<?> listContentNoPage = queryAccountByJDBC.filterWithNoPaging(searchBody);
+        Gson gson = new Gson();
+        Type listType = new TypeToken<Set<Role>>(){}.getType();
+        List<AccountSearchDTO> listContentPage = queryAccountByJDBC.filterWithPaging(searchBody);
+        for (AccountSearchDTO check: listContentPage) {
+            check.setRoles(gson.fromJson(check.getRolesListBefore(),listType));
+        }
+        List<AccountSearchDTO> listContentNoPage = queryAccountByJDBC.filterWithNoPaging(searchBody);
 
         Map<String, Object> responses = new HashMap<>();
         responses.put("content",listContentPage);
