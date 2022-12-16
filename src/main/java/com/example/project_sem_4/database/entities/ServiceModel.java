@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "services")
-public class Service extends BaseEntity{
+public class ServiceModel extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -28,7 +28,7 @@ public class Service extends BaseEntity{
     @Column(insertable = false, updatable = false)
     private int type_service_id;
 
-    public Service() {
+    public ServiceModel() {
         super();
     }
 }

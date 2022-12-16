@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,7 +23,7 @@ public class TypeService extends BaseEntity{
     @OneToMany(cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "typeService", fetch = FetchType.LAZY)
-    private Set<Service> services;
+    private Set<ServiceModel> services;
 
     public TypeService() {
         super();
