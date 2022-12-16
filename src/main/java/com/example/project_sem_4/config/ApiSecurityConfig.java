@@ -35,17 +35,15 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         apiAuthenticationFilter.setFilterProcessesUrl("/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/register**", "/login**", "/token/refresh**","/uploadfile**").permitAll();
+        http.authorizeRequests().antMatchers("/register**", "/login**", "/token/refresh**","/uploadfile**","/test**","/cloud**","/create-branch**").permitAll();
         //ADMIN
         http.authorizeRequests().antMatchers("/account**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/blog**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/booking**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/branch**").hasAnyAuthority("ADMIN");
-        http.authorizeRequests().antMatchers("/cloud**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/feedback**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/order**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/service**").hasAnyAuthority("ADMIN");
-        http.authorizeRequests().antMatchers("/test**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/voucher**").hasAnyAuthority("ADMIN");
         //RECEPTIONISTS
 
