@@ -59,90 +59,49 @@ public class QueryAccountByJDBC {
                 .append(" Join accounts_roles ").append(" ON accounts.id = accounts_roles.account_id ")
                 .append(" Join roles ").append(" ON accounts_roles.role_id = roles.id ");
 
-        if (checkAllSearch(searchBody)){
             if (searchBody.getMember_ship_class_id() != -1){
                 sqlQuery.append(" Join membership_classes ").append(" ON accounts.member_ship_class_id = membership_classes.id ");
             }
-            sqlQuery.append(" Where ");
-            boolean checkCountAnd = false;
+            sqlQuery.append(" Where 1=1 ");
+
             if (searchBody.getName() != null && searchBody.getName().length() > 0){
-                sqlQuery.append(" accounts.name Like '%" + searchBody.getName() + "%'");
-                checkCountAnd = true;
+                sqlQuery.append(" AND accounts.name Like '%" + searchBody.getName() + "%'");
             }
 
             if (searchBody.getEmail() != null && searchBody.getEmail().length() > 0){
-                if (checkCountAnd){
-                    sqlQuery.append(" And ");
-                    checkCountAnd = false;
-                }
-                sqlQuery.append(" accounts.email Like '%" + searchBody.getEmail() + "%'");
-                checkCountAnd = true;
+                sqlQuery.append(" AND accounts.email Like '%" + searchBody.getEmail() + "%'");
             }
 
             if (searchBody.getPhone() != null && searchBody.getPhone().length() > 0){
-                if (checkCountAnd){
-                    sqlQuery.append(" And ");
-                    checkCountAnd = false;
-                }
-                sqlQuery.append(" accounts.phone Like '%" + searchBody.getPhone() + "%'");
-                checkCountAnd = true;
+                sqlQuery.append(" AND accounts.phone Like '%" + searchBody.getPhone() + "%'");
             }
 
             if (searchBody.getGender() != null && searchBody.getGender().length() > 0){
-                if (checkCountAnd){
-                    sqlQuery.append(" And ");
-                    checkCountAnd = false;
-                }
-                sqlQuery.append(" accounts.gender Like '%" + searchBody.getGender() + "%'");
-                checkCountAnd = true;
+                sqlQuery.append(" AND accounts.gender Like '%" + searchBody.getGender() + "%'");
             }
 
             if (searchBody.getRole_id() != -1){
-                if (checkCountAnd){
-                    sqlQuery.append(" And ");
-                    checkCountAnd = false;
-                }
-                sqlQuery.append(" roles.id = " + searchBody.getRole_id());
-                checkCountAnd = true;
+                sqlQuery.append(" AND roles.id = " + searchBody.getRole_id());
             }
 
             if (searchBody.getStatus() != -1){
-                if (checkCountAnd){
-                    sqlQuery.append(" And ");
-                    checkCountAnd = false;
-                }
-                sqlQuery.append(" accounts.status = " + searchBody.getStatus());
-                checkCountAnd = true;
+                sqlQuery.append(" AND accounts.status = " + searchBody.getStatus());
             }
 
             if (searchBody.getStatus() != -1){
-                if (checkCountAnd){
-                    sqlQuery.append(" And ");
-                    checkCountAnd = false;
-                }
-                sqlQuery.append(" accounts.member_ship_class_id = " + searchBody.getMember_ship_class_id());
-                checkCountAnd = true;
+                sqlQuery.append(" AND accounts.member_ship_class_id = " + searchBody.getMember_ship_class_id());
             }
 
             if (searchBody.getStart() != null && searchBody.getStart().length() > 0){
-                if (checkCountAnd){
-                    sqlQuery.append(" And ");
-                    checkCountAnd = false;
-                }
                 LocalDate date = HelpConvertDate.convertStringToLocalDate(searchBody.getStart());
-                sqlQuery.append(" accounts.created_at >= '" + date + " 00:00:00' ");
-                checkCountAnd = true;
+                sqlQuery.append(" AND accounts.created_at >= '" + date + " 00:00:00' ");
             }
 
             if (searchBody.getEnd() != null && searchBody.getEnd().length() > 0){
-                if (checkCountAnd){
-                    sqlQuery.append(" And ");
-                    checkCountAnd = false;
-                }
                 LocalDate date = HelpConvertDate.convertStringToLocalDate(searchBody.getEnd());
-                sqlQuery.append(" accounts.created_at <= '" + date + " 23:59:59' ");
+                sqlQuery.append(" AND accounts.created_at <= '" + date + " 23:59:59' ");
             }
-        }
+
         sqlQuery.append(" GROUP BY accounts_id ");
         sqlQuery.append(" ORDER BY accounts.id ");
         if (searchBody.getSort().equals("asc")){
@@ -151,19 +110,19 @@ public class QueryAccountByJDBC {
         if (searchBody.getSort().equals("desc")){
             sqlQuery.append(" DESC ");
         }
-//        log.info("check query: "+ sqlQuery);
+        log.info("check query: "+ sqlQuery);
         return sqlQuery.toString();
     }
 
-    private boolean checkAllSearch(AccountSearchBody searchBody) {
-        return (searchBody.getName() != null && searchBody.getName().length() > 0) ||
-                (searchBody.getEmail() != null && searchBody.getEmail().length() > 0) ||
-                (searchBody.getPhone() != null && searchBody.getPhone().length() > 0) ||
-                (searchBody.getGender() != null && searchBody.getGender().length() > 0) ||
-                (searchBody.getRole_id() != -1) ||
-                (searchBody.getStatus() != -1) ||
-                (searchBody.getMember_ship_class_id() != -1) ||
-                (searchBody.getStart() != null && searchBody.getStart().length() > 0) ||
-                (searchBody.getEnd() != null && searchBody.getEnd().length() > 0);
-    }
+//    private boolean checkAllSearch(AccountSearchBody searchBody) {
+//        return (searchBody.getName() != null && searchBody.getName().length() > 0) ||
+//                (searchBody.getEmail() != null && searchBody.getEmail().length() > 0) ||
+//                (searchBody.getPhone() != null && searchBody.getPhone().length() > 0) ||
+//                (searchBody.getGender() != null && searchBody.getGender().length() > 0) ||
+//                (searchBody.getRole_id() != -1) ||
+//                (searchBody.getStatus() != -1) ||
+//                (searchBody.getMember_ship_class_id() != -1) ||
+//                (searchBody.getStart() != null && searchBody.getStart().length() > 0) ||
+//                (searchBody.getEnd() != null && searchBody.getEnd().length() > 0);
+//    }
 }
