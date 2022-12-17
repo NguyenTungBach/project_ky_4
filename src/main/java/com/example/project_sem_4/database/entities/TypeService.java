@@ -1,5 +1,6 @@
 package com.example.project_sem_4.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class TypeService extends BaseEntity{
     @OneToMany(cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "typeService", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<ServiceModel> services;
 
     public TypeService() {

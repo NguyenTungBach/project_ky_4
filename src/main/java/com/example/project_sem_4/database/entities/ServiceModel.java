@@ -1,5 +1,6 @@
 package com.example.project_sem_4.database.entities;
 
+import com.example.project_sem_4.database.dto.ServiceDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,8 @@ public class ServiceModel extends BaseEntity{
     private String name;
     private String description;
 
+    private String thumbnail;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
@@ -30,5 +33,12 @@ public class ServiceModel extends BaseEntity{
 
     public ServiceModel() {
         super();
+    }
+
+    public ServiceModel(ServiceDTO serviceDTO) {
+        this.name = serviceDTO.getName();
+        this.description = serviceDTO.getDescription();
+        this.type_service_id = serviceDTO.getTypeServiceId();
+        this.thumbnail = serviceDTO.getThumbnail();
     }
 }
