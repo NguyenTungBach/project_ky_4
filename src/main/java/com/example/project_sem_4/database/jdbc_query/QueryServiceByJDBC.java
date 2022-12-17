@@ -25,7 +25,7 @@ public class QueryServiceByJDBC {
 
     public String sqlQuery(ServiceSearchBody serviceSearchBody) {
         StringBuilder sql = new StringBuilder("SELECT s.id as service_id, s.name as service_name, s.description as description, s.thumbnail as thumbnail, " +
-                "ts.id as typeServiceStr FROM services s JOIN type_services ts ON s.type_service_id = ts.id WHERE 1 = 1 ");
+                "ts.id as typeServiceId FROM services s JOIN type_services ts ON s.type_service_id = ts.id WHERE 1 = 1 ");
         if(serviceSearchBody.getName() != null && serviceSearchBody.getName().trim().length() > 0) {
             sql.append(" AND s.name LIKE '%" + serviceSearchBody.getName() + "%'");
         }
