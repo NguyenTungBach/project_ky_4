@@ -46,13 +46,13 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/service**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/voucher**").hasAnyAuthority("ADMIN");
         //RECEPTIONISTS
-
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/service**").hasAnyAuthority("CUSTOMER");
         //CUSTOMER_CARE
-
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/service**").hasAnyAuthority("CUSTOMER");
         //STAFF
-
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/service**").hasAnyAuthority("CUSTOMER");
         //CUSTOMER
-
+        http.authorizeRequests().antMatchers(HttpMethod.GET,"/service**").hasAnyAuthority("CUSTOMER");
         //add requests path for more role here
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(apiAuthenticationFilter);

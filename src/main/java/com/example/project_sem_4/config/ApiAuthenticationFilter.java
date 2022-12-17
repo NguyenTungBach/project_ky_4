@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +26,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -56,10 +59,18 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             RegisterDTO registerDTO = gson.fromJson(jsonData, RegisterDTO.class);
             Account checkAccount = accountRepository.findByEmail(registerDTO.getEmail()).orElse(null);
             if (checkAccount == null){
-                throw new ApiExceptionNotFound("accounts","email", "không tìm thấy email là " + registerDTO.getEmail());
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+                Map<String, String> errors = new HashMap<>();
+                errors.put("error", "Không tìm thấy email là " + registerDTO.getEmail());
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), errors);
             }
             if (checkAccount.getStatus() == 0){
-                throw new ApiExceptionNotAcceptable("Tài khoản chưa được kích hoạt hoặc bị khóa");
+                response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+                Map<String, String> errors = new HashMap<>();
+                errors.put("error", "Tài khoản chưa được kích hoạt hoặc bị khóa");
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), errors);
             }
             String email = registerDTO.getEmail();
             String password = registerDTO.getPassword();
@@ -91,7 +102,15 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         new ObjectMapper().writeValue(response.getOutputStream(), credential);
     }
 
-//    @Override
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        super.unsuccessfulAuthentication(request, response, failed);
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getOutputStream().println("{ \"error\": \"" + "bach falied login" + "\" }");
+    }
+
+    //    @Override
 //    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
 //        System.out.println("Bach Authentication Failed");
 //        MailLog mailLog = MailLog.builder()
