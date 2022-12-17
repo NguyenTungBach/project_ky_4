@@ -3,6 +3,7 @@ package com.example.project_sem_4.controller;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.project_sem_4.database.dto.AccountDTO;
 import com.example.project_sem_4.database.dto.CredentialDTO;
+import com.example.project_sem_4.database.dto.RegisterCustomerDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
 import com.example.project_sem_4.database.entities.Account;
 import com.example.project_sem_4.database.entities.Role;
@@ -33,6 +34,13 @@ public class AuthenticationController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO registerDTO) {
         AccountDTO account = authenticationService.saveAccount(registerDTO);
+        return ResponseEntity.ok().body(account);
+    }
+
+    @RequestMapping(value = "/registerCustomer", method = RequestMethod.POST)
+    public ResponseEntity<Object> registerCustomer(@RequestBody @Valid RegisterCustomerDTO registerCustomerDTO) {
+
+        AccountDTO account = authenticationService.saveAccountCustomer(registerCustomerDTO);
         return ResponseEntity.ok().body(account);
     }
 
@@ -106,19 +114,6 @@ public class AuthenticationController {
             }
         */
 
-//        AccountSearchBody accountSearchBody = AccountSearchBody.builder()
-//                .page(page)
-//                .limit(limit)
-//                .name(name)
-//                .role_id(role_id)
-//                .member_ship_class_id(member_ship_class_id)
-//                .gender(gender)
-//                .phone(phone)
-//                .status(status)
-//                .start(start)
-//                .end(end)
-//                .sort(sort)
-//                .build();
         return new ResponseEntity(authenticationService.findAllAccount(accountSearchBody), HttpStatus.OK);
     }
 
