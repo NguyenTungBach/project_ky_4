@@ -37,8 +37,8 @@ import java.util.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-@CrossOrigin()
 @Log4j2
+@CrossOrigin(origins = "*")
 public class AuthenticationService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
@@ -209,8 +209,6 @@ public class AuthenticationService implements UserDetailsService {
         responses.put("totalItems",listContentNoPage.size());
         responses.put("totalPage",(int) Math.ceil((double) listContentNoPage.size() / searchBody.getLimit()));
         return responses;
-
-//        return accountRepository.findAll();
     }
 
 }

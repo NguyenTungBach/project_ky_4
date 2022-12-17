@@ -2,9 +2,15 @@ package com.example.project_sem_4.config;
 
 import com.example.project_sem_4.database.dto.CredentialDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
+import com.example.project_sem_4.database.entities.Account;
+import com.example.project_sem_4.database.repository.AccountRepository;
 import com.example.project_sem_4.util.JwtUtil;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotAcceptable;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,8 +36,12 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
 
-    public ApiAuthenticationFilter(AuthenticationManager authenticationManager) {
+    @Autowired
+    AccountRepository accountRepository;
+
+    public ApiAuthenticationFilter(AuthenticationManager authenticationManager, ApplicationContext ctx) {
         this.authenticationManager = authenticationManager;
+        this.accountRepository = ctx.getBean(AccountRepository.class);
 //        this.mailLogService = ctx.getBean(MailLogService.class);
     }
 
@@ -44,6 +54,13 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Gson gson = new Gson();
             //it should be loginDTO
             RegisterDTO registerDTO = gson.fromJson(jsonData, RegisterDTO.class);
+            Account checkAccount = accountRepository.findByEmail(registerDTO.getEmail()).orElse(null);
+            if (checkAccount == null){
+                throw new ApiExceptionNotFound("accounts","email", "không tìm thấy email là " + registerDTO.getEmail());
+            }
+            if (checkAccount.getStatus() == 0){
+                throw new ApiExceptionNotAcceptable("Tài khoản chưa được kích hoạt hoặc bị khóa");
+            }
             String email = registerDTO.getEmail();
             String password = registerDTO.getPassword();
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);

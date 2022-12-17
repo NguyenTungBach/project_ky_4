@@ -26,8 +26,6 @@ public class AccountSearchDTO {
     private String thumbnail;
     private Double total_payment;
     private String account_created_at;
-//    private Double roles_id;
-//    private String roles_name;
     @JsonIgnore
     private String rolesListBefore;
     private Set<Role> roles;

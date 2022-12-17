@@ -31,11 +31,11 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //override default login path
-        ApiAuthenticationFilter apiAuthenticationFilter = new ApiAuthenticationFilter(authenticationManagerBean());
+        ApiAuthenticationFilter apiAuthenticationFilter = new ApiAuthenticationFilter(authenticationManagerBean(),getApplicationContext());
         apiAuthenticationFilter.setFilterProcessesUrl("/login");
-        http.csrf().disable();
+        http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/register**", "/login**", "/token/refresh**","/uploadfile**","/test**","/cloud**").permitAll();
+        http.authorizeRequests().antMatchers("/register**", "/login**", "/token/refresh**","/uploadfile**","/mail**","/test**","/cloud**").permitAll();
         //ADMIN
         http.authorizeRequests().antMatchers("/account**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/blog**").hasAnyAuthority("ADMIN");
