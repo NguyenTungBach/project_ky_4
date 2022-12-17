@@ -19,15 +19,14 @@ import java.util.Date;
 @Table(name = "vouchers")
 public class Voucher extends BaseEntity{
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String voucherCode;
+    private int voucherCodeInt;
     private String name;
-    private double discount;
-    @CreationTimestamp
-    private LocalDateTime expired_date;
+    private Double discount;
+    private Date expired_date;
     private boolean is_used;
-
     public Voucher() {
         super();
     }
