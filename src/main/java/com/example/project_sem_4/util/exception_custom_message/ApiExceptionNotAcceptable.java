@@ -11,5 +11,6 @@ public class ApiExceptionNotAcceptable extends RuntimeException{
 
     public ApiExceptionNotAcceptable(String message) {
         super(message);
+        this.message = message;
     }
 }
