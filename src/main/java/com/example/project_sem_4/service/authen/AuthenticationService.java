@@ -113,7 +113,7 @@ public class AuthenticationService implements UserDetailsService {
         account.setCreated_at(new Date());
         account.setStatus(1);
 
-        MembershipClass membershipClass = membershipClassRepository.findById(5).orElse(null);
+        MembershipClass membershipClass = membershipClassRepository.findById(1).orElse(null);
         if (membershipClass == null){
             throw new ApiExceptionNotFound("membership_classes","id","với giá trị nhập cứng là "+5);
         }
