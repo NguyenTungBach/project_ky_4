@@ -87,6 +87,21 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal(); //get user that successfully login
+        Account checkAccount = accountRepository.findByEmail(user.getUsername()).orElse(null);
+        if (checkAccount == null){
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            Map<String, String> errors = new HashMap<>();
+            errors.put("error", "Không tìm thấy email là " + user.getUsername());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), errors);
+        }
+        if (checkAccount.getStatus() == 0){
+            response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+            Map<String, String> errors = new HashMap<>();
+            errors.put("error", "Tài khoản chưa được kích hoạt hoặc bị khóa");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), errors);
+        }
         //generate tokens
         String accessToken = JwtUtil.generateToken(user.getUsername(),
                 user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()),
@@ -97,7 +112,7 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()),
                 request.getRequestURL().toString(),
                 JwtUtil.ONE_DAY * 14);
-        CredentialDTO credential = new CredentialDTO(accessToken, refreshToken,user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        CredentialDTO credential = new CredentialDTO(checkAccount.getName(),checkAccount.getEmail(),checkAccount.getCreated_at(),checkAccount.getUpdated_at(),accessToken, refreshToken,user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), credential);
     }

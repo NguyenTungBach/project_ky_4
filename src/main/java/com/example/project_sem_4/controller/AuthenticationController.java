@@ -80,7 +80,7 @@ public class AuthenticationController {
                     null,
                     request.getRequestURL().toString(),
                     JwtUtil.ONE_DAY * 14);
-            CredentialDTO credential = new CredentialDTO(accessToken, refreshToken,roles);
+            CredentialDTO credential = new CredentialDTO(account.getName(),account.getEmail(),account.getCreated_at(),account.getUpdated_at(),accessToken, refreshToken,roles);
             return ResponseEntity.ok(credential);
         } catch (Exception ex) {
             //show error
