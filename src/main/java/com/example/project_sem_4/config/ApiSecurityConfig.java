@@ -21,7 +21,11 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    
+    @Bean
+    public ApiAuthorizationFilter apiAuthorizationFilter(){
+        return new ApiAuthorizationFilter();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
@@ -56,7 +60,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         //add requests path for more role here
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(apiAuthenticationFilter);
-        http.addFilterBefore(new ApiAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(apiAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

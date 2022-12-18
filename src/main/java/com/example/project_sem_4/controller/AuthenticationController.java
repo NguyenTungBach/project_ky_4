@@ -131,6 +131,7 @@ public class AuthenticationController {
         return new ResponseEntity(authenticationService.findAccountByRole_id(id), HttpStatus.OK);
     }
 
+    // Đi cùng với khóa và mở khóa tài khoản
     @RequestMapping(value = "account/update/{id}",method = RequestMethod.POST)
     public ResponseEntity<Object> update(
             @RequestBody @Valid RegisterDTO registerDTO,
