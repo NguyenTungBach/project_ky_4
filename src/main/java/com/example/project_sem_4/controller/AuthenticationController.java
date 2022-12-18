@@ -3,6 +3,7 @@ package com.example.project_sem_4.controller;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.project_sem_4.database.dto.AccountDTO;
 import com.example.project_sem_4.database.dto.CredentialDTO;
+import com.example.project_sem_4.database.dto.RegisterCustomerDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
 import com.example.project_sem_4.database.entities.Account;
 import com.example.project_sem_4.database.entities.Role;
@@ -26,13 +27,20 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin()
+@CrossOrigin(origins = "*")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO registerDTO) {
         AccountDTO account = authenticationService.saveAccount(registerDTO);
+        return ResponseEntity.ok().body(account);
+    }
+
+    @RequestMapping(value = "/registerCustomer", method = RequestMethod.POST)
+    public ResponseEntity<Object> registerCustomer(@RequestBody @Valid RegisterCustomerDTO registerCustomerDTO) {
+
+        AccountDTO account = authenticationService.saveAccountCustomer(registerCustomerDTO);
         return ResponseEntity.ok().body(account);
     }
 
@@ -72,7 +80,7 @@ public class AuthenticationController {
                     null,
                     request.getRequestURL().toString(),
                     JwtUtil.ONE_DAY * 14);
-            CredentialDTO credential = new CredentialDTO(accessToken, refreshToken,roles);
+            CredentialDTO credential = new CredentialDTO(account.getName(),account.getEmail(),account.getCreated_at(),account.getUpdated_at(),accessToken, refreshToken,roles);
             return ResponseEntity.ok(credential);
         } catch (Exception ex) {
             //show error
@@ -80,7 +88,7 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "account",method = RequestMethod.GET)
+    @RequestMapping(value = "account/search",method = RequestMethod.GET)
     public ResponseEntity<List<Account>> findAllJDBC(
 //            @RequestParam(name = "page", defaultValue = "1") int page,
 //            @RequestParam(name = "limit", defaultValue = "4") int limit,
@@ -106,19 +114,6 @@ public class AuthenticationController {
             }
         */
 
-//        AccountSearchBody accountSearchBody = AccountSearchBody.builder()
-//                .page(page)
-//                .limit(limit)
-//                .name(name)
-//                .role_id(role_id)
-//                .member_ship_class_id(member_ship_class_id)
-//                .gender(gender)
-//                .phone(phone)
-//                .status(status)
-//                .start(start)
-//                .end(end)
-//                .sort(sort)
-//                .build();
         return new ResponseEntity(authenticationService.findAllAccount(accountSearchBody), HttpStatus.OK);
     }
 

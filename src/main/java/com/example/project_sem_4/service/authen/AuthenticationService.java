@@ -1,6 +1,7 @@
 package com.example.project_sem_4.service.authen;
 
 import com.example.project_sem_4.database.dto.AccountDTO;
+import com.example.project_sem_4.database.dto.RegisterCustomerDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
 import com.example.project_sem_4.database.dto.search.account.AccountSearchDTO;
 import com.example.project_sem_4.database.entities.Account;
@@ -37,8 +38,8 @@ import java.util.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-@CrossOrigin()
 @Log4j2
+@CrossOrigin(origins = "*")
 public class AuthenticationService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
@@ -112,6 +113,61 @@ public class AuthenticationService implements UserDetailsService {
 
         account.setCreated_at(new Date());
         account.setStatus(1);
+
+        MembershipClass membershipClass = membershipClassRepository.findById(1).orElse(null);
+        if (membershipClass == null){
+            throw new ApiExceptionNotFound("membership_classes","id","với giá trị nhập cứng là "+5);
+        }
+        account.setMembershipClass(membershipClass);
+        account.setRoles(roles);
+        Account save = accountRepository.save(account);
+        return new AccountDTO(save);
+    }
+
+    public AccountDTO saveAccountCustomer(RegisterCustomerDTO registerCustomerDTO){
+        //create new user role if not exist
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.builder().name("CUSTOMER").build());
+
+        Optional<Role> userRoleOptional = roleRepository.findByName("CUSTOMER");
+        Role userRole = userRoleOptional.orElse(null);
+        if (userRole == null) {
+            //create new role
+//            userRole = roleRepository.save(new Role(USER_ROLE));
+//            return null;
+            throw new ApiExceptionNotFound("roles","name","Không thấy role CUSTOMER");
+        }
+        roles.add(userRoleOptional.get());
+
+        if (accountRepository.findAccountsByEmail(registerCustomerDTO.getEmail()).size() >= 1){
+            throw new ApiExceptionBadRequest("accounts","email","Email đã tồn tại");
+        }
+        //check if username has exist
+        Optional<Account> byUsername = accountRepository.findByEmail(registerCustomerDTO.getEmail());
+        if (byUsername.isPresent()) {
+            return null;
+        }
+        Account account = new Account();
+        account.setName(registerCustomerDTO.getName());
+        account.setAddress(registerCustomerDTO.getAddress());
+        account.setPhone(registerCustomerDTO.getPhone());
+        account.setEmail(registerCustomerDTO.getEmail());
+        account.setPassword(passwordEncoder.encode(registerCustomerDTO.getPassword()));
+        switch (registerCustomerDTO.getGender()){
+            case GenderConstant.CHECKGENER.MALE:
+                account.setGender(GenderEnum.MALE.toString());
+                break;
+            case GenderConstant.CHECKGENER.FEMALE:
+                account.setGender(GenderEnum.FEMALE.toString());
+                break;
+        }
+
+        if (registerCustomerDTO.getThumbnail() !=null){
+            account.setThumbnail(registerCustomerDTO.getThumbnail());
+        }
+
+        account.setCreated_at(new Date());
+        account.setStatus(0);
 
         MembershipClass membershipClass = membershipClassRepository.findById(5).orElse(null);
         if (membershipClass == null){
@@ -209,8 +265,6 @@ public class AuthenticationService implements UserDetailsService {
         responses.put("totalItems",listContentNoPage.size());
         responses.put("totalPage",(int) Math.ceil((double) listContentNoPage.size() / searchBody.getLimit()));
         return responses;
-
-//        return accountRepository.findAll();
     }
 
 }

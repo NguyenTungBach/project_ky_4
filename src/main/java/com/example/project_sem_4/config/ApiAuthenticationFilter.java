@@ -2,9 +2,16 @@ package com.example.project_sem_4.config;
 
 import com.example.project_sem_4.database.dto.CredentialDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
+import com.example.project_sem_4.database.entities.Account;
+import com.example.project_sem_4.database.repository.AccountRepository;
 import com.example.project_sem_4.util.JwtUtil;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotAcceptable;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +26,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -30,8 +39,12 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
 
-    public ApiAuthenticationFilter(AuthenticationManager authenticationManager) {
+    @Autowired
+    AccountRepository accountRepository;
+
+    public ApiAuthenticationFilter(AuthenticationManager authenticationManager, ApplicationContext ctx) {
         this.authenticationManager = authenticationManager;
+        this.accountRepository = ctx.getBean(AccountRepository.class);
 //        this.mailLogService = ctx.getBean(MailLogService.class);
     }
 
@@ -44,6 +57,21 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             Gson gson = new Gson();
             //it should be loginDTO
             RegisterDTO registerDTO = gson.fromJson(jsonData, RegisterDTO.class);
+            Account checkAccount = accountRepository.findByEmail(registerDTO.getEmail()).orElse(null);
+            if (checkAccount == null){
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+                Map<String, String> errors = new HashMap<>();
+                errors.put("error", "Không tìm thấy email là " + registerDTO.getEmail());
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), errors);
+            }
+            if (checkAccount.getStatus() == 0){
+                response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+                Map<String, String> errors = new HashMap<>();
+                errors.put("error", "Tài khoản chưa được kích hoạt hoặc bị khóa");
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), errors);
+            }
             String email = registerDTO.getEmail();
             String password = registerDTO.getPassword();
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
@@ -59,6 +87,21 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal(); //get user that successfully login
+        Account checkAccount = accountRepository.findByEmail(user.getUsername()).orElse(null);
+        if (checkAccount == null){
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            Map<String, String> errors = new HashMap<>();
+            errors.put("error", "Không tìm thấy email là " + user.getUsername());
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), errors);
+        }
+        if (checkAccount.getStatus() == 0){
+            response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
+            Map<String, String> errors = new HashMap<>();
+            errors.put("error", "Tài khoản chưa được kích hoạt hoặc bị khóa");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), errors);
+        }
         //generate tokens
         String accessToken = JwtUtil.generateToken(user.getUsername(),
                 user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()),
@@ -69,12 +112,20 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()),
                 request.getRequestURL().toString(),
                 JwtUtil.ONE_DAY * 14);
-        CredentialDTO credential = new CredentialDTO(accessToken, refreshToken,user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        CredentialDTO credential = new CredentialDTO(checkAccount.getName(),checkAccount.getEmail(),checkAccount.getCreated_at(),checkAccount.getUpdated_at(),accessToken, refreshToken,user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), credential);
     }
 
-//    @Override
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        super.unsuccessfulAuthentication(request, response, failed);
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getOutputStream().println("{ \"error\": \"" + "bach falied login" + "\" }");
+    }
+
+    //    @Override
 //    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
 //        System.out.println("Bach Authentication Failed");
 //        MailLog mailLog = MailLog.builder()

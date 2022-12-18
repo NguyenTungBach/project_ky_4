@@ -1,8 +1,14 @@
 package com.example.project_sem_4.config;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.project_sem_4.database.entities.Account;
+import com.example.project_sem_4.database.repository.AccountRepository;
 import com.example.project_sem_4.util.JwtUtil;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotAcceptable;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,9 +28,13 @@ import static java.util.Arrays.stream;
 
 // this filter will run first with all request
 // here we get the token from user then assign role for them
+@Log4j2
 public class ApiAuthorizationFilter extends OncePerRequestFilter {
     private static final String[] IGNORE_PATHS = {"/api/v1/login", "/api/v1/register", "/api/v1/token/refresh"};
-    
+
+    @Autowired
+    AccountRepository accountRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //let login and register pass through
@@ -33,6 +43,7 @@ public class ApiAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -43,6 +54,14 @@ public class ApiAuthorizationFilter extends OncePerRequestFilter {
             String token = authorizationHeader.replace("Bearer", "").trim();
             DecodedJWT decodedJWT = JwtUtil.getDecodedJwt(token);
             String username = decodedJWT.getSubject();
+
+            Account checkAccount = accountRepository.findByEmail(username).orElse(null);
+            if (checkAccount == null){
+                throw new ApiExceptionNotFound("accounts","email", "không tìm thấy email là " + username);
+            }
+            if (checkAccount.getStatus() == 0){
+                throw new ApiExceptionNotAcceptable("Tài khoản chưa được kích hoạt hoặc bị khóa");
+            }
 
             String[] roles= decodedJWT.getClaim(JwtUtil.ROLE_CLAIM_KEY).asArray(String.class);
 
