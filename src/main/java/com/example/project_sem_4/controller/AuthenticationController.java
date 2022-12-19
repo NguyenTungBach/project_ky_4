@@ -9,8 +9,10 @@ import com.example.project_sem_4.database.entities.Account;
 import com.example.project_sem_4.database.entities.Role;
 import com.example.project_sem_4.database.search_body.AccountSearchBody;
 import com.example.project_sem_4.service.authen.AuthenticationService;
+import com.example.project_sem_4.service.mail.mail_comfirm.MailConfirmService;
 import com.example.project_sem_4.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -138,4 +140,5 @@ public class AuthenticationController {
             @PathVariable int id){
         return ResponseEntity.ok().body(authenticationService.updateAccount(registerDTO,id));
     }
+
 }
