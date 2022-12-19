@@ -63,7 +63,7 @@ public class ThymeleafMailConfirmService {
                 .toUriString();
 
         context.setVariable("email", email);
-        context.setVariable("linkMailConfirm", baseUrl +"api/v1/mail/confirmMail?id=" + id);
+        context.setVariable("linkMailConfirm", baseUrl +"/api/v1/account/active/" + id);
 
         return templateEngine.process(TEMPLATE_NAME, context);
     }

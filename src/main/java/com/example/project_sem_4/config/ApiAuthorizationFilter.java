@@ -62,7 +62,7 @@ public class ApiAuthorizationFilter extends OncePerRequestFilter {
             if (checkAccount == null){
                 throw new ApiExceptionNotFound("accounts","email", "không tìm thấy email là " + username);
             }
-            if (checkAccount.getStatus() == 0){
+            if (checkAccount.getStatus() <= 0){
                 throw new ApiExceptionNotAcceptable("Tài khoản chưa được kích hoạt hoặc bị khóa");
             }
 

@@ -141,4 +141,10 @@ public class AuthenticationController {
         return ResponseEntity.ok().body(authenticationService.updateAccount(registerDTO,id));
     }
 
+    @RequestMapping(value = "account/active/{id}",method = RequestMethod.GET)
+    public ResponseEntity<Account> activeAccount(
+            @PathVariable Integer id
+    ){
+        return new ResponseEntity(authenticationService.activeAccount(id), HttpStatus.OK);
+    }
 }

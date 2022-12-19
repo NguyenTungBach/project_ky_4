@@ -39,7 +39,11 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         apiAuthenticationFilter.setFilterProcessesUrl("/login");
         http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/register**", "/login**", "/token/refresh**","/uploadfile**","/test**","/cloud**","/create-branch**","/mail**").permitAll();
+        http.authorizeRequests().antMatchers("/register**",
+                "/login**", "/token/refresh**",
+                "/uploadfile**","/test**",
+                "/cloud**","/create-branch**",
+                "/mail**","/account/active/**").permitAll();
         //ADMIN
         http.authorizeRequests().antMatchers("/account**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/blog**").hasAnyAuthority("ADMIN");

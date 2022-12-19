@@ -11,6 +11,8 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin()
@@ -20,7 +22,7 @@ public class ServiceController {
     private ServiceHair serviceHair;
 
     @PostMapping("/create")
-    public ResponseEntity createService(@RequestBody ServiceDTO serviceDTO) {
+    public ResponseEntity createService(@RequestBody @Valid ServiceDTO serviceDTO) {
         return new ResponseEntity<>(serviceHair.createService(serviceDTO), HttpStatus.OK);
     }
     @GetMapping("/delete/{id}")
