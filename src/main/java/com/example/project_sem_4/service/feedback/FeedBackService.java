@@ -1,8 +1,7 @@
 package com.example.project_sem_4.service.feedback;
 
-import com.example.project_sem_4.database.dto.search.account.AccountSearchDTO;
 import com.example.project_sem_4.database.entities.FeedBack;
-import com.example.project_sem_4.database.jdbc_query.QueryAccountByJDBC;
+
 import com.example.project_sem_4.database.jdbc_query.QueryFeedBackByJDBC;
 import com.example.project_sem_4.database.repository.FeedBackRepository;
 import com.example.project_sem_4.database.search_body.FeedBackSearchBody;
