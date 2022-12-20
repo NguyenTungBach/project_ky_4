@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping(value = "/cloud")
-@CrossOrigin()
+@CrossOrigin(origins = "*")
 public class CloudController {
     @Autowired
     private CloudinaryService cloudinaryService;

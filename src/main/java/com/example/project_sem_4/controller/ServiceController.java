@@ -15,7 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin()
+@CrossOrigin(origins = "*")
 @RequestMapping("/service")
 public class ServiceController {
     @Autowired

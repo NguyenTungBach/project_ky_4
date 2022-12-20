@@ -41,7 +41,6 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/registerCustomer", method = RequestMethod.POST)
     public ResponseEntity<Object> registerCustomer(@RequestBody @Valid RegisterCustomerDTO registerCustomerDTO) {
-
         AccountDTO account = authenticationService.saveAccountCustomer(registerCustomerDTO);
         return ResponseEntity.ok().body(account);
     }
