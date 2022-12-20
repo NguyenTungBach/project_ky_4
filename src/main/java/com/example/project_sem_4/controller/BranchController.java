@@ -21,18 +21,19 @@ import javax.validation.Valid;
 @CrossOrigin()
 public class BranchController {
     private final BranchService branchService;
-    @RequestMapping(value = "/branch/create-branch", method = RequestMethod.POST)
+    @RequestMapping(value = "/branch/create", method = RequestMethod.POST)
     //@RequestBody @Valid BranchDTO branchDTO
     public ResponseEntity<Object> create(@RequestBody @Valid BranchDTO branchDTO) {
         Branch branch = branchService.saveBranch(branchDTO);
         if (branch == null){
-            return  ResponseEntity.ok().body(
+            return  ResponseEntity.internalServerError().body(
                     ResponeRepository.ResponeJsonError("Tạo thất bại"));
         }
-        return  ResponeRepository.ResponeJsonSusscess("Tạo thành công", branch.toJson());
+//        return  ResponeRepository.ResponeJsonSusscess("Tạo thành công", branch.toJson());
+        return  ResponseEntity.ok(branch);
     }
 
-    @RequestMapping(value = "/branch/update-branch", method = RequestMethod.POST)
+    @RequestMapping(value = "/branch/update", method = RequestMethod.POST)
     public ResponseEntity<Object> update(@RequestBody @Valid BranchDTO branchDTO) {
 
         return ResponseEntity.ok().body(branchDTO);

@@ -11,6 +11,8 @@ import com.example.project_sem_4.database.repository.ServiceRepository;
 import com.example.project_sem_4.database.repository.TypeServiceRepository;
 import com.example.project_sem_4.database.search_body.AccountSearchBody;
 import com.example.project_sem_4.database.search_body.ServiceSearchBody;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,18 +63,18 @@ public class ServiceHair {
         return true;
     }
 
-    public boolean createService(ServiceDTO serviceDTO) {
-        if(serviceDTO.getTypeServiceId() == null) {
-            return false;
-        }
-        ServiceModel serviceModel = new ServiceModel(serviceDTO);
+    public ServiceModel createService(ServiceDTO serviceDTO) {
+//        if(serviceDTO.getTypeServiceId() == null) {
+//            throw new ApiExceptionBadRequest("service","type_service_id","");
+//        }
         TypeService typeService = typeServiceRepository.findById(serviceDTO.getTypeServiceId()).orElse(null);
         if(typeService == null) {
-            return false;
+            throw new ApiExceptionNotFound("type_services","id",serviceDTO.getTypeServiceId());
         }
+        ServiceModel serviceModel = new ServiceModel(serviceDTO,typeService);
         serviceModel.setTypeService(typeService);
-        serviceRepository.save(serviceModel);
-        return true;
+        return serviceRepository.save(serviceModel);
+//        return true;
     }
 
     public Map<String, Object> findService(ServiceSearchBody searchBody){

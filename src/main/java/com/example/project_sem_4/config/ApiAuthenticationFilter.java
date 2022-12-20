@@ -65,7 +65,7 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), errors);
             }
-            if (checkAccount.getStatus() == 0){
+            if (checkAccount.getStatus() <= 0){
                 response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
                 Map<String, String> errors = new HashMap<>();
                 errors.put("error", "Tài khoản chưa được kích hoạt hoặc bị khóa");
@@ -95,7 +95,7 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             new ObjectMapper().writeValue(response.getOutputStream(), errors);
         }
-        if (checkAccount.getStatus() == 0){
+        if (checkAccount.getStatus() <= 0){
             response.setStatus(HttpStatus.NOT_ACCEPTABLE.value());
             Map<String, String> errors = new HashMap<>();
             errors.put("error", "Tài khoản chưa được kích hoạt hoặc bị khóa");
