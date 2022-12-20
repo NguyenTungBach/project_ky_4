@@ -28,19 +28,19 @@ public class SeedTest implements CommandLineRunner {
 //        roleRepository.save(Role.builder().name("admin").build());
 //        bookingRepository.save(Booking.builder().name("test").build());
 //        bookingRepository.save(Booking.builder().name("test").build());
-        MembershipClass membershipClass = membershipClassRepository.findById(1).orElse(null);
-        if (membershipClass == null){
-            membershipClassRepository.save(MembershipClass.builder().name("Hạng S").build());
-            membershipClassRepository.save(MembershipClass.builder().name("Hạng A").build());
-            membershipClassRepository.save(MembershipClass.builder().name("Hạng B").build());
-            membershipClassRepository.save(MembershipClass.builder().name("Hạng C").build());
-            membershipClassRepository.save(MembershipClass.builder().name("Hạng D").build());
+//        MembershipClass membershipClass = membershipClassRepository.findById(1).orElse(null);
+//        if (membershipClass == null){
+//            membershipClassRepository.save(MembershipClass.builder().name("Hạng S").build());
+//            membershipClassRepository.save(MembershipClass.builder().name("Hạng A").build());
+//            membershipClassRepository.save(MembershipClass.builder().name("Hạng B").build());
+//            membershipClassRepository.save(MembershipClass.builder().name("Hạng C").build());
+//            membershipClassRepository.save(MembershipClass.builder().name("Hạng D").build());
 
-            roleRepository.save(Role.builder().name(RoleEnum.ADMIN.role).build());
-            roleRepository.save(Role.builder().name(RoleEnum.RECEPTIONISTS.role).build());
-            roleRepository.save(Role.builder().name(RoleEnum.STAFF.role).build());
-            roleRepository.save(Role.builder().name(RoleEnum.CUSTOMER_CARE.role).build());
-            roleRepository.save(Role.builder().name(RoleEnum.CUSTOMER.role).build());
-        }
+//            roleRepository.save(Role.builder().name(RoleEnum.ADMIN.role).build());
+//            roleRepository.save(Role.builder().name(RoleEnum.RECEPTIONISTS.role).build());
+//            roleRepository.save(Role.builder().name(RoleEnum.STAFF.role).build());
+//            roleRepository.save(Role.builder().name(RoleEnum.CUSTOMER_CARE.role).build());
+//            roleRepository.save(Role.builder().name(RoleEnum.CUSTOMER.role).build());
+//        }
     }
 }
