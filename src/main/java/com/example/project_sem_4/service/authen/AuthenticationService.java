@@ -80,8 +80,6 @@ public class AuthenticationService implements UserDetailsService {
             Optional<Role> userRoleOptional = roleRepository.findByName(role.getName());
             Role userRole = userRoleOptional.orElse(null);
             if (userRole == null) {
-                //create new role
-//            userRole = roleRepository.save(new Role(USER_ROLE));
                 return null;
             }
             roles.add(userRoleOptional.get());
@@ -133,14 +131,11 @@ public class AuthenticationService implements UserDetailsService {
     public AccountDTO saveAccountCustomer(RegisterCustomerDTO registerCustomerDTO){
         //create new user role if not exist
         Set<Role> roles = new HashSet<>();
-        roles.add(Role.builder().name("CUSTOMER").build());
+//        roles.add(Role.builder().name("CUSTOMER").build());
 
         Optional<Role> userRoleOptional = roleRepository.findByName("CUSTOMER");
         Role userRole = userRoleOptional.orElse(null);
         if (userRole == null) {
-            //create new role
-//            userRole = roleRepository.save(new Role(USER_ROLE));
-//            return null;
             throw new ApiExceptionNotFound("roles","name","Không thấy role CUSTOMER");
         }
         roles.add(userRoleOptional.get());

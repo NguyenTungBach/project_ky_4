@@ -29,8 +29,18 @@ public class QueryServiceByJDBC {
         if(serviceSearchBody.getName() != null && serviceSearchBody.getName().trim().length() > 0) {
             sql.append(" AND s.name LIKE '%" + serviceSearchBody.getName() + "%'");
         }
-        if(serviceSearchBody.getTypeServiceId() != null && serviceSearchBody.getTypeServiceId() > 0) {
-            sql.append(" AND ts.id = " + serviceSearchBody.getTypeServiceId());
+        if(serviceSearchBody.getType_service_id() != null && serviceSearchBody.getType_service_id() > 0) {
+            sql.append(" AND ts.id = " + serviceSearchBody.getType_service_id());
+        }
+        if (serviceSearchBody.getStatus() != -1){
+            sql.append(" AND s.status = " + serviceSearchBody.getStatus());
+        }
+        sql.append(" ORDER BY s.id ");
+        if (serviceSearchBody.getSort().equals("asc")){
+            sql.append(" ASC ");
+        }
+        if (serviceSearchBody.getSort().equals("desc")){
+            sql.append(" DESC ");
         }
         return sql.toString();
     }

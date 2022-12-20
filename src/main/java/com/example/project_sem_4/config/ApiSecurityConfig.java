@@ -42,8 +42,10 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/register**",
                 "/login**", "/token/refresh**",
                 "/uploadfile**","/test**",
-                "/cloud**","/create-branch**",
-                "/mail**","/account/active/**").permitAll();
+                "/cloud**","/branch/create**",
+                "/mail**","/account/active/**",
+                        "/feedback/create**")
+                .permitAll();
         //ADMIN
         http.authorizeRequests().antMatchers("/account**").hasAnyAuthority("ADMIN");
         http.authorizeRequests().antMatchers("/blog**").hasAnyAuthority("ADMIN");

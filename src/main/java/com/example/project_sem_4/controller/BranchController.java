@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin()
+@CrossOrigin(origins = "*")
 public class BranchController {
     private final BranchService branchService;
     @RequestMapping(value = "/branch/create", method = RequestMethod.POST)

@@ -1,15 +1,17 @@
 package com.example.project_sem_4.database.search_body;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class ServiceSearchBody {
-    private String name;
-    private Integer type_service_id;
+public class FeedBackSearchBody {
+    private String title;
+    private String email;
     private Integer status;
     private String start;
     private String end;
@@ -17,7 +19,7 @@ public class ServiceSearchBody {
     private Integer page;
     private String sort;
 
-    public ServiceSearchBody() {
+    public FeedBackSearchBody() {
         this.limit = 1;
         this.page = 4;
         this.status = -1;

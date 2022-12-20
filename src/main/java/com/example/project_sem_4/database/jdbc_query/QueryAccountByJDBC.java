@@ -65,7 +65,7 @@ public class QueryAccountByJDBC {
                 sqlQuery.append(" AND accounts.status = " + searchBody.getStatus());
             }
 
-            if (searchBody.getStatus() != -1){
+            if (searchBody.getMember_ship_class_id() != -1){
                 sqlQuery.append(" AND accounts.member_ship_class_id = " + searchBody.getMember_ship_class_id());
             }
 
