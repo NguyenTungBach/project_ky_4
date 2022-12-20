@@ -35,10 +35,10 @@ public class ServiceModel extends BaseEntity{
         super();
     }
 
-    public ServiceModel(ServiceDTO serviceDTO) {
+    public ServiceModel(ServiceDTO serviceDTO, TypeService typeService1) {
         this.name = serviceDTO.getName();
         this.description = serviceDTO.getDescription();
-        this.type_service_id = serviceDTO.getTypeServiceId();
+        this.typeService = typeService1;
         this.thumbnail = serviceDTO.getThumbnail();
     }
 }

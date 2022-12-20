@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mail Comfirm</title>
+</head>
+<body>
+<p style="color: red; font-weight: bold" th:text="'Khách hàng có email là ' + ${email} + ','"></p>
+<p th:text="'Xin hãy xác nhận email tại đây'"></p>
+<a th:href="@{${linkMailConfirm}}">Click vào đây</a>
+</body>
+</html>

@@ -13,8 +13,10 @@ import com.example.project_sem_4.database.repository.MembershipClassRepository;
 import com.example.project_sem_4.database.repository.RoleRepository;
 import com.example.project_sem_4.database.search_body.AccountSearchBody;
 import com.example.project_sem_4.enum_project.GenderEnum;
+import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.enum_project.constant.GenderConstant;
 import com.example.project_sem_4.enum_project.ERROR;
+import com.example.project_sem_4.service.mail.mail_comfirm.MailConfirmService;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import com.google.gson.Gson;
@@ -47,11 +49,10 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     private MembershipClassRepository membershipClassRepository;
-
     @Autowired
     private QueryAccountByJDBC queryAccountByJDBC;
-
-
+    @Autowired
+    private MailConfirmService mailConfirmService;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Account> accountOptional = accountRepository.findByEmail(email);
@@ -71,6 +72,7 @@ public class AuthenticationService implements UserDetailsService {
 
     }
 
+    @Transactional
     public AccountDTO saveAccount(RegisterDTO registerDTO){
         //create new user role if not exist
         Set<Role> roles = new HashSet<>();
@@ -112,7 +114,7 @@ public class AuthenticationService implements UserDetailsService {
         }
 
         account.setCreated_at(new Date());
-        account.setStatus(1);
+        account.setStatus(StatusEnum.UN_ACTIVE.status);
 
         MembershipClass membershipClass = membershipClassRepository.findById(1).orElse(null);
         if (membershipClass == null){
@@ -121,9 +123,13 @@ public class AuthenticationService implements UserDetailsService {
         account.setMembershipClass(membershipClass);
         account.setRoles(roles);
         Account save = accountRepository.save(account);
+
+        mailConfirmService.sendMailConfirm(save.getEmail(),save.getId());
+
         return new AccountDTO(save);
     }
 
+    @Transactional
     public AccountDTO saveAccountCustomer(RegisterCustomerDTO registerCustomerDTO){
         //create new user role if not exist
         Set<Role> roles = new HashSet<>();
@@ -167,7 +173,7 @@ public class AuthenticationService implements UserDetailsService {
         }
 
         account.setCreated_at(new Date());
-        account.setStatus(0);
+        account.setStatus(StatusEnum.UN_ACTIVE.status);
 
         MembershipClass membershipClass = membershipClassRepository.findById(5).orElse(null);
         if (membershipClass == null){
@@ -176,6 +182,9 @@ public class AuthenticationService implements UserDetailsService {
         account.setMembershipClass(membershipClass);
         account.setRoles(roles);
         Account save = accountRepository.save(account);
+
+        mailConfirmService.sendMailConfirm(save.getEmail(),save.getId());
+
         return new AccountDTO(save);
     }
 
@@ -248,6 +257,15 @@ public class AuthenticationService implements UserDetailsService {
     }
     public List<Account> findAccountByRole_id(int id){
         return accountRepository.findAccountsByRole_id(id);
+    }
+
+    public Account activeAccount(int id){
+        Account account = accountRepository.findById(id).orElse(null);
+        if (account == null){
+            throw new ApiExceptionNotFound("accounts","id", "không tìm thấy id là " + id);
+        }
+        account.setStatus(StatusEnum.ACTIVE.status);
+        return accountRepository.save(account);
     }
 
     public Map<String, Object> findAllAccount(AccountSearchBody searchBody){
