@@ -8,6 +8,7 @@ import com.example.project_sem_4.database.dto.RegisterDTO;
 import com.example.project_sem_4.database.entities.Account;
 import com.example.project_sem_4.database.entities.Role;
 import com.example.project_sem_4.database.search_body.AccountSearchBody;
+import com.example.project_sem_4.enum_project.RoleEnum;
 import com.example.project_sem_4.service.authen.AuthenticationService;
 import com.example.project_sem_4.service.mail.mail_comfirm.MailConfirmService;
 import com.example.project_sem_4.util.JwtUtil;
@@ -81,7 +82,15 @@ public class AuthenticationController {
                     null,
                     request.getRequestURL().toString(),
                     JwtUtil.ONE_DAY * 14);
-            CredentialDTO credential = new CredentialDTO(account.getName(),account.getEmail(),account.getCreated_at(),account.getUpdated_at(),accessToken, refreshToken,roles);
+
+            boolean checkADMIN = false;
+            for (Role role: account.getRoles()) {
+                if (role.getName().equals(RoleEnum.ADMIN.role)){
+                    checkADMIN = true;
+                    break;
+                }
+            }
+            CredentialDTO credential = new CredentialDTO(account.getName(),account.getEmail(),checkADMIN,account.getCreated_at(),account.getUpdated_at(),accessToken, refreshToken,roles);
             return ResponseEntity.ok(credential);
         } catch (Exception ex) {
             //show error

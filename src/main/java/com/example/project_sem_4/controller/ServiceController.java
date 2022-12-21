@@ -25,6 +25,7 @@ public class ServiceController {
     public ResponseEntity createService(@RequestBody @Valid ServiceDTO serviceDTO) {
         return new ResponseEntity<>(serviceHair.createService(serviceDTO), HttpStatus.OK);
     }
+
     @GetMapping("/delete/{id}")
     public ResponseEntity deleteService(@PathVariable int id) {
         return new ResponseEntity<>(serviceHair.deleteService(id), HttpStatus.OK);

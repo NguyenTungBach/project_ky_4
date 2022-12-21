@@ -3,7 +3,9 @@ package com.example.project_sem_4.config;
 import com.example.project_sem_4.database.dto.CredentialDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
 import com.example.project_sem_4.database.entities.Account;
+import com.example.project_sem_4.database.entities.Role;
 import com.example.project_sem_4.database.repository.AccountRepository;
+import com.example.project_sem_4.enum_project.RoleEnum;
 import com.example.project_sem_4.util.JwtUtil;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotAcceptable;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
@@ -112,7 +114,15 @@ public class ApiAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()),
                 request.getRequestURL().toString(),
                 JwtUtil.ONE_DAY * 14);
-        CredentialDTO credential = new CredentialDTO(checkAccount.getName(),checkAccount.getEmail(),checkAccount.getCreated_at(),checkAccount.getUpdated_at(),accessToken, refreshToken,user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+        boolean checkADMIN = false;
+        for (Role role: checkAccount.getRoles()) {
+            if (role.getName().equals(RoleEnum.ADMIN.role)){
+                checkADMIN = true;
+                break;
+            }
+        }
+
+        CredentialDTO credential = new CredentialDTO(checkAccount.getName(),checkAccount.getEmail(),checkADMIN,checkAccount.getCreated_at(),checkAccount.getUpdated_at(),accessToken, refreshToken,user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), credential);
     }

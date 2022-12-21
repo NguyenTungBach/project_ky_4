@@ -1,5 +1,6 @@
 package com.example.project_sem_4.database.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,6 +12,8 @@ import java.util.List;
 public class CredentialDTO {
     private String username;
     private String email;
+    @JsonProperty(namespace = "isAdmin")
+    private boolean isAdmin;
     private Date created_at;
     private Date updated_at;
     private String accessToken;
