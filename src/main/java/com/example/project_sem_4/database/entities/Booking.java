@@ -24,7 +24,7 @@ public class Booking extends BaseEntity{
     @GenericGenerator(name = "my_generator", strategy = "com.example.project_sem_4.database.generator.MyGenerator")
     private String id; // Lịch chỉ tập trung đặt lịch cho nhân viên thôi còn service là đính kèm
     private String date;
-//    private String date_booking;// Kiểm tra ngày đặt lịch
+    private String date_booking;// Kiểm tra ngày đặt lịch
     private String time_booking;// Thời gian đặt
     private String email;
     private String phone;

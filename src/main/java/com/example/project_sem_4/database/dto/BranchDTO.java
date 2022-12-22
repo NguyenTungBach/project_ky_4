@@ -18,7 +18,7 @@ public class BranchDTO {
     @NotEmpty(message = "Thiếu địa chỉ")
     private String address;
     @NotEmpty(message = "Thiếu Số điện thoại")
-    @Size(min = 10, max = 10)
+    @Size(min = 10, max = 10,message = "Sai định dạng điện thoại")
     private String hot_line;
     @NotEmpty(message = "Thiếu ảnh")
     private String thumbnail;

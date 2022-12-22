@@ -44,6 +44,8 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/uploadfile**","/test**",
                 "/cloud**","/branch/create**",
                 "/mail**","/account/active/**",
+                "/order/create",
+                "/order/createOrderDetail",
                         "/feedback/create**")
                 .permitAll();
         //ADMIN

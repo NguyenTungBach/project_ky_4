@@ -1,10 +1,7 @@
 package com.example.project_sem_4.database.dto;
 
 import com.example.project_sem_4.database.entities.Role;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -14,6 +11,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class RegisterCustomerDTO {
     @NotEmpty(message = "Thiếu tên")
     private String name;

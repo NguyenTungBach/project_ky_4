@@ -22,4 +22,7 @@ public class ServiceDTO {
     @Min(value = 1, message= "Thiếu loại dịch vụ")
     private Integer typeServiceId;
     private String thumbnail;
+    @NotNull(message = "Thiếu giá dịch vụ")
+    @Min(value = 1, message= "Thiếu giá dịch vụ")
+    private Double price;
 }

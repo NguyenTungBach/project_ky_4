@@ -280,4 +280,31 @@ public class AuthenticationService implements UserDetailsService {
         return responses;
     }
 
+    @Transactional
+    public Account saveWalk_In_Guest(){
+        MembershipClass membershipClassAgain = membershipClassRepository.findById(5).orElse(null);
+
+        Set<Role> roles = new HashSet<>();
+        Optional<Role> userRoleOptional = roleRepository.findByName("CUSTOMER");
+        Role userRole = userRoleOptional.orElse(null);
+        if (userRole == null) {
+            throw new ApiExceptionNotFound("roles","name","Không thấy role CUSTOMER");
+        }
+        roles.add(userRoleOptional.get());
+
+        Account create_Walk_In_Guest = new Account();
+        create_Walk_In_Guest.setName("Walk_In_Guest");
+        create_Walk_In_Guest.setEmail("Walk_In_Guest@gmail.com");
+        create_Walk_In_Guest.setAddress("From No Where");
+        create_Walk_In_Guest.setPhone("123");
+        create_Walk_In_Guest.setPassword(passwordEncoder.encode("123"));
+        create_Walk_In_Guest.setGender(GenderEnum.MALE.gender);
+        create_Walk_In_Guest.setMembershipClass(membershipClassAgain);
+        create_Walk_In_Guest.setRoles(roles);
+        create_Walk_In_Guest.setCreated_at(new Date());
+        create_Walk_In_Guest.setStatus(StatusEnum.ACTIVE.status);
+
+        return accountRepository.save(create_Walk_In_Guest);
+
+    }
 }

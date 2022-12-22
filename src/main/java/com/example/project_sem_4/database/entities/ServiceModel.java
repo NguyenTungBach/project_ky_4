@@ -22,6 +22,7 @@ public class ServiceModel extends BaseEntity{
     private String description;
 
     private String thumbnail;
+    private Double price;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
@@ -40,5 +41,6 @@ public class ServiceModel extends BaseEntity{
         this.description = serviceDTO.getDescription();
         this.typeService = typeService1;
         this.thumbnail = serviceDTO.getThumbnail();
+        this.price = serviceDTO.getPrice();
     }
 }

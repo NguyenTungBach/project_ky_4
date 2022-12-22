@@ -21,10 +21,10 @@ public class MembershipClass extends BaseEntity{
     private int id;
     private String name;
 
-    @JsonIgnore
     @OneToMany(cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "member_ship_class_id", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Account> accounts;
 
     public MembershipClass() {

@@ -23,4 +23,14 @@ public class BookingController {
     public ResponseEntity createBooking(@RequestBody @Valid BookingDTO bookingDTO) {
         return new ResponseEntity<>(bookingService.create(bookingDTO), HttpStatus.OK);
     }
+
+    @PostMapping("/update")
+    public ResponseEntity updateBooking(@RequestBody @Valid BookingDTO bookingDTO,@RequestParam String id) {
+        return new ResponseEntity<>(bookingService.updateBooking(bookingDTO,id), HttpStatus.OK);
+    }
+
+    @PostMapping("/findAllByEmployee_idAndDate_booking")
+    public ResponseEntity findAllByEmployee_idAndDate_booking(@RequestParam Integer employee_id,@RequestParam String date_booking) {
+        return new ResponseEntity<>(bookingService.findAllByEmployee_idAndDate_booking(employee_id,date_booking), HttpStatus.OK);
+    }
 }

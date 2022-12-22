@@ -31,6 +31,7 @@ public class Account extends BaseEntity{
     private String gender;
     private double total_payment;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
@@ -41,7 +42,8 @@ public class Account extends BaseEntity{
 
     @OneToMany(cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
-            mappedBy = "account_id", fetch = FetchType.LAZY)
+            mappedBy = "customer_id", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Order> orders;
 
     @JsonIgnore
@@ -50,6 +52,7 @@ public class Account extends BaseEntity{
             mappedBy = "account_id", fetch = FetchType.LAZY)
     private Set<Blog> blogs;
 
+    @JsonIgnore
     @OneToMany(cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "employee_id", fetch = FetchType.LAZY)
