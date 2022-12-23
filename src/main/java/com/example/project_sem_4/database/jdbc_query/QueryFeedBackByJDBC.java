@@ -41,8 +41,10 @@ public class QueryFeedBackByJDBC {
             sqlQuery.append(" AND feed_backs.email Like '%" + searchBody.getEmail() + "%'");
         }
 
-        if (searchBody.getStatus() != -1){
+        if (searchBody.getStatus() != null){
             sqlQuery.append(" AND feed_backs.status = " + searchBody.getStatus());
+        } else {
+            sqlQuery.append(" AND feed_backs.status != -1");
         }
 
         if (searchBody.getStart() != null && searchBody.getStart().length() > 0){
@@ -56,10 +58,10 @@ public class QueryFeedBackByJDBC {
         }
 
         sqlQuery.append(" ORDER BY feed_backs.id ");
-        if (searchBody.getSort().equals("asc")){
+        if (searchBody.getSort() != null && searchBody.getSort().equals("asc")){
             sqlQuery.append(" ASC ");
         }
-        if (searchBody.getSort().equals("desc")){
+        if (searchBody.getSort() != null && searchBody.getSort().equals("desc")){
             sqlQuery.append(" DESC ");
         }
         log.info("check query: "+ sqlQuery);

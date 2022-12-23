@@ -263,6 +263,15 @@ public class AuthenticationService implements UserDetailsService {
         return accountRepository.save(account);
     }
 
+    public Account deleteAccount(int id){
+        Account account = accountRepository.findById(id).orElse(null);
+        if (account == null){
+            throw new ApiExceptionNotFound("accounts","id", "không tìm thấy id là " + id);
+        }
+        account.setStatus(StatusEnum.DELETE.status);
+        return accountRepository.save(account);
+    }
+
     public Map<String, Object> findAllAccount(AccountSearchBody searchBody){
         Gson gson = new Gson();
         Type listType = new TypeToken<Set<Role>>(){}.getType();

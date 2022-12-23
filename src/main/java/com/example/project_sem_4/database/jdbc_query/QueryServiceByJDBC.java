@@ -32,14 +32,16 @@ public class QueryServiceByJDBC {
         if(serviceSearchBody.getType_service_id() != null && serviceSearchBody.getType_service_id() > 0) {
             sql.append(" AND ts.id = " + serviceSearchBody.getType_service_id());
         }
-        if (serviceSearchBody.getStatus() != -1){
+        if (serviceSearchBody.getStatus() != null){
             sql.append(" AND s.status = " + serviceSearchBody.getStatus());
+        } else {
+            sql.append(" AND s.status != -1");
         }
         sql.append(" ORDER BY s.id ");
-        if (serviceSearchBody.getSort().equals("asc")){
+        if (serviceSearchBody.getSort() != null && serviceSearchBody.getSort().equals("asc")){
             sql.append(" ASC ");
         }
-        if (serviceSearchBody.getSort().equals("desc")){
+        if (serviceSearchBody.getSort() != null && serviceSearchBody.getSort().equals("desc")){
             sql.append(" DESC ");
         }
         return sql.toString();

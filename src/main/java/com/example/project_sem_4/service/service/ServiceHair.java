@@ -11,6 +11,7 @@ import com.example.project_sem_4.database.repository.ServiceRepository;
 import com.example.project_sem_4.database.repository.TypeServiceRepository;
 import com.example.project_sem_4.database.search_body.AccountSearchBody;
 import com.example.project_sem_4.database.search_body.ServiceSearchBody;
+import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import com.google.gson.Gson;
@@ -36,12 +37,21 @@ public class ServiceHair {
     @Autowired
     private QueryServiceByJDBC queryServiceByJDBC;
 
+    public ServiceModel findById(int serviceId) {
+        ServiceModel serviceModel = serviceRepository.findById(serviceId).orElse(null);
+        if (serviceModel == null) {
+            throw new ApiExceptionNotFound("services","id",serviceId);
+        }
+        return serviceModel;
+    }
+
     public boolean deleteService(int serviceId) {
         ServiceModel serviceModel = serviceRepository.findById(serviceId).orElse(null);
         if (serviceModel == null) {
             return false;
         }
-        serviceRepository.delete(serviceModel);
+        serviceModel.setStatus(StatusEnum.DELETE.status);
+        serviceRepository.save(serviceModel);
         return true;
     }
 

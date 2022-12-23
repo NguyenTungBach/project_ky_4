@@ -1,15 +1,14 @@
 package com.example.project_sem_4.database.dto.order;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @Builder
 public class OrderDetailDTO {
@@ -19,7 +18,9 @@ public class OrderDetailDTO {
     @NotEmpty(message = "Thiếu danh sách hóa đơn")
     private Set<ListServiceDetailDTO> orderDetails;
 
-    @Data
+    @Getter
+    @Setter
+    @AllArgsConstructor
     public static class ListServiceDetailDTO{
         @NotNull(message = "Thiếu id dịch vụ")
         @Min(value = 1, message= "Thiếu id dịch vụ")

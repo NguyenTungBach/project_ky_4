@@ -22,7 +22,5 @@ public class FeedBackSearchBody {
     public FeedBackSearchBody() {
         this.limit = 1;
         this.page = 4;
-        this.status = -1;
-        this.sort = "asc";
     }
 }

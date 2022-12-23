@@ -26,11 +26,7 @@ public class AccountSearchBody {
     private String sort;
 
     public AccountSearchBody() {
-        this.role_id = -1;
-        this.member_ship_class_id = -1;
         this.limit = 1;
         this.page = 4;
-        this.status = -1;
-        this.sort = "asc";
     }
 }

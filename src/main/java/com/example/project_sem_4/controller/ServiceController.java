@@ -26,7 +26,7 @@ public class ServiceController {
         return new ResponseEntity<>(serviceHair.createService(serviceDTO), HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public ResponseEntity deleteService(@PathVariable int id) {
         return new ResponseEntity<>(serviceHair.deleteService(id), HttpStatus.OK);
     }
@@ -39,5 +39,10 @@ public class ServiceController {
     @GetMapping("/search")
     public ResponseEntity searchService(@RequestBody ServiceSearchBody serviceSearchBody) {
         return new ResponseEntity(serviceHair.findService(serviceSearchBody), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable int id) {
+        return new ResponseEntity(serviceHair.findById(id), HttpStatus.OK);
     }
 }

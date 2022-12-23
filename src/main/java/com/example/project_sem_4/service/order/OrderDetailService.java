@@ -7,7 +7,9 @@ import com.example.project_sem_4.database.entities.ServiceModel;
 import com.example.project_sem_4.database.repository.OrderDetailRepository;
 import com.example.project_sem_4.database.repository.OrderRepository;
 import com.example.project_sem_4.database.repository.ServiceRepository;
+import com.example.project_sem_4.service.mail.mail_order_detail.MailOrderDetail;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
+import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,9 @@ public class OrderDetailService {
 
     @Autowired
     private ServiceRepository serviceRepository;
+
+    @Autowired
+    private MailOrderDetail mailOrderDetail;
 
     @Transactional
     public Order create(OrderDetailDTO orderDetailDTO){
@@ -46,6 +51,10 @@ public class OrderDetailService {
             orderDetailRepository.save(orderDetail);
         }
         order.setTotal_price(total_price);
-        return orderRepository.save(order);
+        Order orderSave =orderRepository.save(order);
+        String emailCustomer = order.getCustomer().getEmail();
+        Gson gson = new Gson();
+        mailOrderDetail.sendMailOrderDetail(emailCustomer,gson.toJson(orderDetailDTO));
+        return orderSave;
     }
 }

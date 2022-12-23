@@ -33,7 +33,7 @@ public class BranchController {
         return  ResponseEntity.ok(branch);
     }
 
-    @RequestMapping(value = "/branch/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/branch/update/{id}", method = RequestMethod.POST)
     public ResponseEntity<Object> update(@RequestBody @Valid BranchDTO branchDTO) {
 
         return ResponseEntity.ok().body(branchDTO);

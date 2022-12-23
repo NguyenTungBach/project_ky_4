@@ -96,16 +96,46 @@ public class BookingService {
             throw new ApiExceptionNotFound("branchs","id",bookingDTO.getBranch_id());
         }
 
+//        log.info("Thời gian parse getDay là " + dateBooking.getDay());
+//        log.info("Thời gian parse getDate là " + dateBooking.getDate());
+//        log.info("Thời gian parse getMonth là " + dateBooking.getMonth());
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(dateBooking);
+//        log.info("Thời gian parse cal.get(Calendar.YEAR) là " + cal.get(Calendar.YEAR));
+//        log.info("Thời gian parse getTime là " + dateBooking.getTime());
+//        log.info("Thời gian parse getHours là " + dateBooking.getHours());
+//        log.info("Thời gian parse getMinutes là " + dateBooking.getMinutes());
+//        log.info("Thời gian parse getSeconds là " + dateBooking.getSeconds());
+//        log.info("Thời gian parse getTimezoneOffset là " + dateBooking.getTimezoneOffset());
+//        log.info("Thời gian parse dateBooking là " + dateBooking);
+
+
+        String bookingDate = String.valueOf(dateBooking.getDate());
+        if (dateBooking.getDate() < 10){
+            bookingDate = 0+String.valueOf(dateBooking.getDate());
+        }
+
+        int validateMonth = dateBooking.getMonth() + 1;
+        String bookingMonth = String.valueOf(validateMonth);
+        if (validateMonth < 10){
+            bookingMonth = 0+String.valueOf(validateMonth);
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateBooking);
+        String bookingYear = String.valueOf(cal.get(Calendar.YEAR));
+
         Booking bookingSave = Booking.builder()
                 .branch(checkBranch)
                 .employee(checkEmployee)
                 .date(String.valueOf(dateBooking.getTime()))
-                .date_booking(dateBooking.getDay() + "-" + dateBooking.getMonth() + "-" + dateBooking.getYear())
+                .date_booking(bookingDate + "-" + bookingMonth + "-" + bookingYear)
                 .time_booking(bookingDTO.getTime_booking())
                 .build();
         bookingSave.setCreated_at(new Date());
 
-        return bookingRepository.save(bookingSave);
+//        return bookingRepository.save(bookingSave);
+        return null;
     }
 
     public Booking updateBooking(BookingDTO bookingDTO, String id){
@@ -142,7 +172,7 @@ public class BookingService {
         }
 
         if (!checkTimeBooking){
-            throw new ApiExceptionBadRequest("bookings","time_booking","Chọn sai thời gian lịch " + bookingDTO.getDate_booking());
+            throw new ApiExceptionBadRequest("bookings","time_booking","Chọn sai thời gian lịch " + bookingDTO.getTime_booking());
         }
 
         Date dateBooking = HelpConvertBookingDate.convertStringToDate(bookingDTO.getDate_booking() + " " + timeBookingValue);
@@ -159,7 +189,23 @@ public class BookingService {
             throw new ApiExceptionNotFound("branchs","id",bookingDTO.getBranch_id());
         }
         updateBooking.setBranch(checkBranch);
-        updateBooking.setDate_booking(dateBooking.getDay() + "-" + dateBooking.getMonth() + "-" + dateBooking.getYear());
+
+        String bookingDate = String.valueOf(dateBooking.getDate());
+        if (dateBooking.getDate() < 10){
+            bookingDate = 0+String.valueOf(dateBooking.getDate());
+        }
+
+        int validateMonth = dateBooking.getMonth() + 1;
+        String bookingMonth = String.valueOf(validateMonth);
+        if (validateMonth < 10){
+            bookingMonth = 0+String.valueOf(validateMonth);
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateBooking);
+        String bookingYear = String.valueOf(cal.get(Calendar.YEAR));
+
+        updateBooking.setDate_booking(bookingDate + "-" + bookingMonth + "-" + bookingYear);
         updateBooking.setTime_booking(bookingDTO.getTime_booking());
 
 //        Booking bookingSave = Booking.builder()

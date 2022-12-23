@@ -19,7 +19,7 @@ public class ServiceSearchBody {
     public ServiceSearchBody() {
         this.limit = 1;
         this.page = 4;
-        this.status = -1;
-        this.sort = "asc";
+//        this.status = -1;
+//        this.sort = "asc";
     }
 }

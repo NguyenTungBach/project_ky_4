@@ -155,4 +155,11 @@ public class AuthenticationController {
     ){
         return new ResponseEntity(authenticationService.activeAccount(id), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "account/delete/{id}",method = RequestMethod.POST)
+    public ResponseEntity<Account> deleteAccount(
+            @PathVariable Integer id
+    ){
+        return new ResponseEntity(authenticationService.deleteAccount(id), HttpStatus.OK);
+    }
 }

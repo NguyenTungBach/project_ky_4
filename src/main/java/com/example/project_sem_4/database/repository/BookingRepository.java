@@ -24,4 +24,5 @@ public interface BookingRepository extends JpaRepository<Booking,String> {
             " AND bookings.date_booking = ?2"
             ,nativeQuery = true)
     List<Booking> findByEmployee_idAndDate_booking(int Employee_id, String date_booking);
+
 }

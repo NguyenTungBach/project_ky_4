@@ -24,8 +24,8 @@ public class BookingController {
         return new ResponseEntity<>(bookingService.create(bookingDTO), HttpStatus.OK);
     }
 
-    @PostMapping("/update")
-    public ResponseEntity updateBooking(@RequestBody @Valid BookingDTO bookingDTO,@RequestParam String id) {
+    @PostMapping("/update/{id}")
+    public ResponseEntity updateBooking(@PathVariable String id,@RequestBody @Valid BookingDTO bookingDTO) {
         return new ResponseEntity<>(bookingService.updateBooking(bookingDTO,id), HttpStatus.OK);
     }
 

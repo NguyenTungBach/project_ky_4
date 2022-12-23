@@ -25,8 +25,6 @@ public class OrderDetail {
         private int order_id;
         private int service_id;
 
-
-
         public PK(int order_id, int service_id) {
             this.order_id = order_id;
             this.service_id = service_id;
