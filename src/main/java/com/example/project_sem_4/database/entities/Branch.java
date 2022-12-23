@@ -20,6 +20,7 @@ public class Branch extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String address;
+    private String name;
     private String hot_line;
     private String thumbnail;
 

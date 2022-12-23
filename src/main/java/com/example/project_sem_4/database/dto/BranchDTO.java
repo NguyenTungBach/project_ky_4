@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 public class BranchDTO {
-    private int id;
+
     @NotEmpty(message = "Thiếu địa chỉ")
     private String address;
     @NotEmpty(message = "Thiếu Số điện thoại")
@@ -23,6 +23,8 @@ public class BranchDTO {
     @NotEmpty(message = "Thiếu ảnh")
     private String thumbnail;
 
+    @NotEmpty(message = "Thiếu tên")
+    private String name;
     private Set<Booking> bookings;
 
     private int status;
@@ -30,7 +32,6 @@ public class BranchDTO {
     private Date updatedAt;
 
     public BranchDTO(Branch branch) {
-        this.id = branch.getId();
         this.address = branch.getAddress();
         this.hot_line = branch.getHot_line();
         this.thumbnail = branch.getThumbnail();
