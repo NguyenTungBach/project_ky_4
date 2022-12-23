@@ -3,6 +3,8 @@ package com.example.project_sem_4.controller;
 import com.example.project_sem_4.database.dto.BranchDTO;
 import com.example.project_sem_4.database.entities.Branch;
 import com.example.project_sem_4.database.repository.ResponeRepository;
+import com.example.project_sem_4.database.search_body.BranchSearchBody;
+import com.example.project_sem_4.database.search_body.ServiceSearchBody;
 import com.example.project_sem_4.service.branch.BranchService;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.JsonObject;
@@ -19,23 +21,33 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@RequestMapping("/branch")
 public class BranchController {
     private final BranchService branchService;
-    @RequestMapping(value = "/branch/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     //@RequestBody @Valid BranchDTO branchDTO
     public ResponseEntity<Object> create(@RequestBody @Valid BranchDTO branchDTO) {
-        Branch branch = branchService.saveBranch(branchDTO);
-        if (branch == null){
-            return  ResponseEntity.internalServerError().body(
-                    ResponeRepository.ResponeJsonError("Tạo thất bại"));
-        }
-//        return  ResponeRepository.ResponeJsonSusscess("Tạo thành công", branch.toJson());
-        return  ResponseEntity.ok(branch);
+        return new ResponseEntity<>(branchService.saveBranch(branchDTO), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/branch/update/{id}", method = RequestMethod.POST)
-    public ResponseEntity<Object> update(@RequestBody @Valid BranchDTO branchDTO) {
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+    public ResponseEntity<Object> update(@RequestBody @Valid BranchDTO branchDTO,@PathVariable Integer id) {
+        return ResponseEntity.ok().body(branchService.updateBranch(branchDTO,id));
+    }
 
-        return ResponseEntity.ok().body(branchDTO);
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+        return ResponseEntity.ok().body(branchService.deleteBranch(id));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable int id) {
+        return new ResponseEntity(branchService.findById(id), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/search")
+    public ResponseEntity searchBranch(@RequestBody BranchSearchBody branchSearchBody) {
+        return new ResponseEntity(branchService.findAll(branchSearchBody), HttpStatus.OK);
     }
 }
