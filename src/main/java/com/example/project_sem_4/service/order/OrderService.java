@@ -43,9 +43,9 @@ public class OrderService {
             if (voucher == null){
                 throw new ApiExceptionNotFound("orders","voucher_id",orderDTO.getVoucher_id());
             }
-            if (voucher.getExpired_date().isAfter(LocalDateTime.now())){
-                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn" + orderDTO.getVoucher_id());
-            }
+//            if (voucher.getExpired_date().isAfter(LocalDateTime.now())){
+//                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn" + orderDTO.getVoucher_id());
+//            }
         }
         //Kiểm tra mã Booking và trạng thái
         Booking checkBooking = bookingRepository.findById(orderDTO.getBooking_id()).orElse(null);

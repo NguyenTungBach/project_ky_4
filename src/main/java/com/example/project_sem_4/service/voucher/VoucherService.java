@@ -1,19 +1,23 @@
 package com.example.project_sem_4.service.voucher;
 
 import com.example.project_sem_4.database.dto.VoucherDTO;
+import com.example.project_sem_4.database.entities.Branch;
 import com.example.project_sem_4.database.entities.Voucher;
+import com.example.project_sem_4.database.jdbc_query.QueryBranchByJDBC;
+import com.example.project_sem_4.database.jdbc_query.QueryVoucherByJDBC;
 import com.example.project_sem_4.database.repository.AccountRepository;
 import com.example.project_sem_4.database.repository.VoucherRepository;
+import com.example.project_sem_4.database.search_body.BranchSearchBody;
+import com.example.project_sem_4.database.search_body.VoucherSearchBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.Id;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -22,6 +26,9 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 public class VoucherService {
     private final VoucherRepository voucherRepository;
+
+    @Autowired
+    QueryVoucherByJDBC queryVoucherByJDBC;
 
     public boolean saveVoucher(VoucherDTO voucherDTO){
         Voucher newVoucher = new Voucher();
@@ -58,4 +65,16 @@ public class VoucherService {
       String result = "HNVC-QB-" + a;
       return result;
     };
+
+    public Map<String, Object> findAll(VoucherSearchBody voucherSearchBody) {
+        List<Voucher> listContentPage = queryVoucherByJDBC.filterWithPaging(voucherSearchBody);
+        List<Voucher> listContentNoPage = queryVoucherByJDBC.filterWithNoPaging(voucherSearchBody);
+
+        Map<String, Object> responses = new HashMap<>();
+        responses.put("content", listContentPage);
+        responses.put("currentPage", voucherSearchBody.getPage());
+        responses.put("totalItems", listContentNoPage.size());
+        responses.put("totalPage", (int) Math.ceil((double) listContentNoPage.size() / voucherSearchBody.getLimit()));
+        return responses;
+    }
 }
