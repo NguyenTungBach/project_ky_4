@@ -98,7 +98,7 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "account/search",method = RequestMethod.GET)
+    @RequestMapping(value = "account/search",method = RequestMethod.POST)
     public ResponseEntity<List<Account>> findAllJDBC(
 //            @RequestParam(name = "page", defaultValue = "1") int page,
 //            @RequestParam(name = "limit", defaultValue = "4") int limit,

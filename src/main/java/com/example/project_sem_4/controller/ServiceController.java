@@ -36,7 +36,7 @@ public class ServiceController {
         return new ResponseEntity<>(serviceHair.updateService(id, serviceDTO), HttpStatus.OK);
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity searchService(@RequestBody ServiceSearchBody serviceSearchBody) {
         return new ResponseEntity(serviceHair.findService(serviceSearchBody), HttpStatus.OK);
     }

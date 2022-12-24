@@ -23,7 +23,7 @@ public class FeedBackController {
         return new ResponseEntity<>(feedBackService.create(feedBack), HttpStatus.OK);
     }
 
-    @GetMapping()
+    @PostMapping()
     public ResponseEntity findAll(@RequestBody FeedBackSearchBody feedBackSearchBody) {
         return new ResponseEntity<>(feedBackService.findAll(feedBackSearchBody), HttpStatus.OK);
     }

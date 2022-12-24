@@ -46,7 +46,7 @@ public class BranchController {
     }
 
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity searchBranch(@RequestBody BranchSearchBody branchSearchBody) {
         return new ResponseEntity(branchService.findAll(branchSearchBody), HttpStatus.OK);
     }
