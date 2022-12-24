@@ -43,7 +43,7 @@ public class OrderService {
             if (voucher == null){
                 throw new ApiExceptionNotFound("orders","voucher_id",orderDTO.getVoucher_id());
             }
-            if (voucher.getExpired_date().isAfter(LocalDateTime.now())){
+            if (voucher.getExpired_date().after(new Date())){
                 throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn" + orderDTO.getVoucher_id());
             }
         }
