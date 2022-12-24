@@ -1,5 +1,6 @@
 package com.example.project_sem_4.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,9 +20,11 @@ public class Branch extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String address;
+    private String name;
     private String hot_line;
     private String thumbnail;
 
+    @JsonIgnore
     @OneToMany(cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "branch_id", fetch = FetchType.LAZY)

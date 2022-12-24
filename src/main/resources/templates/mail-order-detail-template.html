@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cảm ơn quý khách đã mua dịch vụ</title>
+</head>
+<body>
+    <h1>
+        <p style="color: blue; font-weight: bold" th:text="'Xin chào quý khách tên ' + ${name}"></p>
+    </h1>
+    <h1>
+        <p style="color: red; font-weight: bold" th:text="'Đơn hàng có mã là ' + ${order_id}"></p>
+    </h1>
+
+    <table>
+        <tr>
+            <th>Tên dịch vụ</th>
+            <th>Giá</th>
+        </tr>
+        <tr th:each="item: ${detail_services}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.price}"></td>
+        </tr>
+    </table>
+
+    <h2>
+        <p style="color: red; font-weight: bold" th:text="'Tổng số tiền là ' + ${total_price} + ' Đồng'"></p>
+    </h2>
+</body>
+</html>

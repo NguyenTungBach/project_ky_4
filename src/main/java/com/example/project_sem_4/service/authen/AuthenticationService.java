@@ -1,6 +1,7 @@
 package com.example.project_sem_4.service.authen;
 
 import com.example.project_sem_4.database.dto.AccountDTO;
+import com.example.project_sem_4.database.dto.RegisterCustomerDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
 import com.example.project_sem_4.database.dto.search.account.AccountSearchDTO;
 import com.example.project_sem_4.database.entities.Account;
@@ -12,8 +13,10 @@ import com.example.project_sem_4.database.repository.MembershipClassRepository;
 import com.example.project_sem_4.database.repository.RoleRepository;
 import com.example.project_sem_4.database.search_body.AccountSearchBody;
 import com.example.project_sem_4.enum_project.GenderEnum;
+import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.enum_project.constant.GenderConstant;
 import com.example.project_sem_4.enum_project.ERROR;
+import com.example.project_sem_4.service.mail.mail_comfirm.MailConfirmService;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import com.google.gson.Gson;
@@ -46,11 +49,10 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     private MembershipClassRepository membershipClassRepository;
-
     @Autowired
     private QueryAccountByJDBC queryAccountByJDBC;
-
-
+    @Autowired
+    private MailConfirmService mailConfirmService;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Account> accountOptional = accountRepository.findByEmail(email);
@@ -70,6 +72,7 @@ public class AuthenticationService implements UserDetailsService {
 
     }
 
+    @Transactional
     public AccountDTO saveAccount(RegisterDTO registerDTO){
         //create new user role if not exist
         Set<Role> roles = new HashSet<>();
@@ -77,8 +80,6 @@ public class AuthenticationService implements UserDetailsService {
             Optional<Role> userRoleOptional = roleRepository.findByName(role.getName());
             Role userRole = userRoleOptional.orElse(null);
             if (userRole == null) {
-                //create new role
-//            userRole = roleRepository.save(new Role(USER_ROLE));
                 return null;
             }
             roles.add(userRoleOptional.get());
@@ -111,7 +112,63 @@ public class AuthenticationService implements UserDetailsService {
         }
 
         account.setCreated_at(new Date());
-        account.setStatus(1);
+        account.setStatus(StatusEnum.UN_ACTIVE.status);
+
+        MembershipClass membershipClass = membershipClassRepository.findById(1).orElse(null);
+        if (membershipClass == null){
+            throw new ApiExceptionNotFound("membership_classes","id","với giá trị nhập cứng là "+5);
+        }
+        account.setMembershipClass(membershipClass);
+        account.setRoles(roles);
+        Account save = accountRepository.save(account);
+
+        mailConfirmService.sendMailConfirm(save.getEmail(),save.getId());
+
+        return new AccountDTO(save);
+    }
+
+    @Transactional
+    public AccountDTO saveAccountCustomer(RegisterCustomerDTO registerCustomerDTO){
+        //create new user role if not exist
+        Set<Role> roles = new HashSet<>();
+//        roles.add(Role.builder().name("CUSTOMER").build());
+
+        Optional<Role> userRoleOptional = roleRepository.findByName("CUSTOMER");
+        Role userRole = userRoleOptional.orElse(null);
+        if (userRole == null) {
+            throw new ApiExceptionNotFound("roles","name","Không thấy role CUSTOMER");
+        }
+        roles.add(userRoleOptional.get());
+
+        if (accountRepository.findAccountsByEmail(registerCustomerDTO.getEmail()).size() >= 1){
+            throw new ApiExceptionBadRequest("accounts","email","Email đã tồn tại");
+        }
+        //check if username has exist
+        Optional<Account> byUsername = accountRepository.findByEmail(registerCustomerDTO.getEmail());
+        if (byUsername.isPresent()) {
+            return null;
+        }
+        Account account = new Account();
+        account.setName(registerCustomerDTO.getName());
+        account.setAddress(registerCustomerDTO.getAddress());
+        account.setPhone(registerCustomerDTO.getPhone());
+        account.setEmail(registerCustomerDTO.getEmail());
+        account.setPassword(passwordEncoder.encode(registerCustomerDTO.getPassword()));
+        switch (registerCustomerDTO.getGender()){
+            case GenderConstant.CHECKGENER.MALE:
+                account.setGender(GenderEnum.MALE.toString());
+                break;
+            case GenderConstant.CHECKGENER.FEMALE:
+                account.setGender(GenderEnum.FEMALE.toString());
+                break;
+        }
+
+        if (registerCustomerDTO.getThumbnail() !=null){
+            account.setThumbnail(registerCustomerDTO.getThumbnail());
+        }
+
+        account.setCreated_at(new Date());
+        account.setStatus(StatusEnum.UN_ACTIVE.status);
 
         MembershipClass membershipClass = membershipClassRepository.findById(5).orElse(null);
         if (membershipClass == null){
@@ -120,6 +177,9 @@ public class AuthenticationService implements UserDetailsService {
         account.setMembershipClass(membershipClass);
         account.setRoles(roles);
         Account save = accountRepository.save(account);
+
+        mailConfirmService.sendMailConfirm(save.getEmail(),save.getId());
+
         return new AccountDTO(save);
     }
 
@@ -194,6 +254,24 @@ public class AuthenticationService implements UserDetailsService {
         return accountRepository.findAccountsByRole_id(id);
     }
 
+    public Account activeAccount(int id){
+        Account account = accountRepository.findById(id).orElse(null);
+        if (account == null){
+            throw new ApiExceptionNotFound("accounts","id", "không tìm thấy id là " + id);
+        }
+        account.setStatus(StatusEnum.ACTIVE.status);
+        return accountRepository.save(account);
+    }
+
+    public Account deleteAccount(int id){
+        Account account = accountRepository.findById(id).orElse(null);
+        if (account == null){
+            throw new ApiExceptionNotFound("accounts","id", "không tìm thấy id là " + id);
+        }
+        account.setStatus(StatusEnum.DELETE.status);
+        return accountRepository.save(account);
+    }
+
     public Map<String, Object> findAllAccount(AccountSearchBody searchBody){
         Gson gson = new Gson();
         Type listType = new TypeToken<Set<Role>>(){}.getType();
@@ -211,4 +289,31 @@ public class AuthenticationService implements UserDetailsService {
         return responses;
     }
 
+    @Transactional
+    public Account saveWalk_In_Guest(){
+        MembershipClass membershipClassAgain = membershipClassRepository.findById(5).orElse(null);
+
+        Set<Role> roles = new HashSet<>();
+        Optional<Role> userRoleOptional = roleRepository.findByName("CUSTOMER");
+        Role userRole = userRoleOptional.orElse(null);
+        if (userRole == null) {
+            throw new ApiExceptionNotFound("roles","name","Không thấy role CUSTOMER");
+        }
+        roles.add(userRoleOptional.get());
+
+        Account create_Walk_In_Guest = new Account();
+        create_Walk_In_Guest.setName("Walk_In_Guest");
+        create_Walk_In_Guest.setEmail("Walk_In_Guest@gmail.com");
+        create_Walk_In_Guest.setAddress("From No Where");
+        create_Walk_In_Guest.setPhone("123");
+        create_Walk_In_Guest.setPassword(passwordEncoder.encode("123"));
+        create_Walk_In_Guest.setGender(GenderEnum.MALE.gender);
+        create_Walk_In_Guest.setMembershipClass(membershipClassAgain);
+        create_Walk_In_Guest.setRoles(roles);
+        create_Walk_In_Guest.setCreated_at(new Date());
+        create_Walk_In_Guest.setStatus(StatusEnum.ACTIVE.status);
+
+        return accountRepository.save(create_Walk_In_Guest);
+
+    }
 }

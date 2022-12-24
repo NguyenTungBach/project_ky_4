@@ -1,16 +1,27 @@
 package com.example.project_sem_4.schedule;
 
+import com.example.project_sem_4.database.entities.Booking;
+import com.example.project_sem_4.database.entities.Order;
+import com.example.project_sem_4.database.repository.BookingRepository;
+import com.example.project_sem_4.database.repository.OrderRepository;
+import com.example.project_sem_4.service.mail.mail_order_booking.MailOrderBooking;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Configuration
 @EnableScheduling
 @EnableAsync
-public class CenimarScheduler {
+@Log4j2
+public class BookingScheduler {
 
 //	@Scheduled(fixedRate = 1000)
 //	public void scheduleFixedRateTask() throws InterruptedException {
@@ -88,4 +99,33 @@ public class CenimarScheduler {
 //		});
 //		Thread.sleep(5000);
 //	}
+
+	@Autowired
+	private BookingRepository bookingRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private MailOrderBooking mailOrderBooking;
+
+//	@Scheduled(cron = "* * 12 * * ?") //dinh dang: giay - phut - gio - ngay trong thang - thang - ngay trong tuan
+    @Scheduled( fixedRate = 1800000)
+    public void checkBookingStatus() throws InterruptedException{
+        SimpleDateFormat dmyFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        Date date = new Date();
+        String formattedDateStr = dmyFormat.format(date);
+        int hour1Tieng = date.getHours() - 1;
+//        log.info("Ngày hôm nay là: "+formattedDateStr);
+//        log.info("Lúc mấy giờ: "+ date.getHours());
+        //Tìm tất cả order có trạng thái là 1 và booking có trạng thái là 1 và booking hôm nay và có giờ đó
+        List<Order> orders = orderRepository.findOrderByStatusAndBooking_idInHour(formattedDateStr, String.valueOf(hour1Tieng));
+        for (Order order: orders) {
+            String email = order.getCustomer().getEmail();
+            String dateHour = String.valueOf(date.getHours());
+            mailOrderBooking.sendMailOrderBooking(email,dateHour);
+        }
+    }
+
 }

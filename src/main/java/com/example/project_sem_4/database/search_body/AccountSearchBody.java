@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public class AccountSearchBody {
@@ -26,4 +25,8 @@ public class AccountSearchBody {
     private Integer page;
     private String sort;
 
+    public AccountSearchBody() {
+        this.limit = 1;
+        this.page = 4;
+    }
 }

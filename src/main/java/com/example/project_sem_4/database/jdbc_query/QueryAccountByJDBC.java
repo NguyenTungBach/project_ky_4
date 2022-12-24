@@ -36,7 +36,7 @@ public class QueryAccountByJDBC {
                 .append(" Join accounts_roles ").append(" ON accounts.id = accounts_roles.account_id ")
                 .append(" Join roles ").append(" ON accounts_roles.role_id = roles.id ");
 
-            if (searchBody.getMember_ship_class_id() != -1){
+            if (searchBody.getMember_ship_class_id() != null){
                 sqlQuery.append(" Join membership_classes ").append(" ON accounts.member_ship_class_id = membership_classes.id ");
             }
             sqlQuery.append(" Where 1=1 ");
@@ -57,15 +57,17 @@ public class QueryAccountByJDBC {
                 sqlQuery.append(" AND accounts.gender Like '%" + searchBody.getGender() + "%'");
             }
 
-            if (searchBody.getRole_id() != -1){
+            if (searchBody.getRole_id() != null){
                 sqlQuery.append(" AND roles.id = " + searchBody.getRole_id());
             }
 
-            if (searchBody.getStatus() != -1){
+            if (searchBody.getStatus() != null){
                 sqlQuery.append(" AND accounts.status = " + searchBody.getStatus());
+            } else {
+                sqlQuery.append(" AND accounts.status != -1");
             }
 
-            if (searchBody.getStatus() != -1){
+            if (searchBody.getMember_ship_class_id() != null){
                 sqlQuery.append(" AND accounts.member_ship_class_id = " + searchBody.getMember_ship_class_id());
             }
 
@@ -81,10 +83,10 @@ public class QueryAccountByJDBC {
 
         sqlQuery.append(" GROUP BY accounts_id ");
         sqlQuery.append(" ORDER BY accounts.id ");
-        if (searchBody.getSort().equals("asc")){
+        if (searchBody.getSort() != null && searchBody.getSort().equals("asc")){
             sqlQuery.append(" ASC ");
         }
-        if (searchBody.getSort().equals("desc")){
+        if (searchBody.getSort() != null && searchBody.getSort().equals("desc")){
             sqlQuery.append(" DESC ");
         }
         log.info("check query: "+ sqlQuery);

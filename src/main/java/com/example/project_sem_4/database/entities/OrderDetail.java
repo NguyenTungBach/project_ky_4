@@ -1,5 +1,6 @@
 package com.example.project_sem_4.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,10 +13,12 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name="order_details")
+@Builder
 public class OrderDetail {
     @EmbeddedId
     private PK pk;
     private double unit_price;
+
     @Data
     @Embeddable
     public static class PK implements Serializable {
