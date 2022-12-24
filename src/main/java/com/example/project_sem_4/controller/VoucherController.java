@@ -18,9 +18,10 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@RequestMapping(value = "/voucher")
 public class VoucherController {
     private final VoucherService voucherService;
-    @RequestMapping(value = "/voucher/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Object> saveVoucher(@RequestBody @Valid VoucherDTO model) {
         boolean result = voucherService.saveVoucher(model);
         if (result){
@@ -39,7 +40,7 @@ public class VoucherController {
         return new ResponseEntity(voucherService.disableVoucher(voucherCode), HttpStatus.OK);
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity search(@RequestBody VoucherSearchBody voucherSearchBody) {
         return new ResponseEntity(voucherService.findAll(voucherSearchBody), HttpStatus.OK);
     }
