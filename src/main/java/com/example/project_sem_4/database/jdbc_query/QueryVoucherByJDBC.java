@@ -1,5 +1,6 @@
 package com.example.project_sem_4.database.jdbc_query;
 
+import com.example.project_sem_4.database.dto.search.voucher.VoucherSearchDTO;
 import com.example.project_sem_4.database.entities.Branch;
 import com.example.project_sem_4.database.entities.Voucher;
 import com.example.project_sem_4.database.search_body.BranchSearchBody;
@@ -19,17 +20,17 @@ import java.util.List;
 public class QueryVoucherByJDBC {
     @Autowired
     JdbcTemplate jdbcTemplate;
-    public List<Voucher> filterWithPaging(VoucherSearchBody searchBody){
+    public List<VoucherSearchDTO> filterWithPaging(VoucherSearchBody searchBody){
         return  jdbcTemplate.query(stringQuery(searchBody) + " LIMIT "
-                + searchBody.getLimit() + " OFFSET " + searchBody.getLimit() * (searchBody.getPage()-1),new BeanPropertyRowMapper<>(Voucher.class));
+                + searchBody.getLimit() + " OFFSET " + searchBody.getLimit() * (searchBody.getPage()-1),new BeanPropertyRowMapper<>(VoucherSearchDTO.class));
     }
 
-    public List<Voucher> filterWithNoPaging(VoucherSearchBody searchBody){
-        return  jdbcTemplate.query(stringQuery(searchBody),new BeanPropertyRowMapper<>(Voucher.class));
+    public List<VoucherSearchDTO> filterWithNoPaging(VoucherSearchBody searchBody){
+        return  jdbcTemplate.query(stringQuery(searchBody),new BeanPropertyRowMapper<>(VoucherSearchDTO.class));
     }
 
     public String stringQuery(VoucherSearchBody searchBody){
-        StringBuilder sqlQuery = new StringBuilder("Select * ");
+        StringBuilder sqlQuery = new StringBuilder("Select *, vouchers.is_used ");
         sqlQuery.append(" FROM vouchers Where 1=1 ");
 
         if (searchBody.getName() != null && searchBody.getName().length() > 0){

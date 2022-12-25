@@ -39,7 +39,7 @@ public class OrderService {
         }
         //Kiểm tra voucher
         if (orderDTO.getVoucher_id() != null){
-            Voucher voucher = voucherRepository.findById(orderDTO.getVoucher_id()).orElse(null);
+            Voucher voucher = voucherRepository.findByVoucherCode(orderDTO.getVoucher_id());
             if (voucher == null){
                 throw new ApiExceptionNotFound("orders","voucher_id",orderDTO.getVoucher_id());
             }

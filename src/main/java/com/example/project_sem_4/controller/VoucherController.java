@@ -30,9 +30,9 @@ public class VoucherController {
         return ResponseEntity.internalServerError().body(null);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity findById(@PathVariable int id) {
-        return new ResponseEntity(voucherService.getVoucherById(id), HttpStatus.OK);
+    @GetMapping("/{voucherCode}")
+    public ResponseEntity findByVoucher_code(@PathVariable String voucherCode) {
+        return new ResponseEntity(voucherService.getVoucherByVoucher_code(voucherCode), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/use-disable/{voucherCode}", method = RequestMethod.GET)

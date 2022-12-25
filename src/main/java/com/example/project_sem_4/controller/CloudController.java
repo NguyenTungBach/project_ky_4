@@ -29,12 +29,12 @@ public class CloudController {
         return new ResponseEntity<>(cloudinaryService.findFile(asset_id),HttpStatus.OK);
     }
 
-    @PostMapping("/delete")
+    @GetMapping("/delete")
     public ResponseEntity<?> deleteImage(@RequestParam String public_id) throws IOException {
         return new ResponseEntity<>(cloudinaryService.deleteFile(public_id),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/uploads",method = RequestMethod.POST)
+    @RequestMapping(value = "/uploads",method = RequestMethod.GET)
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         String url = cloudinaryService.uploadFile(file);
         return new ResponseEntity<>(url,HttpStatus.OK);

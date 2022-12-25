@@ -156,7 +156,7 @@ public class AuthenticationController {
         return new ResponseEntity(authenticationService.activeAccount(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "account/delete/{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "account/delete/{id}",method = RequestMethod.GET)
     public ResponseEntity<Account> deleteAccount(
             @PathVariable Integer id
     ){

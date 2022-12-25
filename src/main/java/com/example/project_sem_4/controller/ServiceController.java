@@ -26,7 +26,7 @@ public class ServiceController {
         return new ResponseEntity<>(serviceHair.createService(serviceDTO), HttpStatus.OK);
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public ResponseEntity deleteService(@PathVariable int id) {
         return new ResponseEntity<>(serviceHair.deleteService(id), HttpStatus.OK);
     }

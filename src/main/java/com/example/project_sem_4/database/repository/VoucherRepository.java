@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface VoucherRepository extends JpaRepository<Voucher, String> {
+public interface VoucherRepository extends JpaRepository<Voucher, Integer> {
     public List<Voucher> findAllByOrderByVoucherCodeIntDesc();
     public Voucher findByVoucherCode(String voucherCode);
 }

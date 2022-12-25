@@ -33,7 +33,7 @@ public class FeedBackController {
         return new ResponseEntity<>(feedBackService.checkRead(id), HttpStatus.OK);
     }
 
-    @PostMapping("/deleteRead")
+    @GetMapping("/deleteRead")
     public ResponseEntity delete(@RequestParam Integer id) {
         return new ResponseEntity<>(feedBackService.deleteRead(id), HttpStatus.OK);
     }

@@ -1,6 +1,7 @@
 package com.example.project_sem_4.service.voucher;
 
 import com.example.project_sem_4.database.dto.VoucherDTO;
+import com.example.project_sem_4.database.dto.search.voucher.VoucherSearchDTO;
 import com.example.project_sem_4.database.entities.Branch;
 import com.example.project_sem_4.database.entities.Voucher;
 import com.example.project_sem_4.database.jdbc_query.QueryBranchByJDBC;
@@ -43,8 +44,8 @@ public class VoucherService {
         return result != null;
     };
 
-    public Voucher getVoucherById(int id){
-        return  voucherRepository.findById(String.valueOf(id)).orElse(null);
+    public Voucher getVoucherByVoucher_code(String id){
+        return voucherRepository.findByVoucherCode(id);
     }
 
     public boolean disableVoucher(String voucherCode){
@@ -67,8 +68,8 @@ public class VoucherService {
     };
 
     public Map<String, Object> findAll(VoucherSearchBody voucherSearchBody) {
-        List<Voucher> listContentPage = queryVoucherByJDBC.filterWithPaging(voucherSearchBody);
-        List<Voucher> listContentNoPage = queryVoucherByJDBC.filterWithNoPaging(voucherSearchBody);
+        List<VoucherSearchDTO> listContentPage = queryVoucherByJDBC.filterWithPaging(voucherSearchBody);
+        List<VoucherSearchDTO> listContentNoPage = queryVoucherByJDBC.filterWithNoPaging(voucherSearchBody);
 
         Map<String, Object> responses = new HashMap<>();
         responses.put("content", listContentPage);
