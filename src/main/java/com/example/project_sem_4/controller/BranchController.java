@@ -35,7 +35,7 @@ public class BranchController {
         return ResponseEntity.ok().body(branchService.updateBranch(branchDTO,id));
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> delete(@PathVariable Integer id) {
         return ResponseEntity.ok().body(branchService.deleteBranch(id));
     }

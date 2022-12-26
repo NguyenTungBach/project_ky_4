@@ -46,7 +46,7 @@ public class BlogController {
         return new ResponseEntity<>(blogService.updateBlog(blogDTO,account,id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> delete(@PathVariable Integer id) {
         return new ResponseEntity<>(blogService.deleteBlog(id), HttpStatus.OK);
     }

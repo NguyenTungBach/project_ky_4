@@ -39,11 +39,11 @@ public class OrderService {
         }
         //Kiểm tra voucher
         if (orderDTO.getVoucher_id() != null){
-            Voucher voucher = voucherRepository.findById(orderDTO.getVoucher_id()).orElse(null);
+            Voucher voucher = voucherRepository.findByVoucherCode(orderDTO.getVoucher_id());
             if (voucher == null){
                 throw new ApiExceptionNotFound("orders","voucher_id",orderDTO.getVoucher_id());
             }
-            if (voucher.getExpired_date().isAfter(LocalDateTime.now())){
+            if (voucher.getExpired_date().after(new Date())){
                 throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn" + orderDTO.getVoucher_id());
             }
         }

@@ -38,7 +38,7 @@ public class BlogService {
             blog.setTitle(blogDTO.getTitle());
             blog.setThumbnail(blogDTO.getThumbnail());
             blog.setDescription(blogDTO.getDescription());
-            blog.setAccount_id(account.getId());
+            blog.setAccount(account);
             blog.setStatus(StatusEnum.ACTIVE.status);
             blog.setCreated_at(new Date());
             return blogRepository.save(blog);
@@ -55,7 +55,7 @@ public class BlogService {
             blog.setTitle(blogDTO.getTitle());
             blog.setThumbnail(blogDTO.getThumbnail());
             blog.setDescription(blogDTO.getDescription());
-            blog.setAccount_id(account.getId());
+            blog.setAccount(account);
             blog.setUpdated_at(new Date());
             return blogRepository.save(blog);
     }

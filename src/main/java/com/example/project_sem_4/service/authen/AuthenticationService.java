@@ -243,6 +243,16 @@ public class AuthenticationService implements UserDetailsService {
 
             checkAccount.setRoles(roles);
         }
+        if (account.getAddress() != null){
+            checkAccount.setAddress(account.getAddress());
+        }
+        if (account.getThumbnail() != null){
+            checkAccount.setThumbnail(account.getThumbnail());
+        }
+        if (account.getPhone() != null){
+            checkAccount.setPhone(account.getPhone());
+        }
+        checkAccount.setName(account.getName());
 
         return accountRepository.save(checkAccount);
     }
@@ -315,5 +325,9 @@ public class AuthenticationService implements UserDetailsService {
 
         return accountRepository.save(create_Walk_In_Guest);
 
+    }
+
+    public List<Role> findAllRole(){
+        return roleRepository.findAll();
     }
 }
