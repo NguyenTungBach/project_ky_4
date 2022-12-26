@@ -326,4 +326,8 @@ public class AuthenticationService implements UserDetailsService {
         return accountRepository.save(create_Walk_In_Guest);
 
     }
+
+    public List<Role> findAllRole(){
+        return roleRepository.findAll();
+    }
 }

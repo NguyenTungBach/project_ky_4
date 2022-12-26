@@ -162,4 +162,9 @@ public class AuthenticationController {
     ){
         return new ResponseEntity(authenticationService.deleteAccount(id), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "account/role",method = RequestMethod.GET)
+    public ResponseEntity<Account> findAllRole(){
+        return new ResponseEntity(authenticationService.findAllRole(), HttpStatus.OK);
+    }
 }
