@@ -25,6 +25,8 @@ public class FeedBack extends BaseEntity{
     @NotEmpty(message = "Thiếu email")
     @Email(message = "Sai định dạng email")
     private String email;
+    @NotEmpty(message = "Thiếu số điện thoại")
+    private String phone;
     @NotEmpty(message = "Thiếu mô tả")
     private String description;
     @Column(columnDefinition = "integer default 0", name = "account_id",nullable = false)
