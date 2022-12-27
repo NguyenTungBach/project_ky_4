@@ -28,13 +28,18 @@ public class FeedBackController {
         return new ResponseEntity<>(feedBackService.findAll(feedBackSearchBody), HttpStatus.OK);
     }
 
-    @GetMapping("/checkRead")
-    public ResponseEntity checkRead(@RequestParam Integer id) {
-        return new ResponseEntity<>(feedBackService.checkRead(id), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity findByid(@PathVariable Integer id) {
+        return new ResponseEntity<>(feedBackService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/deleteRead")
-    public ResponseEntity delete(@RequestParam Integer id) {
+    @GetMapping("/changeStatus/{id}")
+    public ResponseEntity changeStatus(@PathVariable Integer id, @RequestParam Integer status) {
+        return new ResponseEntity<>(feedBackService.changeStatus(id,status), HttpStatus.OK);
+    }
+
+    @GetMapping("/deleteRead/{id}")
+    public ResponseEntity delete(@PathVariable Integer id) {
         return new ResponseEntity<>(feedBackService.deleteRead(id), HttpStatus.OK);
     }
 }
