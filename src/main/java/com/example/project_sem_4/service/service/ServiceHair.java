@@ -45,6 +45,10 @@ public class ServiceHair {
         return serviceModel;
     }
 
+    public List<TypeService> findAllTypeService(){
+        return typeServiceRepository.findAll();
+    }
+
     public boolean deleteService(int serviceId) {
         ServiceModel serviceModel = serviceRepository.findById(serviceId).orElse(null);
         if (serviceModel == null) {
