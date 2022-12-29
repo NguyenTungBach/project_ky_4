@@ -34,7 +34,7 @@ public class CloudController {
         return new ResponseEntity<>(cloudinaryService.deleteFile(public_id),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/uploads",method = RequestMethod.GET)
+    @RequestMapping(value = "/uploads",method = RequestMethod.POST)
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         String url = cloudinaryService.uploadFile(file);
         return new ResponseEntity<>(url,HttpStatus.OK);

@@ -29,7 +29,7 @@ public class QueryBlogByJDBC {
     }
 
     public String stringQuery(BlogSearchBody searchBody){
-        StringBuilder sqlQuery = new StringBuilder("Select * ");
+        StringBuilder sqlQuery = new StringBuilder("Select bl.* ");
         sqlQuery.append(" FROM blogs as bl join accounts as acc ON bl.account_id = acc.id Where 1=1 ");
 
         if (searchBody.getAuth_name() != null && searchBody.getAuth_name().length() > 0){
