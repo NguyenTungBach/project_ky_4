@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ServiceHair {
@@ -73,6 +70,7 @@ public class ServiceHair {
         serviceModel.setType_service_id(serviceDTO.getTypeServiceId());
         serviceModel.setTypeService(typeService);
         serviceModel.setThumbnail(serviceDTO.getThumbnail());
+        serviceModel.setUpdated_at(new Date());
         serviceRepository.save(serviceModel);
         return true;
     }
@@ -87,6 +85,7 @@ public class ServiceHair {
         }
         ServiceModel serviceModel = new ServiceModel(serviceDTO,typeService);
         serviceModel.setTypeService(typeService);
+        serviceModel.setCreated_at(new Date());
         return serviceRepository.save(serviceModel);
 //        return true;
     }
