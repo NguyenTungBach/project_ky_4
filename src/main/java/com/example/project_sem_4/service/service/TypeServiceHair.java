@@ -6,6 +6,7 @@ import com.example.project_sem_4.database.jdbc_query.QueryTypeServiceByJDBC;
 import com.example.project_sem_4.database.repository.TypeServiceRepository;
 import com.example.project_sem_4.database.search_body.ServiceSearchBody;
 import com.example.project_sem_4.database.search_body.TypeServiceSearchBody;
+import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionCustomBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionCustomNotFound;
@@ -39,6 +40,7 @@ public class TypeServiceHair {
         if (checkTypeService != null){
             throw new ApiExceptionCustomBadRequest("Trùng tên loại dịch vụ");
         }
+        typeService.setStatus(StatusEnum.ACTIVE.status);
         typeService.setName(typeService.getName().trim());
         typeService.setCreated_at(new Date());
         return typeServiceRepository.save(typeService);
@@ -49,6 +51,7 @@ public class TypeServiceHair {
         if (updateTypeService == null){
             throw new ApiExceptionCustomNotFound("Không tìm thấy loại dịch vụ");
         }
+        updateTypeService.setStatus(StatusEnum.ACTIVE.status);
         updateTypeService.setName(typeService.getName().trim());
         updateTypeService.setUpdated_at(new Date());
         return typeServiceRepository.save(updateTypeService);

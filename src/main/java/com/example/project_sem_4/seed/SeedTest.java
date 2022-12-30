@@ -61,11 +61,11 @@ public class SeedTest implements CommandLineRunner {
 
         List<TypeService> typeServices= typeServiceRepository.findAll();
         if (typeServices.size() == 0){
-            typeServiceRepository.save(TypeService.builder().name("Cắt Tóc").build());
-            typeServiceRepository.save(TypeService.builder().name("Massage mặt").build());
-            typeServiceRepository.save(TypeService.builder().name("Massage đầu").build());
-            typeServiceRepository.save(TypeService.builder().name("Vẩy light").build());
-            typeServiceRepository.save(TypeService.builder().name("Dưỡng da").build());
+            typeServiceRepository.save(new TypeService("Cắt Tóc",1));
+            typeServiceRepository.save(new TypeService("Massage mặt",1));
+            typeServiceRepository.save(new TypeService("Massage đầu",1));
+            typeServiceRepository.save(new TypeService("Vẩy light",1));
+            typeServiceRepository.save(new TypeService("Dưỡng da",1));
         }
 
         Account Walk_In_Guest = accountRepository.findById(1).orElse(null);
