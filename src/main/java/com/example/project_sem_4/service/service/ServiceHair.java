@@ -43,7 +43,7 @@ public class ServiceHair {
     }
 
     public List<TypeService> findAllTypeService(){
-        return typeServiceRepository.findAll();
+        return typeServiceRepository.findAllByStatusNot(-1);
     }
 
     public boolean deleteService(int serviceId) {
