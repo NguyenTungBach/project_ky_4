@@ -54,7 +54,7 @@ public class QueryAccountByJDBC {
             }
 
             if (searchBody.getGender() != null && searchBody.getGender().length() > 0){
-                sqlQuery.append(" AND accounts.gender Like '%" + searchBody.getGender() + "%'");
+                sqlQuery.append(" AND accounts.gender = '" + searchBody.getGender() +"'");
             }
 
             if (searchBody.getRole_id() != null){
