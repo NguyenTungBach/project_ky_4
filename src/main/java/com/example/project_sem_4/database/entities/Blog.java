@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +24,7 @@ public class Blog extends BaseEntity{
     @Type(type = "text")
     private String content;
     private String thumbnail;
+
 
     @ManyToOne(fetch = FetchType.EAGER, cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
