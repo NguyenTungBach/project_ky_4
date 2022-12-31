@@ -45,4 +45,9 @@ public class ServiceController {
     public ResponseEntity findById(@PathVariable int id) {
         return new ResponseEntity(serviceHair.findById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/findAllTypeService")
+    public ResponseEntity findAllTypeService() {
+        return new ResponseEntity(serviceHair.findAllTypeService(), HttpStatus.OK);
+    }
 }

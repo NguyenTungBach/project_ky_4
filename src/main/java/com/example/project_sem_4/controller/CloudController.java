@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@Controller
+@RestController
 @RequestMapping(value = "/cloud")
 @CrossOrigin(origins = "*")
 public class CloudController {
@@ -34,7 +34,7 @@ public class CloudController {
         return new ResponseEntity<>(cloudinaryService.deleteFile(public_id),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/uploads",method = RequestMethod.GET)
+    @RequestMapping(value = "/uploads",method = RequestMethod.POST)
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         String url = cloudinaryService.uploadFile(file);
         return new ResponseEntity<>(url,HttpStatus.OK);

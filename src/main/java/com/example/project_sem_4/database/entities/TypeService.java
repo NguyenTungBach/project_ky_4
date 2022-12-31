@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -19,6 +21,7 @@ public class TypeService extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotEmpty(message = "Thiếu tên")
     private String name;
 
     @OneToMany(cascade =
@@ -29,5 +32,11 @@ public class TypeService extends BaseEntity{
 
     public TypeService() {
         super();
+    }
+
+    public TypeService(String name, int status) {
+        this.name = name;
+        this.setStatus(status);
+        this.setCreated_at(new Date());
     }
 }

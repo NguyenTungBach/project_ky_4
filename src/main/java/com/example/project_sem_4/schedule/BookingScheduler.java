@@ -109,7 +109,6 @@ public class BookingScheduler {
     @Autowired
     private MailOrderBooking mailOrderBooking;
 
-//	@Scheduled(cron = "* * 12 * * ?") //dinh dang: giay - phut - gio - ngay trong thang - thang - ngay trong tuan
 //    @Scheduled( fixedRate = 1800000)
 //    public void checkBookingStatus() throws InterruptedException{
 //        SimpleDateFormat dmyFormat = new SimpleDateFormat("dd-MM-yyyy");

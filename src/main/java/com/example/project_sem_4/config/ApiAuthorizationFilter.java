@@ -32,7 +32,7 @@ import static java.util.Arrays.stream;
 // here we get the token from user then assign role for them
 @Log4j2
 public class ApiAuthorizationFilter extends OncePerRequestFilter {
-    private static final String[] IGNORE_PATHS = {"/api/v1/login", "/api/v1/register", "/api/v1/token/refresh"};
+    private static final String[] IGNORE_PATHS = {"/api/v1/login", "/api/v1/register", "/api/v1/token/refresh", "/cloud/uploads"};
 
     @Autowired
     private AccountRepository accountRepository;
