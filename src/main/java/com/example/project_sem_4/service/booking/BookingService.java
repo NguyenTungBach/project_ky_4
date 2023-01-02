@@ -36,7 +36,7 @@ public class BookingService {
     @Autowired
     BranchRepository branchRepository;
 
-    public Booking create(BookingDTO bookingDTO){
+    public Booking createBooking(BookingDTO bookingDTO){
         Account checkEmployee = accountRepository.findById(bookingDTO.getEmployee_id()).orElse(null);
         if (checkEmployee == null){
             throw new ApiExceptionNotFound("bookings","employee_id",bookingDTO.getEmployee_id());
@@ -134,8 +134,7 @@ public class BookingService {
                 .build();
         bookingSave.setCreated_at(new Date());
 
-//        return bookingRepository.save(bookingSave);
-        return null;
+        return bookingRepository.save(bookingSave);
     }
 
     public Booking updateBooking(BookingDTO bookingDTO, String id){

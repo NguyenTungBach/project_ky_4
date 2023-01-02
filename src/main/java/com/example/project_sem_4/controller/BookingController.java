@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RestController
-@RequiredArgsConstructor
+@Controller
 @CrossOrigin(origins = "*")
 @RequestMapping("/booking")
 public class BookingController {
@@ -21,7 +21,7 @@ public class BookingController {
 
     @PostMapping("/create")
     public ResponseEntity createBooking(@RequestBody @Valid BookingDTO bookingDTO) {
-        return new ResponseEntity<>(bookingService.create(bookingDTO), HttpStatus.OK);
+        return new ResponseEntity<>(bookingService.createBooking(bookingDTO), HttpStatus.OK);
     }
 
     @GetMapping("/update/{id}")
