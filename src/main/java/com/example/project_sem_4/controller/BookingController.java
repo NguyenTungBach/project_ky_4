@@ -2,6 +2,8 @@ package com.example.project_sem_4.controller;
 
 import com.example.project_sem_4.database.dto.ServiceDTO;
 import com.example.project_sem_4.database.dto.booking.BookingDTO;
+import com.example.project_sem_4.database.search_body.BlogSearchBody;
+import com.example.project_sem_4.database.search_body.BookingSearchBody;
 import com.example.project_sem_4.service.booking.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +35,9 @@ public class BookingController {
     public ResponseEntity findAllByEmployee_idAndDate_booking(@RequestParam Integer employee_id,@RequestParam String date_booking) {
         return new ResponseEntity<>(bookingService.findAllByEmployee_idAndDate_booking(employee_id,date_booking), HttpStatus.OK);
     }
+    @PostMapping("/search")
+    public ResponseEntity searchBooking(@RequestBody BookingSearchBody bookingSearchBody) {
+        return new ResponseEntity(bookingService.findAll(bookingSearchBody), HttpStatus.OK);
+    }
+
 }

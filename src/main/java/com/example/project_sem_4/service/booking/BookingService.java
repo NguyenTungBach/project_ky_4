@@ -1,14 +1,13 @@
 package com.example.project_sem_4.service.booking;
 
 import com.example.project_sem_4.database.dto.booking.BookingDTO;
-import com.example.project_sem_4.database.dto.search.account.AccountSearchDTO;
-import com.example.project_sem_4.database.entities.Account;
-import com.example.project_sem_4.database.entities.Booking;
-import com.example.project_sem_4.database.entities.Branch;
-import com.example.project_sem_4.database.entities.Role;
+import com.example.project_sem_4.database.dto.booking.BookingSearchDTO;
+import com.example.project_sem_4.database.entities.*;
+import com.example.project_sem_4.database.jdbc_query.QueryBookingByJDBC;
 import com.example.project_sem_4.database.repository.AccountRepository;
 import com.example.project_sem_4.database.repository.BookingRepository;
 import com.example.project_sem_4.database.repository.BranchRepository;
+import com.example.project_sem_4.database.search_body.BookingSearchBody;
 import com.example.project_sem_4.enum_project.RoleEnum;
 import com.example.project_sem_4.enum_project.TimeBookingEnum;
 import com.example.project_sem_4.util.HelpConvertBookingDate;
@@ -18,11 +17,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Log4j2
@@ -36,6 +31,8 @@ public class BookingService {
     @Autowired
     BranchRepository branchRepository;
 
+    @Autowired
+    QueryBookingByJDBC queryBookingByJDBC;
     public Booking createBooking(BookingDTO bookingDTO){
         Account checkEmployee = accountRepository.findById(bookingDTO.getEmployee_id()).orElse(null);
         if (checkEmployee == null){
@@ -222,5 +219,16 @@ public class BookingService {
 
     public List<Booking> findAllByEmployee_idAndDate_booking(int employee_id, String date_booking){
         return bookingRepository.findByEmployee_idAndDate_booking(employee_id,date_booking);
+    }
+    public Map<String, Object> findAll(BookingSearchBody bookingSearchBody) {
+        List<BookingSearchDTO> listContentPage = queryBookingByJDBC.filterWithPaging(bookingSearchBody);
+        List<BookingSearchDTO> listContentNoPage = queryBookingByJDBC.filterWithNoPaging(bookingSearchBody);
+
+        Map<String, Object> responses = new HashMap<>();
+        responses.put("content", listContentPage);
+        responses.put("currentPage", bookingSearchBody.getPage());
+        responses.put("totalItems", listContentNoPage.size());
+        responses.put("totalPage", (int) Math.ceil((double) listContentNoPage.size() / bookingSearchBody.getLimit()));
+        return responses;
     }
 }
