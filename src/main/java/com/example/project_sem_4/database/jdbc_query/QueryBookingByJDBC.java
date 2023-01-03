@@ -55,6 +55,7 @@ public class QueryBookingByJDBC {
                     booking.setId(rs.getString("bookings.id"));
                     booking.setEmployee_id(rs.getInt("bookings.employee_id"));
                     booking.setDate_booking(rs.getString("bookings.date_booking"));
+                    booking.setBranch_id(rs.getInt("bookings.branch_id"));
                     booking.setTime_booking(rs.getString("bookings.time_booking"));
                     if (bookingList == null ){
                         bookingList = new ArrayList<Booking>();
@@ -79,6 +80,7 @@ public class QueryBookingByJDBC {
 
                 for ( Map.Entry<Integer, BookingSearchDTO.Employee> emp : liszt.entrySet()) {
                     BookingSearchDTO brschDTO = new BookingSearchDTO(emp.getValue());
+   
                     ListEmpForBooking.add(brschDTO);
                 }
 

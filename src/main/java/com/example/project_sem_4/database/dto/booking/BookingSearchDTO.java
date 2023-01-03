@@ -15,8 +15,6 @@ import java.util.Map;
 public class BookingSearchDTO {
     public BookingSearchDTO(){
     }
-    private String branch_id;
-
     @Getter
     @Setter
     public static class Employee{
