@@ -40,6 +40,7 @@ public class QueryBlogByJDBC {
                         blog = new Blog();
                         blogKepmaper.put(keyBlog, blog);
                         list.add(blog);
+                        blog.setId(rs.getInt("bl.id"));
                         blog.setTitle(rs.getString("bl.title"));
                         blog.setDescription(rs.getString("bl.description"));
                         blog.setContent(rs.getString("bl.content"));
