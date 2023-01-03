@@ -8,22 +8,29 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
 public class BookingSearchDTO {
+    public BookingSearchDTO(){
+    }
     private String branch_id;
-    private Employee employee;
 
     @Getter
     @Setter
     public static class Employee{
+
         private String employee_name;
-        private List<Role> roles;
+        private Map<Integer,Role> roles;
 
         private List<Booking> BookingByTime_bookings;
 
         public Employee() {
         }
+    }
+    public Employee employee;
+    public BookingSearchDTO(Employee emp){
+        this.employee = emp;
     }
 }
