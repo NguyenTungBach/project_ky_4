@@ -34,7 +34,7 @@ public class QueryBookingByJDBC {
             public List<BookingSearchDTO> extractData(ResultSet rs) throws SQLException, DataAccessException {
                 List<BookingSearchDTO>  ListEmpForBooking = new ArrayList<BookingSearchDTO>();
                 Map<Integer,BookingSearchDTO.Employee> liszt = new HashMap<Integer, BookingSearchDTO.Employee>();
-                Map<Integer, List<Booking>> bookingsMaper = new HashMap<Integer, List<Booking>>();
+                Map<Integer, Map<String,Booking>> bookingsMaper = new HashMap<Integer, Map<String,Booking>>();
                 Map<Integer, Map<Integer,Role>> roleMaper = new HashMap<Integer, Map<Integer,Role>>();
                 while (rs.next()) {
                     // Lấy ra tài khoản nhân viên
@@ -50,7 +50,7 @@ public class QueryBookingByJDBC {
 
                     // Lấy ra danh sách lịch đặt theo account nếu booking.employee_id = accounts.id
                     Integer keyBookingEmployee = rs.getInt("bookings.employee_id");
-                    List<Booking> bookingList = bookingsMaper.get(keyBookingEmployee);
+                   Map<String,Booking> bookingList = bookingsMaper.get(keyBookingEmployee);
                     Booking booking = new Booking();
                     booking.setId(rs.getString("bookings.id"));
                     booking.setEmployee_id(rs.getInt("bookings.employee_id"));
@@ -58,9 +58,9 @@ public class QueryBookingByJDBC {
                     booking.setBranch_id(rs.getInt("bookings.branch_id"));
                     booking.setTime_booking(rs.getString("bookings.time_booking"));
                     if (bookingList == null ){
-                        bookingList = new ArrayList<Booking>();
+                        bookingList = new HashMap<>();
                     }
-                    bookingList.add(booking);
+                    bookingList.put(booking.getId(),booking);
                     bookingsMaper.put(keyBookingEmployee,bookingList);
                     employee.setBookingByTime_bookings(bookingList);
 

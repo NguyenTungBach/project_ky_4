@@ -22,7 +22,7 @@ public class BookingSearchDTO {
         private String employee_name;
         private Map<Integer,Role> roles;
 
-        private List<Booking> BookingByTime_bookings;
+        private Map<String,Booking> BookingByTime_bookings;
 
         public Employee() {
         }
