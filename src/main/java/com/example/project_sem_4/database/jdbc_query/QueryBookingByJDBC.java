@@ -52,7 +52,7 @@ public class QueryBookingByJDBC {
 
                     // Lấy ra danh sách lịch đặt theo account nếu booking.employee_id = accounts.id
                     Integer keyBookingEmployee = rs.getInt("bookings.employee_id");
-                   Map<String,Booking> bookingList = bookingsMaper.get(keyBookingEmployee);
+                    Map<String,Booking> bookingList = bookingsMaper.get(keyBookingEmployee);
                     Booking booking = new Booking();
                     booking.setId(rs.getString("bookings.id"));
                     booking.setEmployee_id(rs.getInt("bookings.employee_id"));
@@ -64,7 +64,7 @@ public class QueryBookingByJDBC {
                     }
                     bookingList.put(booking.getId(),booking);
                     bookingsMaper.put(keyBookingEmployee,bookingList);
-                    employee.setBookingByTime_bookings(bookingList);
+                    employee.setBookingByTime_bookings(new ArrayList<>(bookingList.values()));
 
                     Integer keyRolesEmployee = rs.getInt("accounts.id");
                     Map<Integer,Role> roles = roleMaper.get(keyRolesEmployee);
@@ -77,12 +77,13 @@ public class QueryBookingByJDBC {
                     }
                     roles.put(role.getId(),role);
                     roleMaper.put(keyRolesEmployee,roles);
-                    employee.setRoles(roles);
+
+                    employee.setRoles(new ArrayList<>(roles.values()));
                 }
 
                 for ( Map.Entry<Integer, BookingSearchDTO.Employee> emp : liszt.entrySet()) {
                     BookingSearchDTO brschDTO = new BookingSearchDTO(emp.getValue());
-   
+
                     ListEmpForBooking.add(brschDTO);
                 }
 
