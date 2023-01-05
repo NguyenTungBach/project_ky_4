@@ -39,7 +39,9 @@ public class QueryOrderByJDBC {
                         while (rs.next()) {
                             OrderSearchDTO orderSearchDTO = new OrderSearchDTO();
                             Integer order_id = rs.getInt("orders.id");
+                            Integer total_price = rs.getInt("orders.total_price");
                             orderSearchDTO.setId(order_id);
+                            orderSearchDTO.setTotal_price(total_price);
 
                             Booking booking = new Booking();
                             booking.setId(rs.getString("bookings.id"));
@@ -90,7 +92,9 @@ public class QueryOrderByJDBC {
                 while (rs.next()) {
                     OrderSearchDTO orderSearchDTO = new OrderSearchDTO();
                     Integer order_id = rs.getInt("orders.id");
+                    Integer total_price = rs.getInt("orders.total_price");
                     orderSearchDTO.setId(order_id);
+                    orderSearchDTO.setTotal_price(total_price);
 
                     Booking booking = new Booking();
                     booking.setId(rs.getString("bookings.id"));

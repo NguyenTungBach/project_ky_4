@@ -52,6 +52,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/type_service/search",
                 "/type_service/{id}",
                 "/booking/search",
+                "/blog/search",
                         "/feedback/create**")
                 .permitAll();
         //ADMIN
