@@ -35,6 +35,16 @@ public class OrderController {
         return new ResponseEntity<>(orderDetailService.create(orderDetailDTO), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity detail(@PathVariable Integer id) {
+        return new ResponseEntity<>(orderService.findAllByOrder(id), HttpStatus.OK);
+    }
+
+    @GetMapping("update/status/{id}")
+    public ResponseEntity updateOrderStatus(@PathVariable Integer id, @RequestParam Integer status) {
+        return new ResponseEntity<>(orderService.updateOrderStatus(id,status), HttpStatus.OK);
+    }
+
     @PostMapping("/search")
     public ResponseEntity createOrderDetail(@RequestBody OrderSearchBody orderSearchBody) {
         return new ResponseEntity<>(orderService.findAll(orderSearchBody), HttpStatus.OK);

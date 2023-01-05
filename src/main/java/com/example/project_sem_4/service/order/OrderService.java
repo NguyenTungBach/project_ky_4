@@ -89,6 +89,29 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    public List<OrderDetail> findAllByOrder(int id){
+        return orderDetailRepository.findAllByOrder_id(id);
+    }
+
+    public Order updateOrderStatus(int id, int status){
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order == null){
+            throw new ApiExceptionNotFound("order","id",id);
+        }
+        boolean checkStatus = false;
+
+        for (StatusEnum statusEnum: StatusEnum.values()) {
+            if (statusEnum.status == status){
+                checkStatus = true;
+            }
+        }
+        if (!checkStatus){
+            throw new ApiExceptionBadRequest("order","status", "Không tồn tại trạng thái là" + status);
+        }
+        order.setStatus(status);
+        return orderRepository.save(order);
+    }
+
     public Map<String, Object> findAll(OrderSearchBody searchBody) {
         List<OrderSearchDTO> listContentPage = queryOrderByJDBC.filterWithPaging(searchBody);
         List<OrderSearchDTO> listContentNoPage = queryOrderByJDBC.filterWithNoPaging(searchBody);

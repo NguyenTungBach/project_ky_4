@@ -29,6 +29,7 @@ public class Order extends BaseEntity{
     @Column(insertable = false, updatable = false)
     private int customer_id;
 
+    @JsonIgnore
     @OneToMany(cascade =
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             mappedBy = "pk.order_id", fetch = FetchType.LAZY)
