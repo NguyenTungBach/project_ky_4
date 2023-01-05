@@ -1,8 +1,13 @@
 package com.example.project_sem_4.service.order;
 
+import com.example.project_sem_4.database.dto.booking.BookingSearchDTO;
 import com.example.project_sem_4.database.dto.order.OrderDTO;
+import com.example.project_sem_4.database.dto.order.OrderSearchDTO;
 import com.example.project_sem_4.database.entities.*;
+import com.example.project_sem_4.database.jdbc_query.QueryOrderByJDBC;
 import com.example.project_sem_4.database.repository.*;
+import com.example.project_sem_4.database.search_body.BookingSearchBody;
+import com.example.project_sem_4.database.search_body.OrderSearchBody;
 import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
@@ -12,6 +17,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderService {
@@ -29,6 +37,9 @@ public class OrderService {
 
     @Autowired
     private VoucherRepository voucherRepository;
+
+    @Autowired
+    private QueryOrderByJDBC queryOrderByJDBC;
 
     @Transactional
     public Order create(OrderDTO orderDTO){
@@ -77,4 +88,17 @@ public class OrderService {
         order.setCreated_at(new Date());
         return orderRepository.save(order);
     }
+
+    public Map<String, Object> findAll(OrderSearchBody searchBody) {
+        List<OrderSearchDTO> listContentPage = queryOrderByJDBC.filterWithPaging(searchBody);
+        List<OrderSearchDTO> listContentNoPage = queryOrderByJDBC.filterWithNoPaging(searchBody);
+
+        Map<String, Object> responses = new HashMap<>();
+        responses.put("content",listContentPage);
+        responses.put("currentPage",searchBody.getPage());
+        responses.put("totalItems",listContentNoPage.size());
+        responses.put("totalPage",(int) Math.ceil((double) listContentNoPage.size() / searchBody.getLimit()));
+        return responses;
+    }
+
 }

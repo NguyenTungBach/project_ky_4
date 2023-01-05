@@ -9,6 +9,7 @@ import com.example.project_sem_4.database.repository.BookingRepository;
 import com.example.project_sem_4.database.repository.BranchRepository;
 import com.example.project_sem_4.database.search_body.BookingSearchBody;
 import com.example.project_sem_4.enum_project.RoleEnum;
+import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.enum_project.TimeBookingEnum;
 import com.example.project_sem_4.util.HelpConvertBookingDate;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
@@ -129,6 +130,8 @@ public class BookingService {
                 .date_booking(bookingDate + "-" + bookingMonth + "-" + bookingYear)
                 .time_booking(bookingDTO.getTime_booking())
                 .build();
+
+        bookingSave.setStatus(StatusEnum.UN_ACTIVE.status);
         bookingSave.setCreated_at(new Date());
 
         return bookingRepository.save(bookingSave);
@@ -222,13 +225,13 @@ public class BookingService {
     }
     public Map<String, Object> findAll(BookingSearchBody bookingSearchBody) {
         List<BookingSearchDTO> listContentPage = queryBookingByJDBC.filterWithPaging(bookingSearchBody);
-        List<BookingSearchDTO> listContentNoPage = queryBookingByJDBC.filterWithNoPaging(bookingSearchBody);
+//        List<BookingSearchDTO> listContentNoPage = queryBookingByJDBC.filterWithNoPaging(bookingSearchBody);
 
         Map<String, Object> responses = new HashMap<>();
         responses.put("content", listContentPage);
         responses.put("currentPage", bookingSearchBody.getPage());
-        responses.put("totalItems", listContentNoPage.size());
-        responses.put("totalPage", (int) Math.ceil((double) listContentNoPage.size() / bookingSearchBody.getLimit()));
+        responses.put("totalItems", listContentPage.size());
+        responses.put("totalPage", (int) Math.ceil((double) listContentPage.size() / bookingSearchBody.getLimit()));
         return responses;
     }
 }
