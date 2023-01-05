@@ -28,15 +28,17 @@ public class QueryBookingByJDBC {
     JdbcTemplate jdbcTemplate;
 
     public List<BookingSearchDTO> filterWithPaging(BookingSearchBody searchBody) {
-        return jdbcTemplate.query(stringQuery(searchBody) + " LIMIT "
-                + searchBody.getLimit() + " OFFSET " + searchBody.getLimit() * (searchBody.getPage() - 1), new ResultSetExtractor<List<BookingSearchDTO>>() {
+        return jdbcTemplate.query(stringQuery(searchBody)
+                , new ResultSetExtractor<List<BookingSearchDTO>>() {
             @Override
             public List<BookingSearchDTO> extractData(ResultSet rs) throws SQLException, DataAccessException {
                 List<BookingSearchDTO>  ListEmpForBooking = new ArrayList<BookingSearchDTO>();
                 Map<Integer,BookingSearchDTO.Employee> liszt = new HashMap<Integer, BookingSearchDTO.Employee>();
                 Map<Integer, Map<String,Booking>> bookingsMaper = new HashMap<Integer, Map<String,Booking>>();
                 Map<Integer, Map<Integer,Role>> roleMaper = new HashMap<Integer, Map<Integer,Role>>();
+                int count = 1;
                 while (rs.next()) {
+                    count++;
                     // Lấy ra tài khoản nhân viên
                     Integer keyAccount = rs.getInt("accounts.id");
 
@@ -50,7 +52,7 @@ public class QueryBookingByJDBC {
 
                     // Lấy ra danh sách lịch đặt theo account nếu booking.employee_id = accounts.id
                     Integer keyBookingEmployee = rs.getInt("bookings.employee_id");
-                   Map<String,Booking> bookingList = bookingsMaper.get(keyBookingEmployee);
+                    Map<String,Booking> bookingList = bookingsMaper.get(keyBookingEmployee);
                     Booking booking = new Booking();
                     booking.setId(rs.getString("bookings.id"));
                     booking.setEmployee_id(rs.getInt("bookings.employee_id"));
@@ -62,7 +64,7 @@ public class QueryBookingByJDBC {
                     }
                     bookingList.put(booking.getId(),booking);
                     bookingsMaper.put(keyBookingEmployee,bookingList);
-                    employee.setBookingByTime_bookings(bookingList);
+                    employee.setBookingByTime_bookings(new ArrayList<>(bookingList.values()));
 
                     Integer keyRolesEmployee = rs.getInt("accounts.id");
                     Map<Integer,Role> roles = roleMaper.get(keyRolesEmployee);
@@ -75,12 +77,13 @@ public class QueryBookingByJDBC {
                     }
                     roles.put(role.getId(),role);
                     roleMaper.put(keyRolesEmployee,roles);
-                    employee.setRoles(roles);
+
+                    employee.setRoles(new ArrayList<>(roles.values()));
                 }
 
                 for ( Map.Entry<Integer, BookingSearchDTO.Employee> emp : liszt.entrySet()) {
                     BookingSearchDTO brschDTO = new BookingSearchDTO(emp.getValue());
-   
+
                     ListEmpForBooking.add(brschDTO);
                 }
 

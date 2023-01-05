@@ -26,7 +26,7 @@ public class AccountSearchBody {
     private String sort;
 
     public AccountSearchBody() {
-        this.limit = 1;
-        this.page = 4;
+        this.limit = 4;
+        this.page = 1;
     }
 }
