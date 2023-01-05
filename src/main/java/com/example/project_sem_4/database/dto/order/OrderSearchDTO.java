@@ -11,6 +11,8 @@ import lombok.Setter;
 public class OrderSearchDTO {
     private Integer id;
     private Integer total_price;
+    private Integer status;
+    private Integer user_id;
     private Account customer;
     private Booking booking;
     private Voucher voucher;

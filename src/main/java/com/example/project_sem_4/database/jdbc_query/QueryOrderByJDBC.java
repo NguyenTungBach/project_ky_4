@@ -40,19 +40,23 @@ public class QueryOrderByJDBC {
                             OrderSearchDTO orderSearchDTO = new OrderSearchDTO();
                             Integer order_id = rs.getInt("orders.id");
                             Integer total_price = rs.getInt("orders.total_price");
+                            Integer status = rs.getInt("orders.status");
+                            Integer user_id = rs.getInt("bookings.user_id");
                             orderSearchDTO.setId(order_id);
                             orderSearchDTO.setTotal_price(total_price);
+                            orderSearchDTO.setStatus(status);
+                            orderSearchDTO.setUser_id(user_id);
 
                             Booking booking = new Booking();
                             booking.setId(rs.getString("bookings.id"));
                             booking.setDate(rs.getString("bookings.date"));
                             booking.setDate_booking(rs.getString("bookings.date_booking"));
                             booking.setTime_booking(rs.getString("bookings.time_booking"));
-                            booking.setTime_booking(rs.getString("bookings.phone"));
-                            booking.setTime_booking(rs.getString("bookings.user_id"));
-                            booking.setTime_booking(rs.getString("bookings.status"));
+                            booking.setPhone(rs.getString("bookings.phone"));
+                            booking.setUser_id(rs.getInt("bookings.user_id"));
+                            booking.setStatus(rs.getInt("bookings.status"));
                             booking.setEmail(rs.getString("bookings.email"));
-                            booking.setTime_booking(rs.getString("bookings.branch_id"));
+                            booking.setBranch_id(rs.getInt("bookings.branch_id"));
                             orderSearchDTO.setBooking(booking);
 
                             Branch branch = new Branch();
@@ -93,19 +97,23 @@ public class QueryOrderByJDBC {
                     OrderSearchDTO orderSearchDTO = new OrderSearchDTO();
                     Integer order_id = rs.getInt("orders.id");
                     Integer total_price = rs.getInt("orders.total_price");
+                    Integer status = rs.getInt("orders.status");
+                    Integer user_id = rs.getInt("bookings.user_id");
                     orderSearchDTO.setId(order_id);
                     orderSearchDTO.setTotal_price(total_price);
+                    orderSearchDTO.setStatus(status);
+                    orderSearchDTO.setUser_id(user_id);
 
                     Booking booking = new Booking();
                     booking.setId(rs.getString("bookings.id"));
                     booking.setDate(rs.getString("bookings.date"));
                     booking.setDate_booking(rs.getString("bookings.date_booking"));
                     booking.setTime_booking(rs.getString("bookings.time_booking"));
-                    booking.setTime_booking(rs.getString("bookings.phone"));
-                    booking.setTime_booking(rs.getString("bookings.user_id"));
-                    booking.setTime_booking(rs.getString("bookings.status"));
+                    booking.setPhone(rs.getString("bookings.phone"));
+                    booking.setUser_id(rs.getInt("bookings.user_id"));
+                    booking.setStatus(rs.getInt("bookings.status"));
                     booking.setEmail(rs.getString("bookings.email"));
-                    booking.setTime_booking(rs.getString("bookings.branch_id"));
+                    booking.setBranch_id(rs.getInt("bookings.branch_id"));
                     orderSearchDTO.setBooking(booking);
 
                     Branch branch = new Branch();
