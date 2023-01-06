@@ -234,4 +234,12 @@ public class BookingService {
         responses.put("totalPage", (int) Math.ceil((double) listContentPage.size() / bookingSearchBody.getLimit()));
         return responses;
     }
+
+    public Booking findById(String id){
+        Booking booking = bookingRepository.findById(id).orElse(null);
+        if (booking == null){
+            throw new ApiExceptionNotFound("bookings","id",id);
+        }
+        return booking;
+    }
 }

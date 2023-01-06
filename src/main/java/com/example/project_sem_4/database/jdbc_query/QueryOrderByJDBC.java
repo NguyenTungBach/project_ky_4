@@ -154,8 +154,12 @@ public class QueryOrderByJDBC {
 
         sqlQuery.append(" Where 1=1");
 
-        if (searchBody.getBooking_id() != null) {
-            sqlQuery.append(" AND orders.booking_id = " + searchBody.getBooking_id());
+        if (searchBody.getBooking_id() != null && searchBody.getBooking_id().length() > 0) {
+            sqlQuery.append(" AND orders.booking_id = '" + searchBody.getBooking_id()+"'");
+        }
+
+        if (searchBody.getVoucher_id() != null && searchBody.getVoucher_id().length() > 0) {
+            sqlQuery.append(" AND orders.voucher_id = '" + searchBody.getVoucher_id()+"'");
         }
 
         if (searchBody.getCustomer_id() != null) {
