@@ -98,7 +98,7 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "account/search",method = RequestMethod.POST)
+    @RequestMapping(value = "/account/search",method = RequestMethod.POST)
     public ResponseEntity<List<Account>> findAllJDBC(
 //            @RequestParam(name = "page", defaultValue = "1") int page,
 //            @RequestParam(name = "limit", defaultValue = "4") int limit,
@@ -127,14 +127,14 @@ public class AuthenticationController {
         return new ResponseEntity(authenticationService.findAllAccount(accountSearchBody), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "account/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/account/{id}",method = RequestMethod.GET)
     public ResponseEntity<Account> findById(
             @PathVariable int id
     ){
         return new ResponseEntity(authenticationService.findAccountById(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "account/findByRole_id/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/account/findByRole_id/{id}",method = RequestMethod.GET)
     public ResponseEntity<Account> findByRole_id(
             @PathVariable int id
     ){
@@ -142,28 +142,28 @@ public class AuthenticationController {
     }
 
     // Đi cùng với khóa và mở khóa tài khoản
-    @RequestMapping(value = "account/update/{id}",method = RequestMethod.POST)
+    @RequestMapping(value = "/account/update/{id}",method = RequestMethod.POST)
     public ResponseEntity<Object> update(
             @RequestBody @Valid RegisterDTO registerDTO,
             @PathVariable int id){
         return ResponseEntity.ok().body(authenticationService.updateAccount(registerDTO,id));
     }
 
-    @RequestMapping(value = "account/active/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/account/active/{id}",method = RequestMethod.GET)
     public ResponseEntity<Account> activeAccount(
             @PathVariable Integer id
     ){
         return new ResponseEntity(authenticationService.activeAccount(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "account/delete/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/account/delete/{id}",method = RequestMethod.GET)
     public ResponseEntity<Account> deleteAccount(
             @PathVariable Integer id
     ){
         return new ResponseEntity(authenticationService.deleteAccount(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "account/role",method = RequestMethod.GET)
+    @RequestMapping(value = "/account/role",method = RequestMethod.GET)
     public ResponseEntity<Account> findAllRole(){
         return new ResponseEntity(authenticationService.findAllRole(), HttpStatus.OK);
     }
