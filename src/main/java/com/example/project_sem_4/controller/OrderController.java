@@ -40,7 +40,7 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findAllByOrder(id), HttpStatus.OK);
     }
 
-    @GetMapping("update/status/{id}")
+    @GetMapping("/update/status/{id}")
     public ResponseEntity updateOrderStatus(@PathVariable Integer id, @RequestParam Integer status) {
         return new ResponseEntity<>(orderService.updateOrderStatus(id,status), HttpStatus.OK);
     }
