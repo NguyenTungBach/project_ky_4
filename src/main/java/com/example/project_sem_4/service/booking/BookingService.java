@@ -13,6 +13,7 @@ import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.enum_project.TimeBookingEnum;
 import com.example.project_sem_4.util.HelpConvertBookingDate;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionCustomBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,7 +221,17 @@ public class BookingService {
         return bookingRepository.save(updateBooking);
     }
 
-
+    public boolean deleteBooking(String id){
+        Booking deleteBooking = bookingRepository.findById(id).orElse(null);
+        if (deleteBooking == null){
+            throw new ApiExceptionNotFound("bookings","id",id);
+        }
+        if (deleteBooking.getStatus() == StatusEnum.ACTIVE.status){
+            throw new ApiExceptionCustomBadRequest("Lịch đã được đặt, không được xóa");
+        }
+        bookingRepository.delete(deleteBooking);
+        return true;
+    }
 
     public List<Booking> findAllByEmployee_idAndDate_booking(int employee_id, String date_booking){
         return bookingRepository.findByEmployee_idAndDate_booking(employee_id,date_booking);

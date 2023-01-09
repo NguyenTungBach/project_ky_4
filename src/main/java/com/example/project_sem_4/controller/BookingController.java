@@ -33,6 +33,11 @@ public class BookingController {
         return new ResponseEntity<>(bookingService.updateBooking(bookingDTO,id), HttpStatus.OK);
     }
 
+    @GetMapping("/delete/{id}")
+    public ResponseEntity deleteBooking(@PathVariable String id,@RequestBody @Valid BookingDTO bookingDTO) {
+        return new ResponseEntity<>(bookingService.deleteBooking(id), HttpStatus.OK);
+    }
+
     @GetMapping("/findAllByEmployee_idAndDate_booking")
     public ResponseEntity findAllByEmployee_idAndDate_booking(@RequestParam Integer employee_id,@RequestParam String date_booking) {
         return new ResponseEntity<>(bookingService.findAllByEmployee_idAndDate_booking(employee_id,date_booking), HttpStatus.OK);
