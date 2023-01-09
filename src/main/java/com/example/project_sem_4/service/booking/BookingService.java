@@ -216,9 +216,11 @@ public class BookingService {
 //        bookingSave.setCreated_at(new Date());
 
         updateBooking.setUpdated_at(new Date());
-
+        updateBooking.setStatus(bookingDTO.getStatus());
         return bookingRepository.save(updateBooking);
     }
+
+
 
     public List<Booking> findAllByEmployee_idAndDate_booking(int employee_id, String date_booking){
         return bookingRepository.findByEmployee_idAndDate_booking(employee_id,date_booking);
