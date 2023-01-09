@@ -4,10 +4,13 @@ import com.example.project_sem_4.database.dto.order.OrderDetailDTO;
 import com.example.project_sem_4.database.entities.Order;
 import com.example.project_sem_4.database.entities.OrderDetail;
 import com.example.project_sem_4.database.entities.ServiceModel;
+import com.example.project_sem_4.database.entities.Voucher;
 import com.example.project_sem_4.database.repository.OrderDetailRepository;
 import com.example.project_sem_4.database.repository.OrderRepository;
 import com.example.project_sem_4.database.repository.ServiceRepository;
+import com.example.project_sem_4.database.repository.VoucherRepository;
 import com.example.project_sem_4.service.mail.mail_order_detail.MailOrderDetail;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 
 @Service
 @Log4j2
@@ -30,6 +34,9 @@ public class OrderDetailService {
 
     @Autowired
     private MailOrderDetail mailOrderDetail;
+
+    @Autowired
+    private VoucherRepository voucherRepository;
 
     @Transactional
     public Order create(OrderDetailDTO orderDetailDTO){
@@ -49,6 +56,21 @@ public class OrderDetailService {
                     .unit_price(serviceDetailDTO.getUnit_price())
                     .build();
             orderDetailRepository.save(orderDetail);
+        }
+
+        if (order.getVoucher_id() != null){
+            Voucher voucher = voucherRepository.findByVoucherCode(order.getVoucher_id());
+            if (voucher == null){
+                throw new ApiExceptionNotFound("orders","voucher_id",order.getVoucher_id());
+            }
+            if (voucher.getExpired_date().after(new Date())){
+                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn" + order.getVoucher_id());
+            }
+            if (voucher.is_used()){
+                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher đã được sử dụng " + order.getVoucher_id());
+            }
+            total_price = total_price - (total_price * voucher.getDiscount());
+            voucher.set_used(true);
         }
         order.setTotal_price(total_price);
         Order orderSave =orderRepository.save(order);

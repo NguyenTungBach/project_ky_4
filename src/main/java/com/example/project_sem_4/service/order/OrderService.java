@@ -2,6 +2,7 @@ package com.example.project_sem_4.service.order;
 
 import com.example.project_sem_4.database.dto.booking.BookingSearchDTO;
 import com.example.project_sem_4.database.dto.order.OrderDTO;
+import com.example.project_sem_4.database.dto.order.OrderDetailByOrderIdDTO;
 import com.example.project_sem_4.database.dto.order.OrderSearchDTO;
 import com.example.project_sem_4.database.entities.*;
 import com.example.project_sem_4.database.jdbc_query.QueryOrderByJDBC;
@@ -10,16 +11,14 @@ import com.example.project_sem_4.database.search_body.BookingSearchBody;
 import com.example.project_sem_4.database.search_body.OrderSearchBody;
 import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionCustomNotFound;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -31,6 +30,9 @@ public class OrderService {
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
+
+    @Autowired
+    private ServiceRepository serviceRepository;
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -55,7 +57,10 @@ public class OrderService {
                 throw new ApiExceptionNotFound("orders","voucher_id",orderDTO.getVoucher_id());
             }
             if (voucher.getExpired_date().after(new Date())){
-                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn" + orderDTO.getVoucher_id());
+                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn " + orderDTO.getVoucher_id());
+            }
+            if (voucher.is_used()){
+                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher đã được sử dụng " + orderDTO.getVoucher_id());
             }
         }
         //Kiểm tra mã Booking và trạng thái
@@ -89,8 +94,29 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public List<OrderDetail> findAllByOrder(int id){
-        return orderDetailRepository.findAllByOrder_id(id);
+    public List<OrderDetailByOrderIdDTO> findAllByOrder(int id){
+        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrder_id(id);
+        List<OrderDetailByOrderIdDTO> list = new ArrayList<>();
+        for (OrderDetail orderDetail: orderDetailList) {
+            OrderDetailByOrderIdDTO orderDetailByOrderIdDTO  = new OrderDetailByOrderIdDTO();
+            Order order = orderRepository.findById(orderDetail.getPk().getOrder_id()).orElse(null);
+            ServiceModel serviceModel = serviceRepository.findById(orderDetail.getPk().getService_id()).orElse(null);
+            if (order == null){
+                throw new ApiExceptionCustomNotFound("Không tìm thấy order có id là: " + orderDetail.getPk().getOrder_id());
+            }
+
+            if (serviceModel == null){
+                throw new ApiExceptionCustomNotFound("Không tìm thấy service có id là: " + orderDetail.getPk().getService_id());
+            }
+            orderDetailByOrderIdDTO.setOrder_id(orderDetail.getPk().getOrder_id());
+            orderDetailByOrderIdDTO.setOrder(order);
+            orderDetailByOrderIdDTO.setService_id(orderDetail.getPk().getService_id());
+            orderDetailByOrderIdDTO.setServiceModel(serviceModel);
+            orderDetailByOrderIdDTO.setUnit_price((int) orderDetail.getUnit_price());
+            list.add(orderDetailByOrderIdDTO);
+        }
+
+        return list;
     }
 
     public Order updateOrderStatus(int id, int status){

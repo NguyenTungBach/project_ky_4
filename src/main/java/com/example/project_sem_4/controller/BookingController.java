@@ -1,11 +1,8 @@
 package com.example.project_sem_4.controller;
 
-import com.example.project_sem_4.database.dto.ServiceDTO;
 import com.example.project_sem_4.database.dto.booking.BookingDTO;
-import com.example.project_sem_4.database.search_body.BlogSearchBody;
 import com.example.project_sem_4.database.search_body.BookingSearchBody;
 import com.example.project_sem_4.service.booking.BookingService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +31,11 @@ public class BookingController {
     @GetMapping("/update/{id}")
     public ResponseEntity updateBooking(@PathVariable String id,@RequestBody @Valid BookingDTO bookingDTO) {
         return new ResponseEntity<>(bookingService.updateBooking(bookingDTO,id), HttpStatus.OK);
+    }
+
+    @GetMapping("/delete/{id}")
+    public ResponseEntity deleteBooking(@PathVariable String id,@RequestBody @Valid BookingDTO bookingDTO) {
+        return new ResponseEntity<>(bookingService.deleteBooking(id), HttpStatus.OK);
     }
 
     @GetMapping("/findAllByEmployee_idAndDate_booking")

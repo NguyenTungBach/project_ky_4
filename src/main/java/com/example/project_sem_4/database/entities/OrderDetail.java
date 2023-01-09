@@ -19,15 +19,15 @@ public class OrderDetail {
     private PK pk;
     private double unit_price;
 
-    @ManyToOne
-    @MapsId("order_id")
-    @JoinColumn(name = "order_id")
-    private Order order;
+//    @ManyToOne
+//    @MapsId("order_id")
+//    @JoinColumn(name = "order_id")
+//    private Order order;
 
-    @ManyToOne
-    @MapsId("service_id")
-    @JoinColumn(name = "service_id")
-    private ServiceModel serviceModel;
+//    @ManyToOne
+//    @MapsId("service_id")
+//    @JoinColumn(name = "service_id")
+//    private ServiceModel serviceModel;
 
     @Data
     @Embeddable

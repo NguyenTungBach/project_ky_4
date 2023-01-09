@@ -137,12 +137,22 @@ public class QueryBookingByJDBC {
             sqlQuery.append(" AND bookings.created_at <= '" + date + " 23:59:59' ");
         }
 
-        sqlQuery.append(" ORDER BY bookings.id ");
-        if (searchBody.getSort() != null && searchBody.getSort().equals("asc")) {
-            sqlQuery.append(" ASC ");
-        }
-        if (searchBody.getSort() != null && searchBody.getSort().equals("desc")) {
-            sqlQuery.append(" DESC ");
+        switch (searchBody.getSort()){
+            case "asc":
+                sqlQuery.append(" ORDER BY bookings.id ASC ");
+                break;
+            case "desc":
+                sqlQuery.append(" ORDER BY bookings.id DESC ");
+                break;
+            case "time_bookingASC":
+                sqlQuery.append(" ORDER BY bookings.time_booking ASC ");
+                break;
+            case "time_bookingDESC":
+                sqlQuery.append(" ORDER BY bookings.time_booking DESC ");
+                break;
+            default:
+                sqlQuery.append(" ORDER BY bookings.time_booking ASC ");
+                break;
         }
         log.info("check query: " + sqlQuery);
         return sqlQuery.toString();
