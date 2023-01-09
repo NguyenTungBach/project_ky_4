@@ -26,6 +26,11 @@ public class BookingController {
         return new ResponseEntity<>(bookingService.createBooking(bookingDTO), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity detailBooking(@PathVariable String id) {
+        return new ResponseEntity<>(bookingService.findById(id), HttpStatus.OK);
+    }
+
     @GetMapping("/update/{id}")
     public ResponseEntity updateBooking(@PathVariable String id,@RequestBody @Valid BookingDTO bookingDTO) {
         return new ResponseEntity<>(bookingService.updateBooking(bookingDTO,id), HttpStatus.OK);
@@ -39,5 +44,4 @@ public class BookingController {
     public ResponseEntity searchBooking(@RequestBody BookingSearchBody bookingSearchBody) {
         return new ResponseEntity(bookingService.findAll(bookingSearchBody), HttpStatus.OK);
     }
-
 }
