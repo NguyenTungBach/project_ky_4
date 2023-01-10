@@ -75,29 +75,29 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/type_service**").hasAnyAuthority(ADMIN);
         http.authorizeRequests().antMatchers("/voucher**").hasAnyAuthority(ADMIN);
         // ACCOUNT
-        http.authorizeRequests().antMatchers("/account/{id}").hasAnyAuthority(RECEPTIONISTS, CUSTOMER_CARE, STAFF, CUSTOMER);
-        http.authorizeRequests().antMatchers("account/update/{id}").hasAnyAuthority(RECEPTIONISTS, CUSTOMER_CARE, STAFF, CUSTOMER);
-        http.authorizeRequests().antMatchers("/account/search").hasAnyAuthority(RECEPTIONISTS, CUSTOMER_CARE);
+        http.authorizeRequests().antMatchers("/account/{id}").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER_CARE, STAFF, CUSTOMER);
+        http.authorizeRequests().antMatchers("account/update/{id}").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER_CARE, STAFF, CUSTOMER);
+        http.authorizeRequests().antMatchers("/account/search").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER_CARE);
         // BLOG
-        http.authorizeRequests().antMatchers("blog/create").hasAnyAuthority(CUSTOMER_CARE);
-        http.authorizeRequests().antMatchers("blog/update/{id}").hasAnyAuthority(CUSTOMER_CARE);
+        http.authorizeRequests().antMatchers("blog/create").hasAnyAuthority(ADMIN,CUSTOMER_CARE);
+        http.authorizeRequests().antMatchers("blog/update/{id}").hasAnyAuthority(ADMIN,CUSTOMER_CARE);
         // BOOKING
         // BRANCH
         // FEEDBACK
-        http.authorizeRequests().antMatchers("/feedback/{id}").hasAnyAuthority(CUSTOMER_CARE, CUSTOMER);
-        http.authorizeRequests().antMatchers("/feedback/search").hasAnyAuthority(CUSTOMER_CARE, CUSTOMER);
-        http.authorizeRequests().antMatchers("/feedback/changeStatus/{id}").hasAnyAuthority(CUSTOMER_CARE);
+        http.authorizeRequests().antMatchers("/feedback/{id}").hasAnyAuthority(ADMIN,CUSTOMER_CARE, CUSTOMER);
+        http.authorizeRequests().antMatchers("/feedback/search").hasAnyAuthority(ADMIN,CUSTOMER_CARE, CUSTOMER);
+        http.authorizeRequests().antMatchers("/feedback/changeStatus/{id}").hasAnyAuthority(ADMIN,CUSTOMER_CARE);
         // ORDER
-        http.authorizeRequests().antMatchers("/order/create").hasAnyAuthority(CUSTOMER);
-        http.authorizeRequests().antMatchers("/order/createOrderDetail").hasAnyAuthority(CUSTOMER);
-        http.authorizeRequests().antMatchers("/order/{id}").hasAnyAuthority(RECEPTIONISTS, CUSTOMER);
-        http.authorizeRequests().antMatchers("/order/search").hasAnyAuthority(RECEPTIONISTS, CUSTOMER);
-        http.authorizeRequests().antMatchers("/order/update/status/{id}").hasAnyAuthority(RECEPTIONISTS);
+        http.authorizeRequests().antMatchers("/order/create").hasAnyAuthority(ADMIN,CUSTOMER);
+        http.authorizeRequests().antMatchers("/order/createOrderDetail").hasAnyAuthority(ADMIN,CUSTOMER);
+        http.authorizeRequests().antMatchers("/order/{id}").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER);
+        http.authorizeRequests().antMatchers("/order/search").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER);
+        http.authorizeRequests().antMatchers("/order/update/status/{id}").hasAnyAuthority(ADMIN,RECEPTIONISTS);
         // SERVICE
         // TYPE_SERVICE
         // VOUCHER
-        http.authorizeRequests().antMatchers("/voucher/{voucherCode}").hasAnyAuthority(CUSTOMER);
-        http.authorizeRequests().antMatchers("/voucher/search").hasAnyAuthority(CUSTOMER);
+        http.authorizeRequests().antMatchers("/voucher/{voucherCode}").hasAnyAuthority(ADMIN,CUSTOMER);
+        http.authorizeRequests().antMatchers("/voucher/search").hasAnyAuthority(ADMIN,CUSTOMER);
 
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(apiAuthenticationFilter);
