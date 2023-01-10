@@ -88,8 +88,8 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/feedback/search").hasAnyAuthority(ADMIN,CUSTOMER_CARE, CUSTOMER);
         http.authorizeRequests().antMatchers("/feedback/changeStatus/{id}").hasAnyAuthority(ADMIN,CUSTOMER_CARE);
         // ORDER
-        http.authorizeRequests().antMatchers("/order/create").hasAnyAuthority(ADMIN,CUSTOMER);
-        http.authorizeRequests().antMatchers("/order/createOrderDetail").hasAnyAuthority(ADMIN,CUSTOMER);
+//        http.authorizeRequests().antMatchers("/order/create").hasAnyAuthority(ADMIN,CUSTOMER);
+//        http.authorizeRequests().antMatchers("/order/createOrderDetail").hasAnyAuthority(ADMIN,CUSTOMER);
         http.authorizeRequests().antMatchers("/order/{id}").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER);
         http.authorizeRequests().antMatchers("/order/search").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER);
         http.authorizeRequests().antMatchers("/order/update/status/{id}").hasAnyAuthority(ADMIN,RECEPTIONISTS);

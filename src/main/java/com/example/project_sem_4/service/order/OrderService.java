@@ -51,7 +51,7 @@ public class OrderService {
             throw new ApiExceptionNotFound("orders","customer_id",orderDTO.getCustomer_id());
         }
         //Kiểm tra voucher
-        if (orderDTO.getVoucher_id() != null){
+        if (orderDTO.getVoucher_id() != null && orderDTO.getVoucher_id().length() > 0){
             Voucher voucher = voucherRepository.findByVoucherCode(orderDTO.getVoucher_id());
             if (voucher == null){
                 throw new ApiExceptionNotFound("orders","voucher_id",orderDTO.getVoucher_id());
@@ -76,12 +76,16 @@ public class OrderService {
             checkBooking.setStatus(StatusEnum.ACTIVE.status);
             checkBooking.setEmail(orderDTO.getEmail());
             checkBooking.setPhone(orderDTO.getPhone());
+            checkBooking.setName_booking(orderDTO.getName_booking());
             checkBooking.setUser_id(orderDTO.getCustomer_id());
+            checkBooking.setUpdated_at(new Date());
         } else {
             checkBooking.setStatus(StatusEnum.ACTIVE.status);
             checkBooking.setEmail(checkCustomer.getEmail());
             checkBooking.setPhone(checkCustomer.getPhone());
+            checkBooking.setName_booking(checkCustomer.getName());
             checkBooking.setUser_id(checkCustomer.getId());
+            checkBooking.setUpdated_at(new Date());
         }
         bookingRepository.save(checkBooking);
 
