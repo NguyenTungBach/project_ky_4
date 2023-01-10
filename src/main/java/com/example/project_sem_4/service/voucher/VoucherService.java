@@ -10,6 +10,7 @@ import com.example.project_sem_4.database.repository.AccountRepository;
 import com.example.project_sem_4.database.repository.VoucherRepository;
 import com.example.project_sem_4.database.search_body.BranchSearchBody;
 import com.example.project_sem_4.database.search_body.VoucherSearchBody;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,15 @@ public class VoucherService {
 
     public Voucher getVoucherByVoucher_code(String id){
         return voucherRepository.findByVoucherCode(id);
+    }
+
+    public boolean deleteVoucherByVoucher_code(String id){
+        Voucher voucher = voucherRepository.findByVoucherCode(id);
+        if (voucher == null){
+            throw new ApiExceptionNotFound("vouchers","id",id);
+        }
+        voucherRepository.delete(voucher);
+        return true;
     }
 
     public boolean disableVoucher(String voucherCode){
