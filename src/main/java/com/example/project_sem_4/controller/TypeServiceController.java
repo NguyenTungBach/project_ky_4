@@ -45,4 +45,9 @@ public class TypeServiceController {
     public ResponseEntity findById(@PathVariable int id) {
         return new ResponseEntity(typeServiceHair.findById(id), HttpStatus.OK);
     }
+
+    @GetMapping("/findWithTypeServiceForOrderDTO")
+    public ResponseEntity findWithTypeServiceForOrderDTO() {
+        return new ResponseEntity(typeServiceHair.findWithTypeServiceForOrderDTO(), HttpStatus.OK);
+    }
 }

@@ -40,15 +40,15 @@ public class BookingService {
         if (checkEmployee == null){
             throw new ApiExceptionNotFound("bookings","employee_id",bookingDTO.getEmployee_id());
         }
-        boolean checkRoleADMIN_STAFF = false;
+        boolean checkRoleSTAFF = false;
         // Kiểm tra đây có phải là nhân viên cắt tóc không
         for (Role role: checkEmployee.getRoles()) {
-            if (role.getName().equals(RoleEnum.ADMIN.role) || role.getName().equals(RoleEnum.STAFF.role)){
-                checkRoleADMIN_STAFF = true;
+            if (role.getName().equals(RoleEnum.STAFF.role)){
+                checkRoleSTAFF = true;
             }
         }
-        if (!checkRoleADMIN_STAFF){
-            throw new ApiExceptionBadRequest("bookings","employee_id","Yêu cầu chọn tài khoản có role là ADMIN hoặc STAFF");
+        if (!checkRoleSTAFF){
+            throw new ApiExceptionBadRequest("bookings","employee_id","Yêu cầu chọn tài khoản có role là STAFF");
         }
 
 //        //Tạo thời gian đặt
@@ -83,6 +83,11 @@ public class BookingService {
         }
 
         Date dateBooking = HelpConvertBookingDate.convertStringToDate(bookingDTO.getDate_booking() + " " + timeBookingValue);
+        //Kiểm tra thời gian đặt
+        Date dateNow = new Date();
+        if (dateBooking.getTime() - dateNow.getTime() < 0){
+            throw new ApiExceptionCustomBadRequest("Thời gian tạo lịch làm việc không được trước thời gian hiện tại");
+        }
 
         // Kiểm tra trùng lịch
         Booking checkBookingDuplicate =  bookingRepository.findByDateAndAndEmployee_id(String.valueOf(dateBooking.getTime()),bookingDTO.getEmployee_id());
