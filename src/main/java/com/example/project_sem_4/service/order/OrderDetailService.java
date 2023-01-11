@@ -9,6 +9,7 @@ import com.example.project_sem_4.database.repository.OrderDetailRepository;
 import com.example.project_sem_4.database.repository.OrderRepository;
 import com.example.project_sem_4.database.repository.ServiceRepository;
 import com.example.project_sem_4.database.repository.VoucherRepository;
+import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.service.mail.mail_order_detail.MailOrderDetail;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
@@ -73,6 +74,7 @@ public class OrderDetailService {
             voucher.set_used(true);
         }
         order.setTotal_price(total_price);
+        order.setStatus(StatusEnum.ACTIVE.status);
         Order orderSave =orderRepository.save(order);
         String emailCustomer = order.getCustomer().getEmail();
         Gson gson = new Gson();
