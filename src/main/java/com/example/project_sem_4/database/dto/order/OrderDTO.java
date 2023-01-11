@@ -24,4 +24,6 @@ public class OrderDTO {
     @NotEmpty(message = "Thiếu số điện thoại")
     @Size(min = 10, max = 10, message = "Sai định dạng điện thoại")
     private String phone;
+    @NotEmpty(message = "Thiếu tên người đặt")
+    private String name_booking;
 }

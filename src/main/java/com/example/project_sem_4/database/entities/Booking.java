@@ -28,6 +28,7 @@ public class Booking extends BaseEntity{
     private String time_booking;// Thời gian đặt
     private String email;
     private String phone;
+    private String name_booking;
     private int user_id;
 
     @JsonIgnore

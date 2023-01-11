@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public class VoucherSearchBody {
     private String name;
+    private String voucher_code;
+    private Integer is_used;
     private Integer status;
     private Integer limit;
     private Integer page;

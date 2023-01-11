@@ -1,15 +1,14 @@
 package com.example.project_sem_4.controller;
 
-import com.example.project_sem_4.database.dto.booking.BookingDTO;
 import com.example.project_sem_4.database.dto.order.OrderDTO;
 import com.example.project_sem_4.database.dto.order.OrderDetailDTO;
+import com.example.project_sem_4.database.search_body.OrderSearchBody;
 import com.example.project_sem_4.service.order.OrderDetailService;
 import com.example.project_sem_4.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,5 +31,20 @@ public class OrderController {
     @PostMapping("/createOrderDetail")
     public ResponseEntity createOrderDetail(@RequestBody @Valid OrderDetailDTO orderDetailDTO) {
         return new ResponseEntity<>(orderDetailService.create(orderDetailDTO), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detail(@PathVariable Integer id) {
+        return new ResponseEntity<>(orderService.findAllByOrder(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/update/status/{id}")
+    public ResponseEntity updateOrderStatus(@PathVariable Integer id, @RequestParam Integer status) {
+        return new ResponseEntity<>(orderService.updateOrderStatus(id,status), HttpStatus.OK);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity createOrderDetail(@RequestBody OrderSearchBody orderSearchBody) {
+        return new ResponseEntity<>(orderService.findAll(orderSearchBody), HttpStatus.OK);
     }
 }

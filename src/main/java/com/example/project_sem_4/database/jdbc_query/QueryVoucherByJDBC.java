@@ -37,6 +37,16 @@ public class QueryVoucherByJDBC {
             sqlQuery.append(" AND vouchers.name Like '%" + searchBody.getName() + "%'");
         }
 
+        if (searchBody.getVoucher_code() != null && searchBody.getVoucher_code().length() > 0){
+            sqlQuery.append(" AND vouchers.voucher_code Like '%" + searchBody.getVoucher_code() + "%'");
+        }
+
+        if (searchBody.getIs_used() != null){
+            sqlQuery.append(" AND vouchers.is_used = " + searchBody.getIs_used());
+        } else {
+            sqlQuery.append(" AND vouchers.is_used != -1");
+        }
+
         if (searchBody.getStatus() != null){
             sqlQuery.append(" AND vouchers.status = " + searchBody.getStatus());
         } else {

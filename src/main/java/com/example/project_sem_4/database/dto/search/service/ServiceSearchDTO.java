@@ -14,6 +14,7 @@ public class ServiceSearchDTO {
     private int service_id;
     private String service_name;
     private String description;
+    private Integer price;
     private String thumbnail;
     private int typeServiceId;
     private TypeService type_service;

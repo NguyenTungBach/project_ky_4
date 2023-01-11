@@ -18,4 +18,5 @@ public class BookingDTO {
     @NotNull(message = "Thiếu id chi nhánh")
     @Min(value = 1, message= "Thiếu id chi nhánh")
     private int branch_id;
+    private Integer status;
 }

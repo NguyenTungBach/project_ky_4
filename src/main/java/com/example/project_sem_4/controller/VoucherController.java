@@ -35,6 +35,11 @@ public class VoucherController {
         return new ResponseEntity(voucherService.getVoucherByVoucher_code(voucherCode), HttpStatus.OK);
     }
 
+    @GetMapping("delete/{voucherCode}")
+    public ResponseEntity deleteByVoucher_code(@PathVariable String voucherCode) {
+        return new ResponseEntity(voucherService.deleteVoucherByVoucher_code(voucherCode), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/use-disable/{voucherCode}", method = RequestMethod.GET)
     public ResponseEntity disableVoucherUsed(@PathVariable String voucherCode) {
         return new ResponseEntity(voucherService.disableVoucher(voucherCode), HttpStatus.OK);

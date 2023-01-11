@@ -20,9 +20,9 @@ public class BookingSearchDTO {
     public static class Employee{
 
         private String employee_name;
-        private Map<Integer,Role> roles;
+        private List<Role> roles;
 
-        private Map<String,Booking> BookingByTime_bookings;
+        private List<Booking> BookingByTime_bookings;
 
         public Employee() {
         }
