@@ -58,7 +58,7 @@ public class OrderDetailService {
             orderDetailRepository.save(orderDetail);
         }
 
-        if (order.getVoucher_id() != null){
+        if (order.getVoucher_id() != null && order.getVoucher_id().length() > 0){
             Voucher voucher = voucherRepository.findByVoucherCode(order.getVoucher_id());
             if (voucher == null){
                 throw new ApiExceptionNotFound("orders","voucher_id",order.getVoucher_id());
