@@ -7,6 +7,7 @@ import com.example.project_sem_4.database.search_body.BookingSearchBody;
 import com.example.project_sem_4.database.search_body.OrderSearchBody;
 import com.example.project_sem_4.util.HelpConvertDate;
 import lombok.extern.log4j.Log4j2;
+import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -208,5 +209,26 @@ public class QueryOrderByJDBC {
         }
 //        log.info("check query: "+ sqlQuery);
         return sqlQuery.toString();
+    }
+    public String stringQueryForChart(){
+        return "SELECT * FROM orders where `status` != -1";
+    }
+    public List<Object> filterOrderForChartLine(){
+        return jdbcTemplate.query(stringQueryForChart()
+                , new ResultSetExtractor<List<Object>>() {
+                    @Override
+                    public List<Object> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                        List<Object>  list = new ArrayList<Object>();
+                        while (rs.next()) {
+
+                            JSONObject jo = new JSONObject();
+                            jo.put("Date", rs.getString("created_at"));
+                            jo.put("scales", rs.getDouble("total_price"));
+                            list.add(jo);
+                        }
+
+                        return list;
+                    }
+                });
     }
 }

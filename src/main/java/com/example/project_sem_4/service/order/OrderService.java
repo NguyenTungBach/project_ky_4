@@ -154,4 +154,9 @@ public class OrderService {
         return responses;
     }
 
+    public   List<Object> findChartLine(){
+
+        List<Object> responses = queryOrderByJDBC.filterOrderForChartLine();
+        return  responses;
+    }
 }

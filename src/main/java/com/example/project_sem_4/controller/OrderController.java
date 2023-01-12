@@ -47,4 +47,19 @@ public class OrderController {
     public ResponseEntity createOrderDetail(@RequestBody OrderSearchBody orderSearchBody) {
         return new ResponseEntity<>(orderService.findAll(orderSearchBody), HttpStatus.OK);
     }
+
+    @PostMapping("/dashboard-line")
+    public ResponseEntity dashBoardLine() {
+        return new ResponseEntity<>(orderService.findChartLine(), HttpStatus.OK);
+    }
+
+//    @PostMapping("/dashboard-pie")
+//    public ResponseEntity dashBoardPie(@RequestBody OrderSearchBody orderSearchBody) {
+//        return new ResponseEntity<>(orderService.findChartPie(orderSearchBody), HttpStatus.OK);
+//    }
+//
+//    @PostMapping("/dashboard-column")
+//    public ResponseEntity dashBoardColumn(@RequestBody OrderSearchBody orderSearchBody) {
+//        return new ResponseEntity<>(orderService.findChaColumnr(orderSearchBody), HttpStatus.OK);
+//    }
 }
