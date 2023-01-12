@@ -53,13 +53,19 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findChartLine(), HttpStatus.OK);
     }
 
-//    @PostMapping("/dashboard-pie")
-//    public ResponseEntity dashBoardPie(@RequestBody OrderSearchBody orderSearchBody) {
-//        return new ResponseEntity<>(orderService.findChartPie(orderSearchBody), HttpStatus.OK);
-//    }
-//
-//    @PostMapping("/dashboard-column")
-//    public ResponseEntity dashBoardColumn(@RequestBody OrderSearchBody orderSearchBody) {
-//        return new ResponseEntity<>(orderService.findChaColumnr(orderSearchBody), HttpStatus.OK);
-//    }
+    @PostMapping("/dashboard-pei")
+    public ResponseEntity dashBoardPie() {
+        return new ResponseEntity<>(orderService.findChartPie(), HttpStatus.OK);
+    }
+
+    @PostMapping("/dashboard-column")
+    public ResponseEntity dashBoardColumn() {
+        return new ResponseEntity<>(orderService.findChartColumn(), HttpStatus.OK);
+    }
+
+    @PostMapping("/dashboard-status")
+    public ResponseEntity dashBoardStatus() {
+        return new ResponseEntity<>(orderService.findOrderbyStatuses(), HttpStatus.OK);
+    }
+
 }

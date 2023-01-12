@@ -8,6 +8,7 @@ import lombok.Setter;
 public class OrderSearchBody {
     private String booking_id;
     private Integer customer_id;
+    private String time_booking;
     private String voucher_id;
     private Integer rangeTotalPriceStart;
     private Integer rangeTotalPriceEnd;

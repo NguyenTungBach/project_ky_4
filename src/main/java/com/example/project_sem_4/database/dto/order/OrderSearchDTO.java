@@ -16,4 +16,5 @@ public class OrderSearchDTO {
     private Account customer;
     private Booking booking;
     private Voucher voucher;
+    private String created_at;
 }

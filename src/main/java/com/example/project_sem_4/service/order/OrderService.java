@@ -159,4 +159,17 @@ public class OrderService {
         List<Object> responses = queryOrderByJDBC.filterOrderForChartLine();
         return  responses;
     }
+    public   List<Object> findChartPie(){
+        List<Object> responses = queryOrderByJDBC.filterOrderForChartPei();
+        return  responses;
+    }
+    public   List<Object> findChartColumn(){
+
+        List<Object> responses = queryOrderByJDBC.filterOrderForChartColumn();
+        return  responses;
+    }
+    public   List<Object> findOrderbyStatuses(){
+        List<Object> responses = queryOrderByJDBC.filterOrderForStatus();
+        return  responses;
+    }
 }
