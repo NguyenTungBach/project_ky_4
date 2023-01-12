@@ -13,6 +13,7 @@ import lombok.Setter;
 public class BookingSearchBody {
     private Integer branch_id;
     private Integer employee_id;
+    private String employee_name;
     private String role;
     private String date_booking;
 

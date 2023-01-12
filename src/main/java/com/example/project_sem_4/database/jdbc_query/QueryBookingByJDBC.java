@@ -112,6 +112,9 @@ public class QueryBookingByJDBC {
         if (searchBody.getEmployee_id() != null) {
             sqlQuery.append(" AND accounts.id = " + searchBody.getEmployee_id());
         }
+        if (searchBody.getEmployee_name() != null && searchBody.getEmployee_name().length() > 0) {
+            sqlQuery.append(" AND accounts.name LIKE '%" + searchBody.getEmployee_name() + "%'");
+        }
 
         if (searchBody.getDate_booking() != null && searchBody.getDate_booking().length() > 0) {
             sqlQuery.append(" AND bookings.date_booking = '" + searchBody.getDate_booking() + "'");
