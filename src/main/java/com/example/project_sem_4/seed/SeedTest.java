@@ -48,7 +48,7 @@ public class SeedTest implements CommandLineRunner {
     @Autowired
     ServiceHair serviceHair;
 
-    private boolean createSeed = true;
+    private boolean createSeed = false;
 
     @Autowired
     OrderRepository orderRepository;
@@ -67,10 +67,6 @@ public class SeedTest implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Random rand = new Random();
         String sql;
-//        roleRepository.deleteAll();
-//        roleRepository.save(Role.builder().name("admin").build());
-//        bookingRepository.save(Booking.builder().name("test").build());
-//        bookingRepository.save(Booking.builder().name("test").build());
         if (createSeed) {
             MembershipClass membershipClass = membershipClassRepository.findById(1).orElse(null);
             if (membershipClass == null) {
@@ -86,10 +82,19 @@ public class SeedTest implements CommandLineRunner {
                 roleRepository.save(Role.builder().name(RoleEnum.CUSTOMER_CARE.role).build());
                 roleRepository.save(Role.builder().name(RoleEnum.CUSTOMER.role).build());
             }
+
+            Account Walk_In_Guest = accountRepository.findById(1).orElse(null);
+            if (Walk_In_Guest == null) {
+                authenticationService.saveWalk_In_Guest();
+            }
+            createAccount("ADMIN");
+            createAccount("RECEPTIONISTS");
+            createAccount("STAFF");
+            createAccount("CUSTOMER_CARE");
+            createAccount("CUSTOMER");
             
             List<ServiceModel> services = serviceModelRepository.findAll();
         if (services.size() == 0){
-
             String[] link = {"https://i.pinimg.com/236x/47/ae/24/47ae2447e4cd688098398f6c8687bea0.jpg",
             "https://i.pinimg.com/236x/35/e5/a8/35e5a8cb6c8f31599b6cdff138ba13ef.jpg",
             "https://i.pinimg.com/236x/6c/93/d6/6c93d61f013b9e7ec3ea47f998574e7e.jpg",
@@ -130,20 +135,19 @@ public class SeedTest implements CommandLineRunner {
                        pricez+ ","+
                         '"'+ linkz+'"'+ ","+
                         typez+")";
-                jdbcTemplate.update(
-                        sql);
+                jdbcTemplate.update(sql);
             }
         }
 
         List<Booking> booking = bookingRepository.findAll();
         if (booking.size() == 0) {
             Integer[] branch_ids = {1, 2};
-            Integer[] emp_ids = {2, 3, 4, 5, 6, 7, 8};
+//            Integer[] emp_ids = {2, 3, 4, 5, 6, 7, 8};
+            Integer[] emp_ids = {4};
             TimeBookingEnum[] time_bookings = TimeBookingEnum.values();
-            Integer[] user_ids = {1, 4};
+//            Integer[] user_ids = {5};
+            Integer[] user_ids = {1,6};
             Integer[] statuss = {-1, 0, 1, 2};
-
-
 
             for (int i = 0; i < 200; i++) {
                 Integer status = statuss[rand.nextInt(statuss.length)];
@@ -232,8 +236,6 @@ public class SeedTest implements CommandLineRunner {
         }
         List<OrderDetail> orderDetails = orderDetailRepository.findAll();
         if(orderDetails.size() == 0){
-
-
             for (int i = 1; i < 210; i++) {
                 Date dateorderDetail = getRamdomDate(2015, 2022, "yyyy-MM-dd");
                 Order order =  orders.get(rand.nextInt(orders.size()));
@@ -308,11 +310,6 @@ public class SeedTest implements CommandLineRunner {
                         .build());
 
             }
-            createAccount("ADMIN");
-            createAccount("RECEPTIONISTS");
-            createAccount("STAFF");
-            createAccount("CUSTOMER_CARE");
-            createAccount("CUSTOMER");
         }
     }
 
@@ -328,7 +325,7 @@ public class SeedTest implements CommandLineRunner {
         String email;
         String phone;
         switch (roleName) {
-            case "ADMIN":
+                case "ADMIN":
                 name = "Admin";
                 email = "admin@gmail.com";
                 phone = "0123523532";
