@@ -33,7 +33,7 @@ public class Account extends BaseEntity{
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade =
-            {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            {CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "member_ship_class_id")
     private MembershipClass membershipClass;

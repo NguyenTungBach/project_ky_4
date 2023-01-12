@@ -19,13 +19,14 @@ public class ServiceModel extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String thumbnail;
     private Double price;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade =
-            {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            {CascadeType.MERGE, CascadeType.REFRESH}
     )
     @JoinColumn(name = "type_service_id")
     private TypeService typeService;
@@ -38,6 +39,7 @@ public class ServiceModel extends BaseEntity{
 
     public ServiceModel(ServiceDTO serviceDTO, TypeService typeService1) {
         this.name = serviceDTO.getName();
+
         this.description = serviceDTO.getDescription();
         this.typeService = typeService1;
         this.thumbnail = serviceDTO.getThumbnail();

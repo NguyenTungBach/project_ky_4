@@ -48,7 +48,7 @@ public class SeedTest implements CommandLineRunner {
     @Autowired
     ServiceHair serviceHair;
 
-    private boolean createSeed = false;
+    private boolean createSeed = true;
 
     @Autowired
     OrderRepository orderRepository;
@@ -63,11 +63,73 @@ public class SeedTest implements CommandLineRunner {
     @Autowired
     private OrderDetailRepository orderDetailRepository;
 
+
+
+
     @Override
     public void run(String... args) throws Exception {
         Random rand = new Random();
+        Calendar cal = Calendar.getInstance();
         String sql;
         if (createSeed) {
+            List<Branch> branches = branchRepository.findAll();
+            if(branches.size() == 0){
+                Integer[] statuss = {0, StatusEnum.ACTIVE.status};
+
+                String hotLine = "0773776942";
+
+                    String thumbnail1 = "https://lawkey.vn/wp-content/uploads/2016/10/72358PICV9G.jpg";
+                    String address1 = "Hà Nội";
+                    String name1 = "Cơ Sở Hoàng Quốc Việt";
+
+
+                String thumbnail2 = "https://2doctor.org/wp-content/uploads/2021/08/dia-chi-cat-toc-nam-dep-o-ha-noi.jpg";
+                String address2 = "Hồ Chí Minh";
+                String name2 = "Cơ Sở Hoàng Quốc Việt";
+
+                    Date dateBranch = getRamdomDate(2015, 2015, "yyyy-MM-dd");
+                    Integer status = statuss[rand.nextInt(statuss.length)];
+                    String bookingDateBranch = String.valueOf(dateBranch.getDate());
+                    if (dateBranch.getDate() < 10) {
+                        bookingDateBranch = 0 + String.valueOf(dateBranch.getDate());
+                    }
+
+                    int validateMonthBranch = dateBranch.getMonth() + 1;
+                    String bookingMonthBranch = String.valueOf(validateMonthBranch);
+                    if (validateMonthBranch < 10) {
+                        bookingMonthBranch = 0 + String.valueOf(validateMonthBranch);
+                    }
+
+                    cal.setTime(dateBranch);
+                    String bookingYearBranch = String.valueOf(cal.get(Calendar.YEAR));
+
+                   String sql1 = "INSERT INTO branchs VALUES (" +
+                       1 + ","+
+                           '"' + bookingYearBranch + "-" + bookingMonthBranch + "-" + bookingDateBranch + '"' + ","+
+                           status + ","+
+                           '"' + bookingYearBranch + "-" + bookingMonthBranch + "-" + bookingDateBranch + '"' + ","+
+                            '"' + address1+ '"' + ","+
+                            '"' + hotLine+ '"' + ","+
+                            '"' + thumbnail1+ '"' + ","+
+                            '"' + name1+ '"' + ")"
+                   ;
+                   jdbcTemplate.update(
+                           sql1);
+                String sql2 = "INSERT INTO branchs VALUES (" +
+                        2 + ","+
+                        '"' + bookingYearBranch + "-" + bookingMonthBranch + "-" + bookingDateBranch + '"' + ","+
+                        status + ","+
+                        '"' + bookingYearBranch + "-" + bookingMonthBranch + "-" + bookingDateBranch + '"' + ","+
+                        '"' + address2+ '"' + ","+
+                        '"' + hotLine+ '"' + ","+
+                        '"' + thumbnail2+ '"' + ","+
+                        '"' + name2+ '"' + ")"
+                        ;
+                jdbcTemplate.update(
+                        sql2);
+
+            }
+
             MembershipClass membershipClass = membershipClassRepository.findById(1).orElse(null);
             if (membershipClass == null) {
                 membershipClassRepository.save(MembershipClass.builder().name("Hạng S").build());
@@ -86,176 +148,13 @@ public class SeedTest implements CommandLineRunner {
             Account Walk_In_Guest = accountRepository.findById(1).orElse(null);
             if (Walk_In_Guest == null) {
                 authenticationService.saveWalk_In_Guest();
-            }
-            createAccount("ADMIN");
-            createAccount("RECEPTIONISTS");
-            createAccount("STAFF");
-            createAccount("CUSTOMER_CARE");
-            createAccount("CUSTOMER");
-            
-            List<ServiceModel> services = serviceModelRepository.findAll();
-        if (services.size() == 0){
-            String[] link = {"https://i.pinimg.com/236x/47/ae/24/47ae2447e4cd688098398f6c8687bea0.jpg",
-            "https://i.pinimg.com/236x/35/e5/a8/35e5a8cb6c8f31599b6cdff138ba13ef.jpg",
-            "https://i.pinimg.com/236x/6c/93/d6/6c93d61f013b9e7ec3ea47f998574e7e.jpg",
-            "https://i.pinimg.com/236x/83/4e/f6/834ef6a7e9cbd9388c3b2345af769ef3.jpg",
-            "https://i.pinimg.com/236x/c3/ea/23/c3ea233f4cd95b9c6c9ee0bc0212d938.jpg"};
-            Integer status = 1;
-            String description = "Kiểu tóc nam,nữ đẹp ";
-            String name = "Đầu cắt moi";
-            double[] price = {200000,300000,400000,500000};
-            Integer[] type = {1,2,3,4,5};
-            for (int i = 1; i < 20; i++) {
-                Date dateservice = getRamdomDate(2015, 2022, "yyyy-MM-dd");
-                String linkz = link[rand.nextInt(link.length)];
-                double pricez = price[rand.nextInt(price.length)];
-                Integer typez = type[rand.nextInt(type.length)];
-
-                String bookingDateService = String.valueOf(dateservice.getDate());
-                if (dateservice.getDate() < 10) {
-                    bookingDateService = 0 + String.valueOf(dateservice.getDate());
-                }
-
-                int validateMonthService = dateservice.getMonth() + 1;
-                String bookingMonthService = String.valueOf(validateMonthService);
-                if (validateMonthService < 10) {
-                    bookingMonthService = 0 + String.valueOf(validateMonthService);
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(dateservice);
-                String bookingYearService = String.valueOf(cal.get(Calendar.YEAR));
-
-                 sql = "INSERT INTO services VALUES (" +
-                       i + ","+
-                        '"' + bookingYearService + "-" + bookingMonthService + "-" + bookingDateService + '"' + ","+
-                        status + ","+
-                        '"' + bookingYearService + "-" + bookingMonthService + "-" + bookingDateService + '"' + ","+
-                        '"'+description+'"' + ","+
-                        '"'+name+'"' + ","+
-                       pricez+ ","+
-                        '"'+ linkz+'"'+ ","+
-                        typez+")";
-                jdbcTemplate.update(sql);
-            }
-        }
-
-        List<Booking> booking = bookingRepository.findAll();
-        if (booking.size() == 0) {
-            Integer[] branch_ids = {1, 2};
-//            Integer[] emp_ids = {2, 3, 4, 5, 6, 7, 8};
-            Integer[] emp_ids = {4};
-            TimeBookingEnum[] time_bookings = TimeBookingEnum.values();
-//            Integer[] user_ids = {5};
-            Integer[] user_ids = {1,6};
-            Integer[] statuss = {-1, 0, 1, 2};
-
-            for (int i = 0; i < 200; i++) {
-                Integer status = statuss[rand.nextInt(statuss.length)];
-                Date date = getRamdomDate(2015, 2022, "yyyy-MM-dd");
-                Integer branch_id = branch_ids[rand.nextInt(branch_ids.length)];
-                Integer emp_id = emp_ids[rand.nextInt(emp_ids.length)];
-                String time_booking = time_bookings[rand.nextInt(time_bookings.length)].timeName;
-                Integer user_id = user_ids[rand.nextInt(user_ids.length)];
-                String email = "Seeder@gmail.com";
-
-                String bookingDate = String.valueOf(date.getDate());
-                if (date.getDate() < 10) {
-                    bookingDate = 0 + String.valueOf(date.getDate());
-                }
-
-                int validateMonth = date.getMonth() + 1;
-                String bookingMonth = String.valueOf(validateMonth);
-                if (validateMonth < 10) {
-                    bookingMonth = 0 + String.valueOf(validateMonth);
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
-                String bookingYear = String.valueOf(cal.get(Calendar.YEAR));
-
-                 sql = "INSERT INTO bookings VALUES (" +
-                        '"' +  "HN" +i+ '"' + ","+
-                        '"' + bookingYear + "-" + bookingMonth + "-" + bookingDate + '"' + ","+
-                        status + ","+
-                        '"' + bookingYear + "-" + bookingMonth + "-" + bookingDate + '"' + ","+
-                        branch_id + ","+
-                        '"' + String.valueOf(date.getTime()) + '"'  + ","+
-                        '"' +bookingDate + "-" + bookingMonth + "-" + bookingYear + '"' + ","+
-                        '"' +email+ '"' + ","+
-                        emp_id + ","+
-                        "''" + ","+
-                        '"' + time_booking + '"' + ","+
-                        user_id + ","+
-                        "''" + ")"
-                        ;
-                jdbcTemplate.update(
-                        sql);
+                createAccount("ADMIN");
+                createAccount("RECEPTIONISTS");
+                createAccount("STAFF");
+                createAccount("CUSTOMER_CARE");
+                createAccount("CUSTOMER");
             }
 
-        }
-        List<Order> orders = orderRepository.findAll();
-        if (orders.size() == 0) {
-
-            Integer[] statussOrder = {-1,0,1,2};
-            Integer[] customer_ids = {1, 4};
-            double[] pricesOrder = {200000,300000,400000,500000};
-            Integer voicher_id = 0;
-            for (int i = 1; i < 100; i++) {
-                Date dateorder = getRamdomDate(2015, 2022, "yyyy-MM-dd");
-                Booking bookin =  booking.get(rand.nextInt(booking.size()));
-                String booking_id = bookin.getId();
-                Integer customer_id = customer_ids[rand.nextInt(customer_ids.length)];
-                Double priceOrder = pricesOrder[rand.nextInt(pricesOrder.length)];
-                Integer statusOrder = statussOrder[rand.nextInt(statussOrder.length)];
-
-                String bookingDateOrder = String.valueOf(dateorder.getDate());
-                if (dateorder.getDate() < 10) {
-                    bookingDateOrder = 0 + String.valueOf(dateorder.getDate());
-                }
-
-                int validateMonthOrder = dateorder.getMonth() + 1;
-                String bookingMonthOrder = String.valueOf(validateMonthOrder);
-                if (validateMonthOrder < 10) {
-                    bookingMonthOrder = 0 + String.valueOf(validateMonthOrder);
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(dateorder);
-                String bookingYearOrder = String.valueOf(cal.get(Calendar.YEAR));
-
-                 sql = "INSERT INTO orders VALUES (" +
-                        i + ","+
-                        '"' + bookingYearOrder + "-" + bookingMonthOrder + "-" + bookingDateOrder + '"' + ","+
-                        statusOrder + ","+
-                        '"' + bookingYearOrder + "-" + bookingMonthOrder + "-" + bookingDateOrder + '"' + ","+
-                        '"'+booking_id+'"' + ","+
-                        customer_id + ","+
-                        priceOrder + ","+
-                        '"'+voicher_id+'"' +")";
-                jdbcTemplate.update(
-                        sql);
-            }
-        }
-        List<OrderDetail> orderDetails = orderDetailRepository.findAll();
-        if(orderDetails.size() == 0){
-            for (int i = 1; i < 210; i++) {
-                Date dateorderDetail = getRamdomDate(2015, 2022, "yyyy-MM-dd");
-                Order order =  orders.get(rand.nextInt(orders.size()));
-                Integer order_id = order.getId();
-                ServiceModel serviceModel = services.get(rand.nextInt(services.size()));
-               Integer service_id = serviceModel.getId();
-               double unit_price = serviceModel.getPrice();
-                 sql = "SELECT count(*) FROM order_details WHERE order_id = ? AND service_id = ?";
-
-                int count = jdbcTemplate.queryForObject(sql, new Object[] { order_id,service_id }, Integer.class);
-                    if (count == 0){
-                        sql = "INSERT INTO order_details VALUES (" +
-                                order_id + ","+
-                                service_id + ","+
-                                unit_price +")";
-                        jdbcTemplate.update(
-                                sql);
-                    }
-                  }
-              }
 
             List<TypeService> typeServices = typeServiceRepository.findAll();
             if (typeServices.size() == 0) {
@@ -310,6 +209,171 @@ public class SeedTest implements CommandLineRunner {
                         .build());
 
             }
+
+            List<ServiceModel> services = serviceModelRepository.findAll();
+        if (services.size() == 0){
+            String[] link = {"https://i.pinimg.com/236x/47/ae/24/47ae2447e4cd688098398f6c8687bea0.jpg",
+            "https://i.pinimg.com/236x/35/e5/a8/35e5a8cb6c8f31599b6cdff138ba13ef.jpg",
+            "https://i.pinimg.com/236x/6c/93/d6/6c93d61f013b9e7ec3ea47f998574e7e.jpg",
+            "https://i.pinimg.com/236x/83/4e/f6/834ef6a7e9cbd9388c3b2345af769ef3.jpg",
+            "https://i.pinimg.com/236x/c3/ea/23/c3ea233f4cd95b9c6c9ee0bc0212d938.jpg"};
+            Integer status = 1;
+            String description = "Kiểu tóc nam,nữ đẹp ";
+            String name = "Đầu cắt moi";
+            double[] price = {200000,300000,400000,500000};
+            Integer[] type = {1,2,3,4,5};
+            for (int i = 1; i < 20; i++) {
+                Date dateservice = getRamdomDate(2015, 2022, "yyyy-MM-dd");
+                String linkz = link[rand.nextInt(link.length)];
+                double pricez = price[rand.nextInt(price.length)];
+                Integer typez = type[rand.nextInt(type.length)];
+
+                String bookingDateService = String.valueOf(dateservice.getDate());
+                if (dateservice.getDate() < 10) {
+                    bookingDateService = 0 + String.valueOf(dateservice.getDate());
+                }
+
+                int validateMonthService = dateservice.getMonth() + 1;
+                String bookingMonthService = String.valueOf(validateMonthService);
+                if (validateMonthService < 10) {
+                    bookingMonthService = 0 + String.valueOf(validateMonthService);
+                }
+                 cal = Calendar.getInstance();
+                cal.setTime(dateservice);
+                String bookingYearService = String.valueOf(cal.get(Calendar.YEAR));
+
+                 sql = "INSERT INTO services VALUES (" +
+                       i + ","+
+                        '"' + bookingYearService + "-" + bookingMonthService + "-" + bookingDateService + '"' + ","+
+                        status + ","+
+                        '"' + bookingYearService + "-" + bookingMonthService + "-" + bookingDateService + '"' + ","+
+                        '"'+description+'"' + ","+
+                        '"'+name+'"' + ","+
+                       pricez+ ","+
+                        '"'+ linkz+'"'+ ","+
+                        typez+")";
+                jdbcTemplate.update(sql);
+            }
+        }
+
+        List<Booking> booking = bookingRepository.findAll();
+        if (booking.size() == 0) {
+            Integer[] branch_ids = {1, 2};
+//            Integer[] emp_ids = {2, 3, 4, 5, 6, 7, 8};
+            Integer[] emp_ids = {4};
+            TimeBookingEnum[] time_bookings = TimeBookingEnum.values();
+//            Integer[] user_ids = {5};
+            Integer[] user_ids = {1,6};
+            Integer[] statuss = {-1, 0, 1, 2};
+
+            for (int i = 0; i < 200; i++) {
+                Integer status = statuss[rand.nextInt(statuss.length)];
+                Date date = getRamdomDate(2015, 2022, "yyyy-MM-dd");
+                Integer branch_id = branch_ids[rand.nextInt(branch_ids.length)];
+                Integer emp_id = emp_ids[rand.nextInt(emp_ids.length)];
+                String time_booking = time_bookings[rand.nextInt(time_bookings.length)].timeName;
+                Integer user_id = user_ids[rand.nextInt(user_ids.length)];
+                String email = "Seeder@gmail.com";
+
+                String bookingDate = String.valueOf(date.getDate());
+                if (date.getDate() < 10) {
+                    bookingDate = 0 + String.valueOf(date.getDate());
+                }
+
+                int validateMonth = date.getMonth() + 1;
+                String bookingMonth = String.valueOf(validateMonth);
+                if (validateMonth < 10) {
+                    bookingMonth = 0 + String.valueOf(validateMonth);
+                }
+                 cal = Calendar.getInstance();
+                cal.setTime(date);
+                String bookingYear = String.valueOf(cal.get(Calendar.YEAR));
+
+                 sql = "INSERT INTO bookings (id,created_at,status,updated_at,branch_id,date,date_booking,email,employee_id,phone,time_booking,name_booking,user_id) VALUES (" +
+                        '"' +  "HN" +i+ '"' + ","+
+                        '"' + bookingYear + "-" + bookingMonth + "-" + bookingDate + '"' + ","+
+                        status + ","+
+                        '"' + bookingYear + "-" + bookingMonth + "-" + bookingDate + '"' + ","+
+                        branch_id + ","+
+                        '"' + String.valueOf(date.getTime()) + '"'  + ","+
+                        '"' +bookingDate + "-" + bookingMonth + "-" + bookingYear + '"' + ","+
+                        '"' +email+ '"' + ","+
+                        emp_id + ","+
+                        "''" + ","+
+                         '"' + time_booking + '"' + ","+
+                         "''"+ ","+
+                         user_id + ")"
+                        ;
+                jdbcTemplate.update(
+                        sql);
+            }
+
+        }
+        List<Order> orders = orderRepository.findAll();
+        if (orders.size() == 0 && booking.size()> 0) {
+
+            Integer[] statussOrder = {-1,0,1,2};
+            Integer[] customer_ids = {1, 6};
+            double[] pricesOrder = {200000,300000,400000,500000};
+
+            for (int i = 1; i < 100; i++) {
+                Date dateorder = getRamdomDate(2015, 2022, "yyyy-MM-dd");
+                Booking bookin =  booking.get(rand.nextInt(booking.size()));
+                String booking_id = bookin.getId();
+                Integer customer_id = customer_ids[rand.nextInt(customer_ids.length)];
+                Double priceOrder = pricesOrder[rand.nextInt(pricesOrder.length)];
+                Integer statusOrder = statussOrder[rand.nextInt(statussOrder.length)];
+
+                String bookingDateOrder = String.valueOf(dateorder.getDate());
+                if (dateorder.getDate() < 10) {
+                    bookingDateOrder = 0 + String.valueOf(dateorder.getDate());
+                }
+
+                int validateMonthOrder = dateorder.getMonth() + 1;
+                String bookingMonthOrder = String.valueOf(validateMonthOrder);
+                if (validateMonthOrder < 10) {
+                    bookingMonthOrder = 0 + String.valueOf(validateMonthOrder);
+                }
+                 cal = Calendar.getInstance();
+                cal.setTime(dateorder);
+                String bookingYearOrder = String.valueOf(cal.get(Calendar.YEAR));
+
+                 sql = "INSERT INTO orders VALUES (" +
+                        i + ","+
+                        '"' + bookingYearOrder + "-" + bookingMonthOrder + "-" + bookingDateOrder + '"' + ","+
+                        statusOrder + ","+
+                        '"' + bookingYearOrder + "-" + bookingMonthOrder + "-" + bookingDateOrder + '"' + ","+
+                        '"'+booking_id+'"' + ","+
+                        customer_id + ","+
+                        priceOrder + ","+ "''" +
+                          ")";
+                jdbcTemplate.update(
+                        sql);
+            }
+        }
+        List<OrderDetail> orderDetails = orderDetailRepository.findAll();
+        if(orderDetails.size() == 0 && orders.size() > 0 && services.size() > 0){
+            for (int i = 1; i < 210; i++) {
+                Order order =  orders.get(rand.nextInt(orders.size()));
+                Integer order_id = order.getId();
+                ServiceModel serviceModel = services.get(rand.nextInt(services.size()));
+               Integer service_id = serviceModel.getId();
+               double unit_price = serviceModel.getPrice();
+                 sql = "SELECT count(*) FROM order_details WHERE order_id = ? AND service_id = ?";
+
+                int count = jdbcTemplate.queryForObject(sql, new Object[] { order_id,service_id }, Integer.class);
+                    if (count == 0){
+                        sql = "INSERT INTO order_details VALUES (" +
+                                order_id + ","+
+                                service_id + ","+
+                                unit_price +")";
+                        jdbcTemplate.update(
+                                sql);
+                    }
+                  }
+              }
+
+
         }
     }
 

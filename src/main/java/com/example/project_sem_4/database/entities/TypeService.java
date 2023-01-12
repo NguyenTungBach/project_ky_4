@@ -25,7 +25,7 @@ public class TypeService extends BaseEntity{
     private String name;
 
     @OneToMany(cascade =
-            {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            {CascadeType.MERGE, CascadeType.REFRESH},
             mappedBy = "typeService", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<ServiceModel> services;
