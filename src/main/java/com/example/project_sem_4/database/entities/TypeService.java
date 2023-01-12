@@ -39,4 +39,11 @@ public class TypeService extends BaseEntity{
         this.setStatus(status);
         this.setCreated_at(new Date());
     }
+
+    public TypeService(int id, String name, int status) {
+        this.id = id;
+        this.name = name;
+        this.setStatus(status);
+        this.setCreated_at(new Date());
+    }
 }
