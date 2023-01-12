@@ -40,12 +40,14 @@ public class QueryOrderByJDBC {
                             OrderSearchDTO orderSearchDTO = new OrderSearchDTO();
                             Integer order_id = rs.getInt("orders.id");
                             Integer total_price = rs.getInt("orders.total_price");
+                            String created_at = rs.getString("orders.created_at");
                             Integer status = rs.getInt("orders.status");
                             Integer user_id = rs.getInt("bookings.user_id");
                             orderSearchDTO.setId(order_id);
                             orderSearchDTO.setTotal_price(total_price);
                             orderSearchDTO.setStatus(status);
                             orderSearchDTO.setUser_id(user_id);
+                            orderSearchDTO.setCreated_at(created_at);
 
                             Booking booking = new Booking();
                             booking.setId(rs.getString("bookings.id"));
@@ -97,12 +99,14 @@ public class QueryOrderByJDBC {
                     OrderSearchDTO orderSearchDTO = new OrderSearchDTO();
                     Integer order_id = rs.getInt("orders.id");
                     Integer total_price = rs.getInt("orders.total_price");
+                    String created_at = rs.getString("orders.created_at");
                     Integer status = rs.getInt("orders.status");
                     Integer user_id = rs.getInt("bookings.user_id");
                     orderSearchDTO.setId(order_id);
                     orderSearchDTO.setTotal_price(total_price);
                     orderSearchDTO.setStatus(status);
                     orderSearchDTO.setUser_id(user_id);
+                    orderSearchDTO.setCreated_at(created_at);
 
                     Booking booking = new Booking();
                     booking.setId(rs.getString("bookings.id"));
@@ -158,6 +162,10 @@ public class QueryOrderByJDBC {
             sqlQuery.append(" AND orders.booking_id = '" + searchBody.getBooking_id()+"'");
         }
 
+        if (searchBody.getTime_booking() != null && searchBody.getTime_booking().length() > 0) {
+            sqlQuery.append(" AND bookings.time_booking = '" + searchBody.getTime_booking()+"'");
+        }
+
         if (searchBody.getVoucher_id() != null && searchBody.getVoucher_id().length() > 0) {
             sqlQuery.append(" AND orders.voucher_id = '" + searchBody.getVoucher_id()+"'");
         }
@@ -198,6 +206,7 @@ public class QueryOrderByJDBC {
         if (searchBody.getSort() != null && searchBody.getSort().equals("desc")) {
             sqlQuery.append(" DESC ");
         }
+//        log.info("check query: "+ sqlQuery);
         return sqlQuery.toString();
     }
 }

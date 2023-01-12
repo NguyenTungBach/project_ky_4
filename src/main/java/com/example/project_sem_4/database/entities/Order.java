@@ -26,6 +26,7 @@ public class Order extends BaseEntity{
             {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private Account customer;
+
     @Column(insertable = false, updatable = false)
     private int customer_id;
 
