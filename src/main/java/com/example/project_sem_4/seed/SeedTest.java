@@ -2,6 +2,7 @@ package com.example.project_sem_4.seed;
 import com.example.project_sem_4.database.dto.ServiceDTO;
 import com.example.project_sem_4.database.entities.*;
 import com.example.project_sem_4.database.repository.*;
+import com.example.project_sem_4.enum_project.GenderEnum;
 import com.example.project_sem_4.enum_project.RoleEnum;
 import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.enum_project.TimeBookingEnum;
@@ -370,12 +371,6 @@ public class SeedTest implements CommandLineRunner {
         account.setStatus(StatusEnum.ACTIVE.status);
         accountRepository.save(account);
     }
-                
-        
-        Account Walk_In_Guest = accountRepository.findById(1).orElse(null);
-        if (Walk_In_Guest == null) {
-            authenticationService.saveWalk_In_Guest();
-        
 
     public static int randBetween(int start, int end) {
         return start + (int) Math.round(Math.random() * (end - start));
