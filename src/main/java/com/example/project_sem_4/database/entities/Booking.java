@@ -8,9 +8,9 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 @Table(name = "bookings")
-public class Booking extends BaseEntity{
+public class Booking extends BaseEntity {
     @Id
     @GeneratedValue(generator = "my_generator")
     @GenericGenerator(name = "my_generator", strategy = "com.example.project_sem_4.database.generator.MyGenerator")
@@ -53,4 +53,7 @@ public class Booking extends BaseEntity{
     public Booking() {
         super();
     }
+
+
+
 }
