@@ -1,6 +1,7 @@
 package com.example.project_sem_4.service.service;
 
 import com.example.project_sem_4.database.dto.search.service.ServiceSearchDTO;
+import com.example.project_sem_4.database.dto.typeService.TypeServiceForOrderDTO;
 import com.example.project_sem_4.database.entities.TypeService;
 import com.example.project_sem_4.database.jdbc_query.QueryTypeServiceByJDBC;
 import com.example.project_sem_4.database.repository.TypeServiceRepository;
@@ -14,10 +15,7 @@ import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TypeServiceHair {
@@ -76,5 +74,18 @@ public class TypeServiceHair {
         responses.put("totalItems",listContentNoPage.size());
         responses.put("totalPage",(int) Math.ceil((double) listContentNoPage.size() / searchBody.getLimit()));
         return responses;
+    }
+
+    public List<TypeServiceForOrderDTO> findWithTypeServiceForOrderDTO(){
+        List<TypeService> typeServiceList = typeServiceRepository.findAll();
+        List<TypeServiceForOrderDTO> list = new ArrayList<>();
+        for (TypeService typeService: typeServiceList) {
+            TypeServiceForOrderDTO typeServiceForOrderDTO = new TypeServiceForOrderDTO();
+            typeServiceForOrderDTO.setId(typeService.getId());
+            typeServiceForOrderDTO.setName(typeService.getName());
+            typeServiceForOrderDTO.setServices(typeService.getServices());
+            list.add(typeServiceForOrderDTO);
+        }
+        return list;
     }
 }
