@@ -110,8 +110,8 @@ public class SeedTest implements CommandLineRunner {
                            '"' + bookingYearBranch + "-" + bookingMonthBranch + "-" + bookingDateBranch + '"' + ","+
                             '"' + address1+ '"' + ","+
                             '"' + hotLine+ '"' + ","+
-                            '"' + thumbnail1+ '"' + ","+
-                            '"' + name1+ '"' + ")"
+                            '"' + name1+ '"' + ","+
+                            '"' + thumbnail1+ '"' + ")"
                    ;
                    jdbcTemplate.update(
                            sql1);
@@ -122,8 +122,8 @@ public class SeedTest implements CommandLineRunner {
                         '"' + bookingYearBranch + "-" + bookingMonthBranch + "-" + bookingDateBranch + '"' + ","+
                         '"' + address2+ '"' + ","+
                         '"' + hotLine+ '"' + ","+
-                        '"' + thumbnail2+ '"' + ","+
-                        '"' + name2+ '"' + ")"
+                        '"' + name2+ '"' + ","+
+                        '"' + thumbnail2+ '"' + ")"
                         ;
                 jdbcTemplate.update(
                         sql2);

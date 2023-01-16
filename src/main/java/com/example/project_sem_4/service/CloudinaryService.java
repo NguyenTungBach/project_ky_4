@@ -30,7 +30,29 @@ public class CloudinaryService {
 
     public ApiResponse findFile(String asset_id) {
         try {
-            return cloudinaryConfig.search().expression("resource_type:image AND asset_id="+ asset_id).execute();
+            return cloudinaryConfig.search().expression("resource_type:image AND folder=project_ky_4 AND asset_id="+ asset_id).execute();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ApiResponse findAll(int limit,String next_cursor) {
+        //Paginate của clouddinary chỉ có thể next
+        try {
+            if (next_cursor != null && next_cursor.length() > 0){
+                return cloudinaryConfig
+                        .search()
+                        .expression("resource_type:image AND folder=project_ky_4")
+                        .maxResults(limit)
+                        .nextCursor(next_cursor)
+                        .execute();
+            }
+
+            return cloudinaryConfig
+                    .search()
+                    .expression("resource_type:image AND folder=project_ky_4")
+                    .maxResults(limit)
+                    .execute();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
