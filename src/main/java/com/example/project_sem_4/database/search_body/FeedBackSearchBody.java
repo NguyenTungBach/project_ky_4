@@ -12,6 +12,7 @@ import lombok.Setter;
 public class FeedBackSearchBody {
     private String title;
     private String email;
+    private String phone;
     private Integer status;
     private String start;
     private String end;
