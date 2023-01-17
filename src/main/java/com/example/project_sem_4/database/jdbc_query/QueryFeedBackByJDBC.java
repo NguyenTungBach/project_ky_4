@@ -41,6 +41,10 @@ public class QueryFeedBackByJDBC {
             sqlQuery.append(" AND feed_backs.email Like '%" + searchBody.getEmail() + "%'");
         }
 
+        if (searchBody.getPhone() != null && searchBody.getPhone().length() > 0){
+            sqlQuery.append(" AND feed_backs.phone Like '%" + searchBody.getPhone() + "%'");
+        }
+
         if (searchBody.getStatus() != null){
             sqlQuery.append(" AND feed_backs.status = " + searchBody.getStatus());
         } else {

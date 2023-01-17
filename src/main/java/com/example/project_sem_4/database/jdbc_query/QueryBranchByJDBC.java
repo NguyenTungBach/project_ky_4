@@ -36,6 +36,14 @@ public class QueryBranchByJDBC {
             sqlQuery.append(" AND branchs.name Like '%" + searchBody.getName() + "%'");
         }
 
+        if (searchBody.getAddress() != null && searchBody.getAddress().length() > 0){
+            sqlQuery.append(" AND branchs.address Like '%" + searchBody.getAddress() + "%'");
+        }
+
+        if (searchBody.getHot_line() != null && searchBody.getHot_line().length() > 0){
+            sqlQuery.append(" AND branchs.hot_line Like '%" + searchBody.getHot_line() + "%'");
+        }
+
         if (searchBody.getStatus() != null){
             sqlQuery.append(" AND branchs.status = " + searchBody.getStatus());
         } else {

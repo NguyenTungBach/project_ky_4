@@ -29,6 +29,11 @@ public class CloudController {
         return new ResponseEntity<>(cloudinaryService.findFile(asset_id),HttpStatus.OK);
     }
 
+    @GetMapping("/findAll")
+    public ResponseEntity<?> findAll(@RequestParam Integer limit, @RequestParam String next_cursor) throws IOException {
+        return new ResponseEntity<>(cloudinaryService.findAll(limit,next_cursor),HttpStatus.OK);
+    }
+
     @GetMapping("/delete")
     public ResponseEntity<?> deleteImage(@RequestParam String public_id) throws IOException {
         return new ResponseEntity<>(cloudinaryService.deleteFile(public_id),HttpStatus.OK);
