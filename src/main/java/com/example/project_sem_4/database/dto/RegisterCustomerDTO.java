@@ -16,6 +16,7 @@ public class RegisterCustomerDTO {
     @NotEmpty(message = "Thiếu tên")
     private String name;
     private String address;
+    private String description;
     @Email(message = "Sai định dạng email")
     @NotEmpty(message = "Thiếu email")
     private String email;

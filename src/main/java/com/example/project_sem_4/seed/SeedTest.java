@@ -80,7 +80,7 @@ public class SeedTest implements CommandLineRunner {
 
                     String thumbnail1 = "https://lawkey.vn/wp-content/uploads/2016/10/72358PICV9G.jpg";
                     String address1 = "Hà Nội";
-                    String name1 = "Cơ Sở Hoàng Quốc Việt";
+                    String name1 = "Cơ Sở Tôn Đức Thắng";
 
 
                 String thumbnail2 = "https://2doctor.org/wp-content/uploads/2021/08/dia-chi-cat-toc-nam-dep-o-ha-noi.jpg";
@@ -388,39 +388,47 @@ public class SeedTest implements CommandLineRunner {
         String name;
         String email;
         String phone;
+        String description;
         switch (roleName) {
                 case "ADMIN":
                 name = "Admin";
+                description = "Quản trị viên ";
                 email = "admin@gmail.com";
                 phone = "0123523532";
                 break;
             case "RECEPTIONISTS":
                 name = "Receptionists";
+                description = "Lễ tân";
                 email = "receptionists@gmail.com";
                 phone = "43241414141532";
                 break;
             case "STAFF":
                 name = "Staff";
+                description = "Nhân viên cắt tóc";
                 email = "staff@gmail.com";
                 phone = "0214124142";
                 break;
             case "CUSTOMER_CARE":
                 name = "Customer Care";
+                description = "Nhân viên chăm sóc";
                 email = "customer_care@gmail.com";
                 phone = "543564312";
                 break;
             case "CUSTOMER":
                 name = "Customer";
+                description = "Khách hàng";
                 email = "customer@gmail.com";
                 phone = "464314141";
                 break;
             default:
                 name = "";
+                description = "";
                 email = "";
                 phone = "";
                 break;
                 }
         account.setName(name);
+        account.setDescription(description);
         account.setEmail(email);
         account.setAddress("From No Where");
         account.setPhone(phone);

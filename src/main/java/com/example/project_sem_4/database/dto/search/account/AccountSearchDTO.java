@@ -20,6 +20,7 @@ public class AccountSearchDTO {
     private Integer accounts_id;
     private String accounts_name;
     private String accounts_email;
+    private String account_description;
     private String phone;
     private String gender;
     private String address;
