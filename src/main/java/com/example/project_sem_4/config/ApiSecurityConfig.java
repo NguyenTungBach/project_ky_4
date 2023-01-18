@@ -56,6 +56,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/service/{id}",
                 "/type_service/search",
                 "/type_service/{id}",
+                "/account/{id}",
                 "/branch/{id}", "/branch/search",
                 "/booking/search",
                 "/booking/findAllByEmployee_idAndDate_booking",
@@ -75,7 +76,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/type_service**").hasAnyAuthority(ADMIN);
         http.authorizeRequests().antMatchers("/voucher**").hasAnyAuthority(ADMIN);
         // ACCOUNT
-        http.authorizeRequests().antMatchers("/account/{id}").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER_CARE, STAFF, CUSTOMER);
+//        http.authorizeRequests().antMatchers("/account/{id}").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER_CARE, STAFF, CUSTOMER);
         http.authorizeRequests().antMatchers("account/update/{id}").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER_CARE, STAFF, CUSTOMER);
         http.authorizeRequests().antMatchers("/account/search").hasAnyAuthority(ADMIN,RECEPTIONISTS, CUSTOMER_CARE);
         // BLOG
