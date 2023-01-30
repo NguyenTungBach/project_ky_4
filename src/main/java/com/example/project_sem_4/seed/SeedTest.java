@@ -268,7 +268,7 @@ public class SeedTest implements CommandLineRunner {
 
             TimeBookingEnum[] time_bookings = TimeBookingEnum.values();
 //            Integer[] user_ids = {5};
-            Integer[] user_ids = {1,6};
+            Integer[] user_ids = {1,6,7,8,9};
             Integer user_ids_zero = 0;
             Integer[] statuss = {-1, 0, 1, 2};
 
