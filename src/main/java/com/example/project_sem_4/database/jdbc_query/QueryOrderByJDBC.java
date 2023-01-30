@@ -15,6 +15,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Array;
@@ -32,6 +33,7 @@ public class QueryOrderByJDBC {
     JdbcTemplate jdbcTemplate;
 
     public List<OrderSearchDTO> filterWithPaging(OrderSearchBody searchBody) {
+        
         return jdbcTemplate.query(stringQuery(searchBody) + " LIMIT "
                         + searchBody.getLimit() + " OFFSET " + searchBody.getLimit() * (searchBody.getPage() - 1)
                 , new ResultSetExtractor<List<OrderSearchDTO>>() {
@@ -165,9 +167,25 @@ public class QueryOrderByJDBC {
             sqlQuery.append(" AND orders.booking_id = '" + searchBody.getBooking_id() + "'");
         }
 
+        if (searchBody.getIdsOrder() != null && searchBody.getIdsOrder().size() > 0){
+
+            sqlQuery.append(" AND orders.id in (");
+            for(int i = 0; i < searchBody.getIdsOrder().size(); i++) {
+                Integer Id = Integer.valueOf(searchBody.getIdsOrder().get(i));
+
+                if(i != 0) {
+                    sqlQuery.append(',');
+                }
+                sqlQuery.append(Id);
+            }
+
+            sqlQuery.append(")");
+        }
+
         if (searchBody.getTime_booking() != null && searchBody.getTime_booking().length() > 0) {
             sqlQuery.append(" AND bookings.time_booking = '" + searchBody.getTime_booking()+"'");
         }
+
 
         if (searchBody.getVoucher_id() != null && searchBody.getVoucher_id().length() > 0) {
             sqlQuery.append(" AND orders.voucher_id = '" + searchBody.getVoucher_id() + "'");
@@ -308,17 +326,17 @@ public class QueryOrderByJDBC {
                                 order_ids.add(rs.getInt("ord.id"));
                                 Double total_prices = Double.valueOf(0);
                                 total_prices += rs.getDouble("total_price");
-                                branch.put("order_ids", order_ids);
+                                branch.put("ids", order_ids);
                                 branch.put("type", rs.getString("br.name"));
                                 branch.put("branch_id", branch_id);
                                 branch.put("value", total_prices);
                                 branches.put(branch_id,branch);
                             } else {
-                                List<Integer> orderBranchIds = (List<Integer>) branch.get("order_ids");
+                                List<Integer> orderBranchIds = (List<Integer>) branch.get("ids");
                                 orderBranchIds.add(rs.getInt("ord.id"));
                                 Double totalPricesBranch = (Double) branch.get("value");
                                 totalPricesBranch += rs.getDouble("total_price");
-                                branch.put("order_ids", orderBranchIds);
+                                branch.put("ids", orderBranchIds);
                                 branch.put("value", totalPricesBranch);
                                 branches.put(branch_id,branch);
                             }
@@ -347,17 +365,17 @@ public class QueryOrderByJDBC {
                                 order_ids.add(rs.getInt("ord.id"));
                                 Double total_prices = Double.valueOf(0);
                                 total_prices += rs.getDouble("total_price");
-                                account.put("order_ids", order_ids);
+                                account.put("ids", order_ids);
                                 account.put("type", rs.getString("acc.name"));
                                 account.put("account_id", account_id);
                                 account.put("sales", total_prices);
                                 accounts.put(account_id,account);
                             } else {
-                                List<Integer> orderAccountIds = (List<Integer>) account.get("order_ids");
+                                List<Integer> orderAccountIds = (List<Integer>) account.get("ids");
                                 orderAccountIds.add(rs.getInt("ord.id"));
                                 Double totalPricesAccount = (Double) account.get("sales");
                                 totalPricesAccount += rs.getDouble("total_price");
-                                account.put("order_ids", orderAccountIds);
+                                account.put("ids", orderAccountIds);
                                 account.put("sales", totalPricesAccount);
                                 accounts.put(account_id,account);
                             }

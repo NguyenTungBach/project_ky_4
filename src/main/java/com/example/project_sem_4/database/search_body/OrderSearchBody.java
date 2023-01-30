@@ -3,6 +3,8 @@ package com.example.project_sem_4.database.search_body;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class OrderSearchBody {
@@ -12,7 +14,7 @@ public class OrderSearchBody {
     private String voucher_id;
     private Integer rangeTotalPriceStart;
     private Integer rangeTotalPriceEnd;
-
+    private List<String> idsOrder;
     private Integer status;
     private String start;
     private String end;

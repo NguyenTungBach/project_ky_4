@@ -6,11 +6,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @Getter
 @Setter
 public class BookingSearchBody {
+    private String booking_id;
+    private List<String> idsBooking;
     private Integer branch_id;
     private Integer employee_id;
     private String employee_name;

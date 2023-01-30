@@ -105,4 +105,14 @@ public class ServiceHair {
         responses.put("totalPage",(int) Math.ceil((double) listContentNoPage.size() / searchBody.getLimit()));
         return responses;
     }
+
+    public   List<Object> findChartBar(){
+        List<Object> responses = queryServiceByJDBC.filterServiceForChartBar();
+        return  responses;
+    }
+
+    public   Object countServicesAndStaffs(){
+        Object responses = queryServiceByJDBC.filterCountStaffAndService();
+        return  responses;
+    }
 }
