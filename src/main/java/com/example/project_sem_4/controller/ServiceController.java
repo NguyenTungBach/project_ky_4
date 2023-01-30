@@ -41,6 +41,16 @@ public class ServiceController {
         return new ResponseEntity(serviceHair.findService(serviceSearchBody), HttpStatus.OK);
     }
 
+    @PostMapping("/dashboard-bar")
+    public ResponseEntity dashBoardBar() {
+        return new ResponseEntity(serviceHair.findChartBar(), HttpStatus.OK);
+    }
+
+    @PostMapping("/dashboard-count")
+    public ResponseEntity countServicesAndStaffs() {
+        return new ResponseEntity(serviceHair.countServicesAndStaffs(), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity findById(@PathVariable int id) {
         return new ResponseEntity(serviceHair.findById(id), HttpStatus.OK);

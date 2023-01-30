@@ -46,4 +46,26 @@ public class BookingController {
     public ResponseEntity searchBooking(@RequestBody BookingSearchBody bookingSearchBody) {
         return new ResponseEntity(bookingService.findAll(bookingSearchBody), HttpStatus.OK);
     }
+
+    @PostMapping("/dashboard-pei")
+    public ResponseEntity dashBoardPie() {
+        return new ResponseEntity<>(bookingService.findChartPie(), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/dashboard-range")
+    public ResponseEntity dashBoardRange() {
+        return new ResponseEntity<>(bookingService.findChartRange(), HttpStatus.OK);
+    }
+
+    @PostMapping("/dashboard-column")
+    public ResponseEntity dashBoardColumn() {
+        return new ResponseEntity<>(bookingService.findChartColumn(), HttpStatus.OK);
+    }
+
+    @PostMapping("/dashboard-heat")
+    public ResponseEntity dashBoardHeat() {
+        return new ResponseEntity<>(bookingService.findChartHeat(), HttpStatus.OK);
+    }
+
 }
