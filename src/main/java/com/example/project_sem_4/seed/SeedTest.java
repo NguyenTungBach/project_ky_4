@@ -266,7 +266,7 @@ public class SeedTest implements CommandLineRunner {
             Integer[] emp_ids = {4};
             TimeBookingEnum[] time_bookings = TimeBookingEnum.values();
 //            Integer[] user_ids = {5};
-            Integer[] user_ids = {1,6};
+            Integer[] user_ids = {1,6,7,8,9};
             Integer[] statuss = {-1, 0, 1, 2};
 
             for (int i = 0; i < 200; i++) {
