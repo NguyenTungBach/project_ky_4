@@ -120,6 +120,7 @@ public class AuthenticationService implements UserDetailsService {
         }
         account.setMembershipClass(membershipClass);
         account.setRoles(roles);
+        account.setDescription(registerDTO.getDescription());
         Account save = accountRepository.save(account);
 
         mailConfirmService.sendMailConfirm(save.getEmail(),save.getId());
@@ -176,6 +177,7 @@ public class AuthenticationService implements UserDetailsService {
         }
         account.setMembershipClass(membershipClass);
         account.setRoles(roles);
+        account.setDescription(registerCustomerDTO.getDescription());
         Account save = accountRepository.save(account);
 
         mailConfirmService.sendMailConfirm(save.getEmail(),save.getId());
@@ -253,6 +255,7 @@ public class AuthenticationService implements UserDetailsService {
             checkAccount.setPhone(account.getPhone());
         }
         checkAccount.setName(account.getName());
+        checkAccount.setDescription(account.getDescription());
 
         return accountRepository.save(checkAccount);
     }

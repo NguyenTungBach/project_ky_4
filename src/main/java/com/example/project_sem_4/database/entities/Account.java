@@ -28,6 +28,8 @@ public class Account extends BaseEntity{
     private String email;
     private String password;
     private String thumbnail;
+    @Column(columnDefinition = "TEXT")
+    private String description;
     private String gender;
     private double total_payment;
 
