@@ -260,4 +260,25 @@ public class BookingService {
         }
         return booking;
     }
+
+    public   List<Object> findChartPie(){
+        List<Object> responses = queryBookingByJDBC.filterBookingForChartPei();
+        return  responses;
+    }
+
+    public   List<Object> findChartRange(){
+        List<Object> responses = queryBookingByJDBC.filterBookingForChartRange();
+        return  responses;
+    }
+
+    public   List<Object> findChartColumn(){
+        List<Object> responses = queryBookingByJDBC.filterBookingForChartColumn();
+        return  responses;
+    }
+
+    public   List<Object> findChartHeat(){
+        List<Object> responses = queryBookingByJDBC.filterBookingForChartHeat();
+        return  responses;
+    }
+
 }

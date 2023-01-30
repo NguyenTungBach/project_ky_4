@@ -87,7 +87,7 @@ public class SeedTest implements CommandLineRunner {
                 String address2 = "Hồ Chí Minh";
                 String name2 = "Cơ Sở Hoàng Quốc Việt";
 
-                    Date dateBranch = getRamdomDate(2015, 2015, "yyyy-MM-dd");
+                    Date dateBranch = getRamdomDate(2020, 2020, "yyyy-MM-dd");
                     Integer status = statuss[rand.nextInt(statuss.length)];
                     String bookingDateBranch = String.valueOf(dateBranch.getDate());
                     if (dateBranch.getDate() < 10) {
@@ -223,7 +223,7 @@ public class SeedTest implements CommandLineRunner {
             double[] price = {200000,300000,400000,500000};
             Integer[] type = {1,2,3,4,5};
             for (int i = 1; i < 20; i++) {
-                Date dateservice = getRamdomDate(2015, 2022, "yyyy-MM-dd");
+                Date dateservice = getRamdomDate(2020, 2022, "yyyy-MM-dd");
                 String linkz = link[rand.nextInt(link.length)];
                 double pricez = price[rand.nextInt(price.length)];
                 Integer typez = type[rand.nextInt(type.length)];
@@ -261,16 +261,20 @@ public class SeedTest implements CommandLineRunner {
             Integer[] branch_ids = {1, 2};
 //            Integer[] emp_ids = {2, 3, 4, 5, 6, 7, 8};
             Integer[] emp_ids = {4};
+            Integer[] service_names = {1,2,3,4,5,6,7,8};
+
             TimeBookingEnum[] time_bookings = TimeBookingEnum.values();
 //            Integer[] user_ids = {5};
             Integer[] user_ids = {1,6};
+            Integer user_ids_zero = 0;
             Integer[] statuss = {-1, 0, 1, 2};
 
-            for (int i = 0; i < 200; i++) {
+            for (int i = 0; i < 600; i++) {
                 Integer status = statuss[rand.nextInt(statuss.length)];
-                Date date = getRamdomDate(2015, 2022, "yyyy-MM-dd");
+                Date date = getRamdomDate(2020, 2022, "yyyy-MM-dd");
                 Integer branch_id = branch_ids[rand.nextInt(branch_ids.length)];
                 Integer emp_id = emp_ids[rand.nextInt(emp_ids.length)];
+                Integer service_name = service_names[rand.nextInt(service_names.length)];
                 String time_booking = time_bookings[rand.nextInt(time_bookings.length)].timeName;
                 Integer user_id = user_ids[rand.nextInt(user_ids.length)];
                 String email = "Seeder@gmail.com";
@@ -301,13 +305,55 @@ public class SeedTest implements CommandLineRunner {
                         emp_id + ","+
                         "''" + ","+
                          '"' + time_booking + '"' + ","+
-                         "''"+ ","+
+                         service_name+ ","+
                          user_id + ")"
                         ;
                 jdbcTemplate.update(
                         sql);
             }
+            for (int i = 601; i < 631; i++) {
+                Integer status = statuss[rand.nextInt(statuss.length)];
+                Date date = getRamdomDate(2021, 2022, "yyyy-MM-dd");
+                Integer branch_id = branch_ids[rand.nextInt(branch_ids.length)];
+                Integer service_name = service_names[rand.nextInt(service_names.length)];
+                Integer emp_id = emp_ids[rand.nextInt(emp_ids.length)];
 
+                String time_booking = time_bookings[rand.nextInt(time_bookings.length)].timeName;
+                Integer user_id = user_ids_zero;
+                String email = "Seeder@gmail.com";
+
+                String bookingDate = String.valueOf(date.getDate());
+                if (date.getDate() < 10) {
+                    bookingDate = 0 + String.valueOf(date.getDate());
+                }
+
+                int validateMonth = date.getMonth() + 1;
+                String bookingMonth = String.valueOf(validateMonth);
+                if (validateMonth < 10) {
+                    bookingMonth = 0 + String.valueOf(validateMonth);
+                }
+                cal = Calendar.getInstance();
+                cal.setTime(date);
+                String bookingYear = String.valueOf(cal.get(Calendar.YEAR));
+
+                sql = "INSERT INTO bookings (id,created_at,status,updated_at,branch_id,date,date_booking,email,employee_id,phone,time_booking,name_booking,user_id) VALUES (" +
+                        '"' +  "HN" +i+ '"' + ","+
+                        '"' + bookingYear + "-" + bookingMonth + "-" + bookingDate + '"' + ","+
+                        status + ","+
+                        '"' + bookingYear + "-" + bookingMonth + "-" + bookingDate + '"' + ","+
+                        branch_id + ","+
+                        '"' + String.valueOf(date.getTime()) + '"'  + ","+
+                        '"' +bookingDate + "-" + bookingMonth + "-" + bookingYear + '"' + ","+
+                        '"' +email+ '"' + ","+
+                        emp_id + ","+
+                        "''" + ","+
+                        '"' + time_booking + '"' + ","+
+                        service_name+ ","+
+                        user_id + ")"
+                ;
+                jdbcTemplate.update(
+                        sql);
+            }
         }
         List<Order> orders = orderRepository.findAll();
         if (orders.size() == 0 && booking.size()> 0) {
@@ -317,7 +363,7 @@ public class SeedTest implements CommandLineRunner {
             double[] pricesOrder = {200000,300000,400000,500000};
 
             for (int i = 1; i < 100; i++) {
-                Date dateorder = getRamdomDate(2015, 2022, "yyyy-MM-dd");
+                Date dateorder = getRamdomDate(2020, 2022, "yyyy-MM-dd");
                 Booking bookin =  booking.get(rand.nextInt(booking.size()));
                 String booking_id = bookin.getId();
                 Integer customer_id = customer_ids[rand.nextInt(customer_ids.length)];
