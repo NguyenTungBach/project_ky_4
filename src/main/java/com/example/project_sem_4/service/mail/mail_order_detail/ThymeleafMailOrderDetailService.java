@@ -89,6 +89,7 @@ public class ThymeleafMailOrderDetailService {
             total_price += serviceDetailDTO.getUnit_price();
             ServiceModel serviceModelAgain = ServiceModel.builder()
                     .name(serviceModel.getName())
+                    .thumbnail(serviceModel.getThumbnail())
                     .price(serviceDetailDTO.getUnit_price())
                     .build();
             serviceModels.add(serviceModelAgain);
