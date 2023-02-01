@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -150,10 +151,13 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/account/active/{id}",method = RequestMethod.GET)
-    public ResponseEntity<Account> activeAccount(
+    public RedirectView activeAccount(
             @PathVariable Integer id
     ){
-        return new ResponseEntity(authenticationService.activeAccount(id), HttpStatus.OK);
+        authenticationService.activeAccount(id);
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("http://localhost:3000/account-confirm");
+        return redirectView;
     }
 
     @RequestMapping(value = "/account/delete/{id}",method = RequestMethod.GET)
