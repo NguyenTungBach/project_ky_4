@@ -402,24 +402,28 @@ public class SeedTest implements CommandLineRunner {
         }
         List<OrderDetail> orderDetails = orderDetailRepository.findAll();
         if(orderDetails.size() == 0 && orders.size() > 0 && services.size() > 0){
-            for (int i = 1; i < 210; i++) {
-                Order order =  orders.get(rand.nextInt(orders.size()));
+            for (int i = 0; i < orders.size(); i++) {
+                Order order =  orders.get(i);
+                int numberLoop = rand.nextInt(4);
+                numberLoop = numberLoop == 0 ? 1 : numberLoop;
                 Integer order_id = order.getId();
-                ServiceModel serviceModel = services.get(rand.nextInt(services.size()));
-               Integer service_id = serviceModel.getId();
-               double unit_price = serviceModel.getPrice();
-                 sql = "SELECT count(*) FROM order_details WHERE order_id = ? AND service_id = ?";
+               for(int j = 1;j <= numberLoop;j++){
+                   ServiceModel serviceModel = services.get(rand.nextInt(services.size()));
+                   Integer service_id = serviceModel.getId();
+                   double unit_price = serviceModel.getPrice();
+                   sql = "SELECT count(*) FROM order_details WHERE order_id = ? AND service_id = ?";
 
-                int count = jdbcTemplate.queryForObject(sql, new Object[] { order_id,service_id }, Integer.class);
-                    if (count == 0){
-                        sql = "INSERT INTO order_details VALUES (" +
-                                order_id + ","+
-                                service_id + ","+
-                                unit_price +")";
-                        jdbcTemplate.update(
-                                sql);
-                    }
-                  }
+                   int count = jdbcTemplate.queryForObject(sql, new Object[] { order_id,service_id }, Integer.class);
+                   if (count == 0){
+                       sql = "INSERT INTO order_details VALUES (" +
+                               order_id + ","+
+                               service_id + ","+
+                               unit_price +")";
+                       jdbcTemplate.update(
+                               sql);
+                   }
+               }
+               }
               }
 
 
