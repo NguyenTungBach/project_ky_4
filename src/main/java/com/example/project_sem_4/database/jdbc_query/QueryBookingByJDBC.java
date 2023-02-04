@@ -50,6 +50,8 @@ public class QueryBookingByJDBC {
                     if (employee == null) {
                         employee = new BookingSearchDTO.Employee();
                         employee.setEmployee_name(rs.getString("accounts.name"));
+                        employee.setEmployee_thumbnail(rs.getString("accounts.thumbnail"));
+                        employee.setEmployee_description(rs.getString("accounts.description"));
                         liszt.put(keyAccount, employee);
                     }
 

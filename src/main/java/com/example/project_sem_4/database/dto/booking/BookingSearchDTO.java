@@ -20,6 +20,8 @@ public class BookingSearchDTO {
     public static class Employee{
 
         private String employee_name;
+        private String employee_thumbnail;
+        private String employee_description;
         private List<Role> roles;
 
         private List<Booking> BookingByTime_bookings;
