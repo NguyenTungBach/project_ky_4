@@ -91,7 +91,7 @@ public class AuthenticationController {
                     break;
                 }
             }
-            CredentialDTO credential = new CredentialDTO(account.getId(),account.getName(),account.getPhone(),account.getEmail(),checkADMIN,account.getCreated_at(),account.getUpdated_at(),accessToken, refreshToken,roles);
+            CredentialDTO credential = new CredentialDTO(account.getId(),account.getName(),account.getPhone(),account.getEmail(),account.getThumbnail(),checkADMIN,account.getCreated_at(),account.getUpdated_at(),accessToken, refreshToken,roles);
             return ResponseEntity.ok(credential);
         } catch (Exception ex) {
             //show error
