@@ -64,6 +64,7 @@ public class QueryBookingByJDBC {
                     booking.setDate_booking(rs.getString("bookings.date_booking"));
                     booking.setBranch_id(rs.getInt("bookings.branch_id"));
                     booking.setTime_booking(rs.getString("bookings.time_booking"));
+                    booking.setStatus(rs.getInt("bookings.status"));
                     if (bookingList == null ){
                         bookingList = new HashMap<>();
                     }
