@@ -124,7 +124,8 @@ public class BookingScheduler {
 //        for (Order order: orders) {
 //            String email = order.getCustomer().getEmail();
 //            String dateHour = String.valueOf(date.getHours());
-//            mailOrderBooking.sendMailOrderBooking(order.getCustomer().getName(),email,dateHour);
+//            String dateMinute = String.valueOf(date.getMinutes());
+//            mailOrderBooking.sendMailOrderBooking(order.getCustomer().getName(),email,dateHour+dateMinute);
 //        }
     }
 
