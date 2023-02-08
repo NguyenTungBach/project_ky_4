@@ -116,15 +116,16 @@ public class BookingScheduler {
         Date date = new Date();
         String formattedDateStr = dmyFormat.format(date);
         int hour1Tieng = date.getHours() - 1;
-//        log.info("Ngày hôm nay là: "+formattedDateStr);
-//        log.info("Lúc mấy giờ: "+ date.getHours());
+        log.info("Ngày hôm nay là: "+formattedDateStr);
+        log.info("date nay là: "+date);
+        log.info("Lúc mấy giờ,phút: "+ date.getHours()+":"+date.getMinutes());
         //Tìm tất cả order có trạng thái là 1 và booking có trạng thái là 1 và booking hôm nay và có giờ đó
-        List<Order> orders = orderRepository.findOrderByStatusAndBooking_idInHour(formattedDateStr, String.valueOf(hour1Tieng));
-        for (Order order: orders) {
-            String email = order.getCustomer().getEmail();
-            String dateHour = String.valueOf(date.getHours());
-            mailOrderBooking.sendMailOrderBooking(email,dateHour);
-        }
+//        List<Order> orders = orderRepository.findOrderByStatusAndBooking_idInHour(formattedDateStr, String.valueOf(hour1Tieng));
+//        for (Order order: orders) {
+//            String email = order.getCustomer().getEmail();
+//            String dateHour = String.valueOf(date.getHours());
+//            mailOrderBooking.sendMailOrderBooking(order.getCustomer().getName(),email,dateHour);
+//        }
     }
 
 }

@@ -87,7 +87,8 @@ public class OrderDetailService {
         Date date = new Date();
         String email = order.getCustomer().getEmail();
         String dateHour = String.valueOf(date.getHours());
-        mailOrderBooking.sendMailOrderBooking(email,dateHour);
+        String dateMinute = String.valueOf(date.getMinutes());
+        mailOrderBooking.sendMailOrderBooking(order.getCustomer().getName(),email,dateHour+dateMinute);
         return orderSave;
     }
 }

@@ -26,7 +26,7 @@ public class MailOrderBooking {
     @Autowired
     private ThymeleafMailOrderBookingService thymeleafMailOrderBookingService;
 
-    public void sendMailOrderBooking(String emailOrderBooking,String hour) {
+    public void sendMailOrderBooking(String name,String emailOrderBooking,String hour) {
         Properties props = new Properties();
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.starttls.enable", "true");
@@ -46,7 +46,7 @@ public class MailOrderBooking {
 
             message.setFrom(new InternetAddress(email));
             message.setSubject("Hair Style xin báo sắp đến giờ cắt tóc");
-            message.setContent(thymeleafMailOrderBookingService.getContent(hour), CONTENT_TYPE_TEXT_HTML);
+            message.setContent(thymeleafMailOrderBookingService.getContent(name,hour), CONTENT_TYPE_TEXT_HTML);
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();

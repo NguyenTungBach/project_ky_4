@@ -52,9 +52,10 @@ public class ThymeleafMailOrderBookingService {
         return templateResolver;
     }
 
-    public String getContent(String hour) {
+    public String getContent(String name,String hour) {
         final Context context = new Context();
         context.setVariable("hour", hour);
+        context.setVariable("name", name);
 
         return templateEngine.process(TEMPLATE_NAME, context);
     }
