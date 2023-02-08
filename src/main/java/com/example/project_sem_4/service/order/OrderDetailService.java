@@ -10,6 +10,7 @@ import com.example.project_sem_4.database.repository.OrderRepository;
 import com.example.project_sem_4.database.repository.ServiceRepository;
 import com.example.project_sem_4.database.repository.VoucherRepository;
 import com.example.project_sem_4.enum_project.StatusEnum;
+import com.example.project_sem_4.service.mail.mail_order_booking.MailOrderBooking;
 import com.example.project_sem_4.service.mail.mail_order_detail.MailOrderDetail;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
@@ -38,6 +39,9 @@ public class OrderDetailService {
 
     @Autowired
     private VoucherRepository voucherRepository;
+
+    @Autowired
+    private MailOrderBooking mailOrderBooking;
 
     @Transactional
     public Order create(OrderDetailDTO orderDetailDTO){
@@ -79,6 +83,11 @@ public class OrderDetailService {
         String emailCustomer = order.getCustomer().getEmail();
         Gson gson = new Gson();
         mailOrderDetail.sendMailOrderDetail(emailCustomer,gson.toJson(orderDetailDTO));
+
+        Date date = new Date();
+        String email = order.getCustomer().getEmail();
+        String dateHour = String.valueOf(date.getHours());
+        mailOrderBooking.sendMailOrderBooking(email,dateHour);
         return orderSave;
     }
 }
