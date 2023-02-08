@@ -1,14 +1,8 @@
 package com.example.project_sem_4.service.order;
 
 import com.example.project_sem_4.database.dto.order.OrderDetailDTO;
-import com.example.project_sem_4.database.entities.Order;
-import com.example.project_sem_4.database.entities.OrderDetail;
-import com.example.project_sem_4.database.entities.ServiceModel;
-import com.example.project_sem_4.database.entities.Voucher;
-import com.example.project_sem_4.database.repository.OrderDetailRepository;
-import com.example.project_sem_4.database.repository.OrderRepository;
-import com.example.project_sem_4.database.repository.ServiceRepository;
-import com.example.project_sem_4.database.repository.VoucherRepository;
+import com.example.project_sem_4.database.entities.*;
+import com.example.project_sem_4.database.repository.*;
 import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.service.mail.mail_order_booking.MailOrderBooking;
 import com.example.project_sem_4.service.mail.mail_order_detail.MailOrderDetail;
@@ -39,6 +33,9 @@ public class OrderDetailService {
 
     @Autowired
     private VoucherRepository voucherRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @Autowired
     private MailOrderBooking mailOrderBooking;
@@ -80,12 +77,16 @@ public class OrderDetailService {
         order.setTotal_price(total_price);
         order.setStatus(StatusEnum.ACTIVE.status);
         Order orderSave =orderRepository.save(order);
-        String emailCustomer = order.getCustomer().getEmail();
+        Booking booking = bookingRepository.findById(order.getBooking_id()).orElse(null);
+        if (booking == null){
+            throw new ApiExceptionNotFound("bookings","id",order.getBooking_id());
+        }
+        String emailCustomer = booking.getEmail();
         Gson gson = new Gson();
         mailOrderDetail.sendMailOrderDetail(emailCustomer,gson.toJson(orderDetailDTO));
 
         Date date = new Date();
-        String email = order.getCustomer().getEmail();
+        String email = booking.getEmail();
         String dateHour = String.valueOf(date.getHours());
         String dateMinute = String.valueOf(date.getMinutes());
         mailOrderBooking.sendMailOrderBooking(order.getCustomer().getName(),email,dateHour+"h"+dateMinute);
