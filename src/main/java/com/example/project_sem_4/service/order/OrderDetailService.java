@@ -7,6 +7,8 @@ import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.service.mail.mail_order_booking.MailOrderBooking;
 import com.example.project_sem_4.service.mail.mail_order_detail.MailOrderDetail;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionCustomBadRequest;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionCustomNotFound;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
@@ -44,7 +46,8 @@ public class OrderDetailService {
     public Order create(OrderDetailDTO orderDetailDTO){
         Order order = orderRepository.findById(orderDetailDTO.getOrder_id()).orElse(null);
         if (order == null){
-            throw new ApiExceptionNotFound("orders","id",orderDetailDTO.getOrder_id());
+//            throw new ApiExceptionNotFound("orders","id",orderDetailDTO.getOrder_id());
+            throw new ApiExceptionCustomNotFound("Không tìm thấy đơn hàng có mã là: " + orderDetailDTO.getOrder_id());
         }
         Double total_price = 0.0;
         for (OrderDetailDTO.ListServiceDetailDTO serviceDetailDTO: orderDetailDTO.getOrderDetails()) {
@@ -63,13 +66,16 @@ public class OrderDetailService {
         if (order.getVoucher_id() != null && order.getVoucher_id().length() > 0){
             Voucher voucher = voucherRepository.findByVoucherCode(order.getVoucher_id());
             if (voucher == null){
-                throw new ApiExceptionNotFound("orders","voucher_id",order.getVoucher_id());
+//                throw new ApiExceptionNotFound("orders","voucher_id",order.getVoucher_id());
+                throw new ApiExceptionCustomNotFound("Không tìm thấy voucher có mã là: " + order.getVoucher_id());
             }
             if (voucher.getExpired_date().before(new Date())){
-                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn" + order.getVoucher_id());
+//                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn" + order.getVoucher_id());
+                throw new ApiExceptionCustomBadRequest("Voucher hết hạn có mã là: " + order.getVoucher_id());
             }
             if (voucher.is_used()){
-                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher đã được sử dụng " + order.getVoucher_id());
+//                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher đã được sử dụng " + order.getVoucher_id());
+                throw new ApiExceptionCustomBadRequest("Voucher đã được sử dụng có mã là: " + order.getVoucher_id());
             }
             total_price = total_price - (total_price * voucher.getDiscount());
             voucher.set_used(true);
@@ -79,7 +85,8 @@ public class OrderDetailService {
         Order orderSave =orderRepository.save(order);
         Booking booking = bookingRepository.findById(order.getBooking_id()).orElse(null);
         if (booking == null){
-            throw new ApiExceptionNotFound("bookings","id",order.getBooking_id());
+//            throw new ApiExceptionNotFound("bookings","id",order.getBooking_id());
+            throw new ApiExceptionCustomNotFound("Không tìm thấy ngày đặt lịch có mã là: "+order.getBooking_id());
         }
         String emailCustomer = booking.getEmail();
         Gson gson = new Gson();

@@ -11,6 +11,7 @@ import com.example.project_sem_4.database.search_body.BookingSearchBody;
 import com.example.project_sem_4.database.search_body.OrderSearchBody;
 import com.example.project_sem_4.enum_project.StatusEnum;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionBadRequest;
+import com.example.project_sem_4.util.exception_custom_message.ApiExceptionCustomBadRequest;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionCustomNotFound;
 import com.example.project_sem_4.util.exception_custom_message.ApiExceptionNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,28 +49,28 @@ public class OrderService {
         //Kiểm tra tài khoản
         Account checkCustomer = accountRepository.findById(orderDTO.getCustomer_id()).orElse(null);
         if (checkCustomer == null){
-            throw new ApiExceptionNotFound("orders","customer_id",orderDTO.getCustomer_id());
+            throw new ApiExceptionCustomNotFound("Không tìm thấy khách hàng này");
         }
         //Kiểm tra voucher
         if (orderDTO.getVoucher_id() != null && orderDTO.getVoucher_id().length() > 0){
             Voucher voucher = voucherRepository.findByVoucherCode(orderDTO.getVoucher_id());
             if (voucher == null){
-                throw new ApiExceptionNotFound("orders","voucher_id",orderDTO.getVoucher_id());
+                throw new ApiExceptionCustomNotFound("Không tìm thấy voucher có mã là: " + orderDTO.getVoucher_id());
             }
             if (voucher.getExpired_date().before(new Date())){
-                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher hết hạn " + orderDTO.getVoucher_id());
+                throw new ApiExceptionCustomBadRequest("Voucher hết hạn có mã là: " + orderDTO.getVoucher_id());
             }
             if (voucher.is_used()){
-                throw new ApiExceptionBadRequest("orders","voucher_id", "Voucher đã được sử dụng " + orderDTO.getVoucher_id());
+                throw new ApiExceptionCustomBadRequest("Voucher đã được sử dụng có mã là: " + orderDTO.getVoucher_id());
             }
         }
         //Kiểm tra mã Booking và trạng thái
         Booking checkBooking = bookingRepository.findById(orderDTO.getBooking_id()).orElse(null);
         if (checkBooking == null){
-            throw new ApiExceptionNotFound("orders","booking_id",orderDTO.getBooking_id());
+            throw new ApiExceptionCustomNotFound("Không tìm thấy ngày đặt lịch có mã là: "+orderDTO.getBooking_id());
         }
         if (checkBooking.getStatus() == StatusEnum.ACTIVE.status){
-            throw new ApiExceptionBadRequest("orders","booking_id","Lịch đã được đặt " + orderDTO.getBooking_id());
+            throw new ApiExceptionCustomNotFound("Lịch đã được đặt có mã là: " + orderDTO.getBooking_id());
         }
 
         if (checkCustomer.getId() == 1){

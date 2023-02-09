@@ -109,24 +109,24 @@ public class BookingScheduler {
     @Autowired
     private MailOrderBooking mailOrderBooking;
 
-    @Scheduled( fixedRate = 1800000)
-    public void checkBookingStatus() throws InterruptedException{
-        SimpleDateFormat dmyFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        Date date = new Date();
-        String formattedDateStr = dmyFormat.format(date);
-        int hour1Tieng = date.getHours() - 1;
-        log.info("Ngày hôm nay là: "+formattedDateStr);
-        log.info("date nay là: "+date);
-        log.info("Lúc mấy giờ,phút: "+ date.getHours()+":"+date.getMinutes());
-        //Tìm tất cả order có trạng thái là 1 và booking có trạng thái là 1 và booking hôm nay và có giờ đó
-//        List<Order> orders = orderRepository.findOrderByStatusAndBooking_idInHour(formattedDateStr, String.valueOf(hour1Tieng));
-//        for (Order order: orders) {
-//            String email = order.getCustomer().getEmail();
-//            String dateHour = String.valueOf(date.getHours());
-//            String dateMinute = String.valueOf(date.getMinutes());
-//            mailOrderBooking.sendMailOrderBooking(order.getCustomer().getName(),email,dateHour+"h"+dateMinute);
-//        }
-    }
+//    @Scheduled( fixedRate = 1800000)
+//    public void checkBookingStatus() throws InterruptedException{
+//        SimpleDateFormat dmyFormat = new SimpleDateFormat("dd-MM-yyyy");
+//
+//        Date date = new Date();
+//        String formattedDateStr = dmyFormat.format(date);
+//        int hour1Tieng = date.getHours() - 1;
+//        log.info("Ngày hôm nay là: "+formattedDateStr);
+//        log.info("date nay là: "+date);
+//        log.info("Lúc mấy giờ,phút: "+ date.getHours()+":"+date.getMinutes());
+//        //Tìm tất cả order có trạng thái là 1 và booking có trạng thái là 1 và booking hôm nay và có giờ đó
+////        List<Order> orders = orderRepository.findOrderByStatusAndBooking_idInHour(formattedDateStr, String.valueOf(hour1Tieng));
+////        for (Order order: orders) {
+////            String email = order.getCustomer().getEmail();
+////            String dateHour = String.valueOf(date.getHours());
+////            String dateMinute = String.valueOf(date.getMinutes());
+////            mailOrderBooking.sendMailOrderBooking(order.getCustomer().getName(),email,dateHour+"h"+dateMinute);
+////        }
+//    }
 
 }
