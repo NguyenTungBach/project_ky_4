@@ -62,6 +62,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/booking/findAllByEmployee_idAndDate_booking",
                 "/booking/{id}",
                 "/blog/search", "/blog/{id}",
+                        "/account/findAccountsByBranch_id/{id}",
                         "/feedback/create**")
                 .permitAll();
         //ADMIN

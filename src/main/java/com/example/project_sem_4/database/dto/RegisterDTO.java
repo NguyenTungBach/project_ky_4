@@ -19,6 +19,7 @@ public class RegisterDTO {
     private String name;
     private String address;
     private String description;
+    private Integer branch_id;
     @Email(message = "Sai định dạng email")
     @NotEmpty(message = "Thiếu email")
     private String email;

@@ -5,10 +5,12 @@ import com.example.project_sem_4.database.dto.RegisterCustomerDTO;
 import com.example.project_sem_4.database.dto.RegisterDTO;
 import com.example.project_sem_4.database.dto.search.account.AccountSearchDTO;
 import com.example.project_sem_4.database.entities.Account;
+import com.example.project_sem_4.database.entities.Branch;
 import com.example.project_sem_4.database.entities.MembershipClass;
 import com.example.project_sem_4.database.entities.Role;
 import com.example.project_sem_4.database.jdbc_query.QueryAccountByJDBC;
 import com.example.project_sem_4.database.repository.AccountRepository;
+import com.example.project_sem_4.database.repository.BranchRepository;
 import com.example.project_sem_4.database.repository.MembershipClassRepository;
 import com.example.project_sem_4.database.repository.RoleRepository;
 import com.example.project_sem_4.database.search_body.AccountSearchBody;
@@ -49,6 +51,8 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     private MembershipClassRepository membershipClassRepository;
+    @Autowired
+    private BranchRepository branchRepository;
     @Autowired
     private QueryAccountByJDBC queryAccountByJDBC;
     @Autowired
@@ -95,6 +99,9 @@ public class AuthenticationService implements UserDetailsService {
         Account account = new Account();
         account.setName(registerDTO.getName());
         account.setAddress(registerDTO.getAddress());
+        if (registerDTO.getBranch_id() != null){
+            account.setBranch_id(registerDTO.getBranch_id());
+        }
         account.setPhone(registerDTO.getPhone());
         account.setEmail(registerDTO.getEmail());
         account.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
@@ -110,6 +117,7 @@ public class AuthenticationService implements UserDetailsService {
         if (registerDTO.getThumbnail() !=null){
             account.setThumbnail(registerDTO.getThumbnail());
         }
+
 
         account.setCreated_at(new Date());
         account.setStatus(StatusEnum.UN_ACTIVE.status);
@@ -245,6 +253,18 @@ public class AuthenticationService implements UserDetailsService {
 
             checkAccount.setRoles(roles);
         }
+
+        if (account.getBranch_id() != null){
+            Branch branch = branchRepository.findById(account.getBranch_id()).orElse(null);
+            for (Role role: account.getRoles()) {
+                Optional<Role> userRoleOptional = roleRepository.findByName(role.getName());
+                Role userRole = userRoleOptional.orElse(null);
+                if (!userRole.getName().equals("CUSTOMER")) {
+                    checkAccount.setBranch_id(branch.getId());
+                }
+            }
+        }
+
         if (account.getAddress() != null){
             checkAccount.setAddress(account.getAddress());
         }
@@ -332,5 +352,9 @@ public class AuthenticationService implements UserDetailsService {
 
     public List<Role> findAllRole(){
         return roleRepository.findAll();
+    }
+
+    public List<Account> findAccountsByBranch_id (Integer branch_id){
+        return accountRepository.findAccountsByBranch_id(branch_id);
     }
 }

@@ -19,5 +19,11 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
             " From accounts join accounts_roles on accounts.id = accounts_roles.account_id"+
             " WHERE accounts_roles.role_id = ?1",nativeQuery = true)
     List<Account> findAccountsByRole_id(Integer role_id);
+
+    @Query(value = "Select" +
+            " accounts.*"+
+            " From accounts"+
+            " WHERE accounts.branch_id = ?1",nativeQuery = true)
+    List<Account> findAccountsByBranch_id(Integer branch_id);
 }
 

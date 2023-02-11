@@ -30,6 +30,8 @@ public class Account extends BaseEntity{
     private String thumbnail;
     @Column(columnDefinition = "TEXT")
     private String description;
+    @Column(columnDefinition = "integer default 0", name = "branch_id")
+    private Integer branch_id;
     private String gender;
     private double total_payment;
 

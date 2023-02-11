@@ -91,7 +91,7 @@ public class AuthenticationController {
                     break;
                 }
             }
-            CredentialDTO credential = new CredentialDTO(account.getId(),account.getName(),account.getPhone(),account.getEmail(),account.getThumbnail(),checkADMIN,account.getCreated_at(),account.getUpdated_at(),accessToken, refreshToken,roles);
+            CredentialDTO credential = new CredentialDTO(account.getId(),account.getName(),account.getPhone(),account.getEmail(),account.getThumbnail(),account.getBranch_id(),checkADMIN,account.getCreated_at(),account.getUpdated_at(),accessToken, refreshToken,roles);
             return ResponseEntity.ok(credential);
         } catch (Exception ex) {
             //show error
@@ -170,5 +170,12 @@ public class AuthenticationController {
     @RequestMapping(value = "/account/role",method = RequestMethod.GET)
     public ResponseEntity<Account> findAllRole(){
         return new ResponseEntity(authenticationService.findAllRole(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/account/findAccountsByBranch_id/{id}",method = RequestMethod.GET)
+    public ResponseEntity<Account> findAccountsByBranch_id(
+            @PathVariable Integer id
+    ){
+        return new ResponseEntity(authenticationService.findAccountsByBranch_id(id), HttpStatus.OK);
     }
 }

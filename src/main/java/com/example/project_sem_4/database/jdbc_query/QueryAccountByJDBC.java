@@ -29,7 +29,7 @@ public class QueryAccountByJDBC {
     }
 
     public String stringQuery(AccountSearchBody searchBody){
-        StringBuilder sqlQuery = new StringBuilder("Select accounts.id as accounts_id,accounts.name as accounts_name,accounts.email as accounts_email,accounts.phone,accounts.gender,accounts.address,accounts.thumbnail,accounts.total_payment,accounts.created_at as account_created_at,accounts.description as account_description ");
+        StringBuilder sqlQuery = new StringBuilder("Select accounts.id as accounts_id,accounts.name as accounts_name,accounts.branch_id as accounts_branch_id,accounts.email as accounts_email,accounts.phone,accounts.gender,accounts.address,accounts.thumbnail,accounts.total_payment,accounts.created_at as account_created_at,accounts.description as account_description ");
 
         sqlQuery.append(" ,(CONCAT(\"[\",GROUP_CONCAT(CONCAT('{\"id\":\"', roles.id, '\", \"name\":\"',roles.name,'\"}')),']')) as rolesListBefore")
                 .append(" FROM accounts ")
@@ -61,7 +61,12 @@ public class QueryAccountByJDBC {
                 sqlQuery.append(" AND roles.id = " + searchBody.getRole_id());
             }
 
-            if (searchBody.getStatus() != null){
+            if (searchBody.getBranch_id() != null){
+                sqlQuery.append(" AND accounts.branch_id = " + searchBody.getBranch_id());
+            }
+
+
+        if (searchBody.getStatus() != null){
                 sqlQuery.append(" AND accounts.status = " + searchBody.getStatus());
             } else {
                 sqlQuery.append(" AND accounts.status != -1");

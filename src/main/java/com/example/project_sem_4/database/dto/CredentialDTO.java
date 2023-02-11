@@ -15,6 +15,7 @@ public class CredentialDTO {
     private String phone;
     private String email;
     private String thumbnail;
+    private Integer branch_id;
     @JsonProperty(namespace = "isAdmin")
     private boolean isAdmin;
     private Date created_at;

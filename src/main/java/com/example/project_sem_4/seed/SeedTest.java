@@ -434,6 +434,7 @@ public class SeedTest implements CommandLineRunner {
         String email;
         String phone;
         String description;
+        Integer branch_id;
         String roleName;
         switch (checkAccount) {
                 case "ADMIN":
@@ -441,6 +442,7 @@ public class SeedTest implements CommandLineRunner {
                 roleName = "ADMIN";
                 description = "Quản trị viên ";
                 email = "admin@gmail.com";
+                branch_id = 1;
                 phone = "0123523532";
                 break;
             case "RECEPTIONISTS":
@@ -448,6 +450,7 @@ public class SeedTest implements CommandLineRunner {
                 roleName = "RECEPTIONISTS";
                 description = "Lễ tân";
                 email = "receptionists@gmail.com";
+                branch_id = 1;
                 phone = "43241414141532";
                 break;
             case "STAFF1":
@@ -455,6 +458,7 @@ public class SeedTest implements CommandLineRunner {
                 roleName = "STAFF";
                 description = "Trước đây, mọi người thường nghĩ đàn ông không cần quá quan trọng ngoại hình, xuề xoà là một nét đặc trưng của đàn ông. Nhưng ở thời đại bây giờ thì mọi thứ khác rồi. Không chỉ phụ nữ mà đàn ông cũng nên chăm chút ngoại hình. Ngoại hình là thứ ảnh hưởng rất nhiều tới các mối quan hệ và công việc, cuộc sống và kể từ khi mình nhận ra điều đó thì mình dần quan tâm chăm sóc ngoại hình bản thân nhiều hơn.Bạn sinh ra đã đẹp thì là một điều tốt, nhưng nếu như mình chưa có thì không có nghĩa mình mãi mãi không có được. Có rất nhiều cách để khiến mình trở nên đẹp hơn như tập gym, thời trang và kiểu tóc";
                 email = "staff1@gmail.com";
+                branch_id = 1;
                 phone = "0214124142";
                 break;
             case "STAFF2":
@@ -462,6 +466,7 @@ public class SeedTest implements CommandLineRunner {
                 roleName = "STAFF";
                 description = "Nghệ thuật không bao giờ có điểm dừng. Mình hiểu rất rõ điều này và luôn tỉ mỉ trong từng đường kéo.Với tay nghề chuẩn quốc tế, cùng với sự am hiểu về mái tóc, con người Việt, chắc chắn các mình sẽ cắt cho bạn kiểu tóc ưng ý nhất.Không những thế, cắt Sport ở tiệm, bạn còn được vuốt sáp tạo kiểu miễn phí không nơi nào có, hướng dẫn vuốt tại nhà nhanh, dễ dàng và đẹp nhất.";
                 email = "staff2@gmail.com";
+                branch_id = 1;
                 phone = "0214124143";
                 break;
             case "STAFF3":
@@ -470,6 +475,7 @@ public class SeedTest implements CommandLineRunner {
                 description = "Tôi thấy có ngoại hình đẹp sáng sủa sẽ giúp đàn ông tự tin hơn rất nhiều. Nam giới Việt Nam đẹp trai chứ, nhưng chưa được định hình phong cách, chưa có người tư vấn, dẫn dắt xu hướng. Thậm chí rất hiếm luôn. Tôi rất khao khát giúp ae trở thành phiên bản tốt hơn, nên có động lực đi tìm trend tóc, tìm phong cách cho ae nam giới Việt. Vì vậy mà tôi đã thử rất nhiều kiểu tóc, màu tóc, thu nạp đc rất nhiều kiến thức và đã có tôi của ngày hôm nay." +
                         "Hành trình để đi tìm những Trend tóc đang là xu hướng, những Trend tóc mới cho ae phải nói là cũng gặp khá nhiều gian nan, khó khăn bởi một chút lơ là thôi thì cái Trend đó đã nguội hay là giảm độ nóng độ hot rồi. Nên bắt buộc bạn phải cực kì nhạy cảm. Tôi còn nhớ trend tóc con sâu từ Hàn Quôc tràn về VN, tôi và anh em stylist tại thức cả đêm để nghiên cứu kỹ thuật, làm sao vẫn giữ được nét đặc trưng của kiểu tóc mà vẫn phù hợp với khuôn mặt, chất tóc nam giới Việt. Có những lúc thử đi thử lại vẫn chưa ưng ý còn cãi nhau to, nhưng khi xong thì mấy ae vui lắm,...";
                 email = "staff3@gmail.com";
+                branch_id = 1;
                 phone = "0214124256";
                 break;
             case "STAFF4":
@@ -480,6 +486,7 @@ public class SeedTest implements CommandLineRunner {
                         "Ví dụ như kiểu tóc Mohican đình đám năm ngoái hay gần đây nhất là kiểu tóc uốn con sâu. Kiểu tóc này có thể hot ở thế giới, tây để rất đẹp nhưng với gương mặt, chất tóc của người Việt chưa chắc đã hợp nên tôi và các chuyên gia tóc ở tiệm phải nghiên cứu rất nhiều, thử nghiệm trên chính mái tóc của tôi và các anh em đến khi nào ra chuẩn thì thôi.\n" +
                         "Tuy khó khăn nhưng làm vì đam mê vì ae thôi, nên tôi cũng đã theo đuổi cũng từ rất lâu rồi. Quan trọng là anh em đẹp hơn, anh em có chỗ dựa tin tưởng để luôn luôn bắt kịp những xu hướng tóc mới. Ko bao giờ sợ lỗi thời.";
                 email = "staff4@gmail.com";
+                branch_id = 1;
                 phone = "0214124589";
                 break;
             case "CUSTOMER_CARE":
@@ -487,6 +494,7 @@ public class SeedTest implements CommandLineRunner {
                 roleName = "CUSTOMER_CARE";
                 description = "Nhân viên chăm sóc";
                 email = "customer_care@gmail.com";
+                branch_id = 1;
                 phone = "543564312";
                 break;
             case "CUSTOMER":
