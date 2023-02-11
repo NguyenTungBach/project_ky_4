@@ -100,20 +100,6 @@ public class BookingService {
             throw new ApiExceptionNotFound("branchs","id",bookingDTO.getBranch_id());
         }
 
-//        log.info("Thời gian parse getDay là " + dateBooking.getDay());
-//        log.info("Thời gian parse getDate là " + dateBooking.getDate());
-//        log.info("Thời gian parse getMonth là " + dateBooking.getMonth());
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(dateBooking);
-//        log.info("Thời gian parse cal.get(Calendar.YEAR) là " + cal.get(Calendar.YEAR));
-//        log.info("Thời gian parse getTime là " + dateBooking.getTime());
-//        log.info("Thời gian parse getHours là " + dateBooking.getHours());
-//        log.info("Thời gian parse getMinutes là " + dateBooking.getMinutes());
-//        log.info("Thời gian parse getSeconds là " + dateBooking.getSeconds());
-//        log.info("Thời gian parse getTimezoneOffset là " + dateBooking.getTimezoneOffset());
-//        log.info("Thời gian parse dateBooking là " + dateBooking);
-
-
         String bookingDate = String.valueOf(dateBooking.getDate());
         if (dateBooking.getDate() < 10){
             bookingDate = 0+String.valueOf(dateBooking.getDate());
@@ -129,6 +115,26 @@ public class BookingService {
         cal.setTime(dateBooking);
         String bookingYear = String.valueOf(cal.get(Calendar.YEAR));
 
+        // Kiểm tra nhân viên tại ngày đó hiện có đang làm ở chi nhánh nào khác không
+        List<Booking> checkBookingBranch =  bookingRepository.findByEmployee_idAndDate_booking(checkEmployee.getId(),bookingDate + "-" + bookingMonth + "-" + bookingYear);
+        if (checkBookingBranch.size() > 0){
+            if (checkBookingBranch.get(0).getBranch().getId() != bookingDTO.getBranch_id()){
+                throw new ApiExceptionCustomBadRequest("Ngày " + bookingDate + "-" + bookingMonth + "-" + bookingYear +"đã được điều đến chi nhánh là " + checkBookingBranch.get(0).getBranch().getName());
+            }
+        }
+//        log.info("Thời gian parse getDay là " + dateBooking.getDay());
+//        log.info("Thời gian parse getDate là " + dateBooking.getDate());
+//        log.info("Thời gian parse getMonth là " + dateBooking.getMonth());
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(dateBooking);
+//        log.info("Thời gian parse cal.get(Calendar.YEAR) là " + cal.get(Calendar.YEAR));
+//        log.info("Thời gian parse getTime là " + dateBooking.getTime());
+//        log.info("Thời gian parse getHours là " + dateBooking.getHours());
+//        log.info("Thời gian parse getMinutes là " + dateBooking.getMinutes());
+//        log.info("Thời gian parse getSeconds là " + dateBooking.getSeconds());
+//        log.info("Thời gian parse getTimezoneOffset là " + dateBooking.getTimezoneOffset());
+//        log.info("Thời gian parse dateBooking là " + dateBooking);
+
         Booking bookingSave = Booking.builder()
                 .branch(checkBranch)
                 .employee(checkEmployee)
@@ -140,6 +146,7 @@ public class BookingService {
         bookingSave.setStatus(StatusEnum.UN_ACTIVE.status);
         bookingSave.setCreated_at(new Date());
 
+//        return bookingSave;
         return bookingRepository.save(bookingSave);
     }
 
