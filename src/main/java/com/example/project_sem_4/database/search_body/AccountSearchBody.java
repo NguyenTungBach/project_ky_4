@@ -15,6 +15,7 @@ public class AccountSearchBody {
     private String name;
     private String email;
     private Integer role_id;
+    private Integer not_in_role_id;
     private Integer branch_id;
     private Integer member_ship_class_id;
     private String phone;

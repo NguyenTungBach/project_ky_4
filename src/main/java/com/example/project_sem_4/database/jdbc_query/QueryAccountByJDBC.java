@@ -61,6 +61,10 @@ public class QueryAccountByJDBC {
                 sqlQuery.append(" AND roles.id = " + searchBody.getRole_id());
             }
 
+        if (searchBody.getNot_in_role_id() != null){
+            sqlQuery.append(" AND NOT roles.id = " + searchBody.getNot_in_role_id());
+        }
+
             if (searchBody.getBranch_id() != null){
                 sqlQuery.append(" AND accounts.branch_id = " + searchBody.getBranch_id());
             }
