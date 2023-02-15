@@ -77,6 +77,7 @@ public class ThymeleafMailOrderDetailService {
 
         context.setVariable("name", order.getCustomer().getName());
         context.setVariable("order_id", orderDetailDTO.getOrder_id());
+        context.setVariable("booking_id", order.getBooking_id());
 
         List<ServiceModel> serviceModels = new ArrayList<>();
         Double total_price = 0.0;
